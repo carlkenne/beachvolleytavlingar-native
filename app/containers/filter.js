@@ -1,24 +1,20 @@
+import { Link } from 'react'
 import { connect } from 'react-redux'
-import { toggleFilter } from '../actions/filterActions'
-import view from '../components/TournamentListFilter'
+import { toggleFilter } from '../containers/tournamentListFilter/actions'
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    filter: state.filter
-  }
-}
+const mapStateToProps = (state) => ({
+  filter: state.filter
+})
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    filterClick: (index, value) => {
-      dispatch(toggleFilter(index, value))
-    }
+const mapDispatchToProps = (dispatch) => ({
+  filterClick: (index, value) => {
+    dispatch(toggleFilter(index, value))
   }
-}
+})
 
 const FilterLink = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Link)
 
-export default TournamentListFilter
+export default FilterLink

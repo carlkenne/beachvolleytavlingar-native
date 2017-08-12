@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import React from 'react';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 
 import createSagaMiddleware from 'redux-saga';
@@ -11,17 +11,14 @@ const sagaMiddleware = createSagaMiddleware();
 
 const createStoreWithMiddleware = applyMiddleware(sagaMiddleware)(createStore);
 const store = createStoreWithMiddleware(reducers);
-console.log(reducers)
 
 // Extensions
 sagaMiddleware.run(sagas);
 
-export default class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Navigator />
-      </Provider>
-    );
-  }
+export default function App() {
+  return (
+    <Provider store={store}>
+      <Navigator />
+    </Provider>
+  );
 }

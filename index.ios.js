@@ -6,6 +6,6 @@ import {
   AppRegistry,
 } from 'react-native';
 
-import app from 'beachvolleytavlingar/app/containers/app';
+import app from './app/containers/app';
 
 AppRegistry.registerComponent('beachvolleytavlingar', () => app);

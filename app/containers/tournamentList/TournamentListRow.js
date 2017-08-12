@@ -1,28 +1,29 @@
 'use strict'
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native'
 
+const backgroundColor = 'rgba(255, 255, 255, 0.6)';
 const styles = StyleSheet.create({
   title: { fontWeight: 'bold', fontSize: 16 },
-  row: { padding: 5, backgroundColor: 'rgba(255, 255, 255, 0.6)'}
+  row: { padding: 5, backgroundColor }
 });
 
-export default class TournamentListRow extends Component {
-    static propTypes = {
-      tournamentInfo: PropTypes.object.isRequired,
-      onPress: PropTypes.func.isRequired
-    }
+function TournamentListRow({ tournamentInfo, onPress }) {
+  return (
+    <TouchableHighlight onPress={onPress}>
+      <View style={styles.row}>
+        <Text style={styles.title}>{tournamentInfo.name}</Text>
+        <Text>
+          {tournamentInfo.date} - {tournamentInfo.club}
+        </Text>
+      </View>
+    </TouchableHighlight>
+  );
+}
 
-    render () {
-      return (
-        <TouchableHighlight onPress={()=>this.props.onPress(this.props.tournamentInfo)}>
-          <View style={styles.row}>
-            <Text style={styles.title}>{this.props.tournamentInfo.name}</Text>
-            <Text>
-              {this.props.tournamentInfo.date} - {this.props.tournamentInfo.club}
-            </Text>
-          </View>
-        </TouchableHighlight>
-      );
-    }
-};
+TournamentListRow.propTypes = {
+  tournamentInfo: PropTypes.shape({}).isRequired,
+  onPress: PropTypes.func.isRequired
+}
+
+export default TournamentListRow

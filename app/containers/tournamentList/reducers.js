@@ -1,7 +1,7 @@
 import * as consts from './constants';
-import cloneObject from 'beachvolleytavlingar/app/lib/clone';
+import cloneObject from '../../lib/clone';
 
-let initialState = {
+const initialState = {
   loaded: false,
   sectionHeaders: {},
   tournamentData: {}
@@ -9,8 +9,8 @@ let initialState = {
 
 
 export default function (state = initialState, action = {}) {
-  switch(action.type) {
-    case consts.GET_TOURNAMENTLIST_SUCCESS:
+  switch (action.type) {
+    case consts.GET_TOURNAMENTLIST_SUCCESS: {
       let _state = cloneObject(state);
       _state = {
         ..._state,
@@ -19,15 +19,17 @@ export default function (state = initialState, action = {}) {
         tournamentData: action.tournamentData
       }
       return _state;
-    case consts.GET_TOURNAMENTLIST_FAILED:
+    }
+    case consts.GET_TOURNAMENTLIST_FAILED: {
       let __state = cloneObject(state);
       __state = {
-        ..._state,
+        ...state,
         loaded: false,
         sectionHeaders: action.sectionHeaders,
         tournamentData: action.tournamentData
       }
       return __state;
+    }
     default:
       return state;
   }

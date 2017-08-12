@@ -1,12 +1,12 @@
-import filter from './filter';
-import tournamentDetails from 'beachvolleytavlingar/app/containers/tournamentDetailsTabbar/reducers';
-import tournamentList from 'beachvolleytavlingar/app/containers/tournamentList/reducers';
 import { combineReducers } from 'redux';
+import filter from '../containers/tournamentListFilter/reducers';
+import tournamentList from '../containers/tournamentList/reducers';
+import mainNavigation from '../containers/mainNavigationTabbar/reducers';
 
 const reducers = combineReducers({
   filter,
-  tournamentDetails,
-  tournamentList
+  tournamentList,
+  mainNavigation
 })
 
 export default reducers

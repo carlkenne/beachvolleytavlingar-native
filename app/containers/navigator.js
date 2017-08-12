@@ -1,61 +1,37 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import {
-  StyleSheet,
-  View,
-  AppRegistry,
   NavigatorIOS,
-  Text,
-  TouchableHighlight
+  StyleSheet
 } from 'react-native';
+import MainNavigationTabbar from '../containers/mainNavigationTabbar';
+import TournamentListFilter from '../containers/tournamentListFilter';
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
-import TournamentDetailsTabbar from 'beachvolleytavlingar/app/containers/tournamentDetailsTabbar';
-import TournamentList from 'beachvolleytavlingar/app/containers/tournamentList';
-import TournamentListFilter from 'beachvolleytavlingar/app/containers/tournamentList/TournamentListFilter';
-import * as filterActions from '../actions/filterActions';
+const styles = StyleSheet.create({
+  flex: { flex: 1 }
+})
 
 class Navigator extends Component {
-  _showFilterView() {
+  _showFilterView = () => {
     this.refs.navigator.push({
       component: TournamentListFilter,
       title: 'filtrera'
     });
   }
 
-  _showTournament(tournamentInfo) {
-    this.refs.navigator.push({
-      component: TournamentDetailsTabbar,
-      title: tournamentInfo.name,
-      passProps: { tournamentInfo }
-    });
-  }
-
   render() {
     return (
       <NavigatorIOS
-        ref = 'navigator'
-        initialRoute = {{
-          component: TournamentList,
+        ref='navigator'
+        initialRoute={{
+          component: MainNavigationTabbar,
           title: 'Säsongskalendern',
           rightButtonTitle: 'filtrera',
-          onRightButtonPress: this._showFilterView.bind(this),
-          passProps: {
-            onPress: this._showTournament.bind(this),
-
-          }
+          onRightButtonPress: this._showFilterView
         }}
-        style = {{flex: 1}}
+        style={styles.flex}
       />
     );
   }
 }
 
-export default connect(state => ({
-    state: state
-  }),
-  (dispatch) => ({
-    actions: bindActionCreators(filterActions, dispatch)
-  })
-)(Navigator);
+export default Navigator;

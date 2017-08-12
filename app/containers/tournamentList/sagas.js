@@ -1,10 +1,8 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import * as consts from './constants';
 
-function* getTournamentList(action) {
-  console.log('saga started');
+function* getTournamentList() {
   try {
-     //const data = yield call("url", "payload");
      const sectionHeaders = {
        tp1: "TP 1 (1 jan - 4 april)"
      }
@@ -17,7 +15,6 @@ function* getTournamentList(action) {
          {name:'08 Beachvolley Open Svart', type: 'opensvart', date: 'lör, 17 feb', club: '08 Beachvolley Club'},
          {name:'IKSU Beachvolley damchallenger, v8', type: 'opensvart', date: 'lör, 18 feb', club: 'IK Studenterna i Umeå'},
          {name:'IKSU Beachvolley herrchallenger, v8', type: 'opensvart', date: 'sön, 19 feb', club: 'IK Studenterna i Umeå'},
-
        ]
      };
      yield put({type: consts.GET_TOURNAMENTLIST_SUCCESS, sectionHeaders, tournamentData });
@@ -27,7 +24,6 @@ function* getTournamentList(action) {
 }
 
 function* getTournamentListSaga() {
-  console.log("saga listening");
   yield takeLatest(consts.GET_TOURNAMENTLIST, getTournamentList)
 }
 
