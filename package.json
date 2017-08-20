@@ -5,13 +5,16 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "lint": "eslint app"
+    "lint": "eslint app",
+    "inspector": "react-devtools",
+    "run-ios": "react-native run-ios"
   },
   "dependencies": {
     "babel": "^6.5.2",
     "babel-plugin-module-alias": "^1.6.0",
     "babel-polyfill": "^6.22.0",
     "immutable": "^3.8.1",
+    "native-base": "^2.3.1",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.0",
     "react-redux": "^5.0.1",
