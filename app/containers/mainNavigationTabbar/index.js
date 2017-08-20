@@ -10,20 +10,20 @@ import * as actions from './actions';
 import laurelIcon from '../../../resources/laurel25x.png'
 import playerIcon from '../../../resources/player-icon25x.png'
 import infoIcon from '../../../resources/info-icon25x.png'
-import TournamentList from '../tournamentList'
+import TournamentListNavigator from '../navigator'
 import RankingList from '../rankingList'
 import FAQ from '../faq'
 
 const tabs = [{
+  title: 'Säsongskalendern',
+  icon: playerIcon,
+  id: 'tournamentListTab',
+  component: TournamentListNavigator
+}, {
   title: 'Ranking',
   icon: laurelIcon,
   id: 'rankingTab',
   component: RankingList
-}, {
-  title: 'Säsongskalendern',
-  icon: playerIcon,
-  id: 'tournamentListTab',
-  component: TournamentList
 }, {
   title: 'FAQ',
   icon: infoIcon,
@@ -31,7 +31,7 @@ const tabs = [{
   component: FAQ
 }]
 
-function MainNavigationTabbar({ selectedTab, actions, navigator }) {
+function MainNavigationTabbar({ selectedTab, actions }) {
 
   const renderTabs = () => tabs.map(tab => (
     <TabBarIOS.Item
@@ -43,7 +43,7 @@ function MainNavigationTabbar({ selectedTab, actions, navigator }) {
         actions.toggleTab(tab.id)
       }
     >
-      <tab.component navigator={navigator} />
+      <tab.component />
     </TabBarIOS.Item>
   ))
 
@@ -56,8 +56,7 @@ function MainNavigationTabbar({ selectedTab, actions, navigator }) {
 
 MainNavigationTabbar.propTypes = {
   selectedTab: PropTypes.string.isRequired,
-  actions: PropTypes.shape().isRequired,
-  navigator: PropTypes.shape().isRequired
+  actions: PropTypes.shape().isRequired
 }
 
 export default connect(state => ({

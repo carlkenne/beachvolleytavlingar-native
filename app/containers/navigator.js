@@ -3,7 +3,7 @@ import {
   NavigatorIOS,
   StyleSheet
 } from 'react-native';
-import MainNavigationTabbar from '../containers/mainNavigationTabbar';
+import TournamentList from '../containers/tournamentList';
 import TournamentListFilter from '../containers/tournamentListFilter';
 
 const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ class Navigator extends Component {
       <NavigatorIOS
         ref='navigator'
         initialRoute={{
-          component: MainNavigationTabbar,
+          component: TournamentList,
           title: 'Säsongskalendern',
           rightButtonTitle: 'filtrera',
           onRightButtonPress: this._showFilterView

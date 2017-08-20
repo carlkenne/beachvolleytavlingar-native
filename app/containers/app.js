@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import createSagaMiddleware from 'redux-saga';
 import reducers from '../reducers';
-import Navigator from './navigator';
+import MainNaviagtionTabBar from './mainNavigationTabbar';
 import sagas from './tournamentList/sagas';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -18,7 +18,7 @@ sagaMiddleware.run(sagas);
 export default function App() {
   return (
     <Provider store={store}>
-      <Navigator />
+      <MainNaviagtionTabBar />
     </Provider>
   );
 }
