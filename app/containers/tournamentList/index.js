@@ -2,30 +2,36 @@
 import React, { Component, PropTypes } from 'react'
 import {
   ListView,
-  Text,
   View,
-  StyleSheet,
-  Image
 } from 'react-native'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import styled from 'styled-components/native';
 import TournamentListRow from './TournamentListRow'
 import TournamentDetails from '../tournamentDetails'
 import * as actions from './actions';
 
-const styles = StyleSheet.create({
-  sectionHeader: {
-    paddingLeft: 10,
-    paddingTop: 30,
-    paddingBottom: 8,
-    backgroundColor: 'transparent'
-  },
-  container: {
-    flex: 1,
-    width: null,
-    height: null,
-  }
-});
+const SectionHeader = styled.Text`
+  paddingLeft: 10;
+  paddingTop: 30;
+  paddingBottom: 8;
+  backgroundColor: transparent;
+`;
+
+const Container = styled.Image`
+  flex: 1;
+`;
+
+const AdjacentRowHighlighted = styled.View`
+  height: 4;
+  backgroundColor: #3B5998;
+`;
+
+const Separator = styled.View`
+  height: 1;
+  backgroundColor: #CCCCCC;
+`;
+
 class TournamentList extends Component {
   static propTypes = {
     actions: PropTypes.shape({
@@ -36,12 +42,10 @@ class TournamentList extends Component {
     navigator: PropTypes.shape().isRequired
   }
 
-  static _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
+  static(sectionID, rowID, adjacentRowHighlighted) {
     return (
-      <View
-        key={`${sectionID}-${rowID}`}
-        style={adjacentRowHighlighted ? styles.separatorAdjacentRowHighlighted : styles.separator}
-      />
+      adjacentRowHighlighted ? <AdjacentRowHighlighted key={`${sectionID}-${rowID}`} />
+        : <Separator key={`${sectionID}-${rowID}`} />
     );
   }
 
@@ -76,7 +80,7 @@ class TournamentList extends Component {
 
   render() {
     return (
-      <Image source={require('../../../resources/sand.png')} style={styles.container}>
+      <Container source={require('../../../resources/sand.png')} style={{ width: null, height: null }}>
         <ListView
           dataSource={this._getVisibleTournaments()}
           renderRow={(tournamentInfo) =>
@@ -92,11 +96,11 @@ class TournamentList extends Component {
             />)
           }
           renderSectionHeader={(sectionHeader) =>
-            <Text style={styles.sectionHeader}>{sectionHeader}</Text>
+            <SectionHeader>{sectionHeader}</SectionHeader>
           }
           renderSeparator={this._renderSeparator}
         />
-      </Image>
+      </Container>
     );
   }
 }
