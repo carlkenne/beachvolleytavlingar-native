@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
 });
 
 class TournamentListFilter extends Component {
+
   static propTypes = {
     filter: PropTypes.shape().isRequired,
     actions: PropTypes.shape().isRequired
@@ -54,18 +55,16 @@ class TournamentListFilter extends Component {
       getSectionHeaderData: _getSectionData
     });
 
-    this.state = {
-      dataSource: dataSource.cloneWithRowsAndSections(state)
-    };
+    return dataSource.cloneWithRowsAndSections(state);
   }
 
 
   render() {
     const { toggleFilter } = this.props.actions;
-    this._createDataSource(this.props.filter);
+    const dataSource = this._createDataSource(this.props.filter);
     return (
       <ListView
-        dataSource={this.state.dataSource}
+        dataSource={dataSource}
         renderRow={(rowData, sectionID, rowID) =>
           (<View style={styles.row}>
             <Text> {rowData.label} </Text>
