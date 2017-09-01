@@ -2,7 +2,6 @@
 import React, { Component, PropTypes } from 'react'
 import {
   ListView,
-  View,
 } from 'react-native'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -42,15 +41,15 @@ class TournamentList extends Component {
     navigator: PropTypes.shape().isRequired
   }
 
-  static(sectionID, rowID, adjacentRowHighlighted) {
+  componentDidMount() {
+    this.props.actions.getTournamentList();
+  }
+
+  _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
     return (
       adjacentRowHighlighted ? <AdjacentRowHighlighted key={`${sectionID}-${rowID}`} />
         : <Separator key={`${sectionID}-${rowID}`} />
     );
-  }
-
-  componentDidMount() {
-    this.props.actions.getTournamentList();
   }
 
   _getVisibleTournaments() {
