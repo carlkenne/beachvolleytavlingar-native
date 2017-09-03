@@ -5,7 +5,7 @@ import styled from 'styled-components/native'
 import Separator from '../../components/separator'
 import SideMargins from './sideMargins'
 import InformationTab from './informationTab'
-import AnmalningsListaTab from './anmalningsListaTab'
+import AnmalningslistaTab from './anmalningsListaTab'
 import SpelschemaTab from './spelschemaTab'
 
 const Header = styled.Text`font-weight: bold;`
@@ -116,7 +116,10 @@ class TournamentDetails extends Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView
+        ref={view =>
+          !this.state.scrollTo && this.setState({ scrollTo: view.scrollTo })}
+      >
         <TopImage
           source={require('../../../resources/arenas/gbc.png')}
           style={{ width: undefined }}
@@ -143,10 +146,11 @@ class TournamentDetails extends Component {
           <InformationTab tournamentInfo={this.props.tournamentInfo} />
         )}
         {this.state.selectedIndex === 1 && (
-          <AnmalningsListaTab
+          <AnmalningslistaTab
             tournamentInfo={this.props.tournamentInfo}
             damer={this.damer}
             herrar={this.herrar}
+            scrollTo={this.state.scrollTo || (() => {})}
           />
         )}
         {this.state.selectedIndex === 2 && (
