@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Text, View } from 'react-native'
 
 import styled from 'styled-components/native'
@@ -23,8 +24,8 @@ const SpelschemaTab = ({ tournamentInfo }) => (
 
 SpelschemaTab.propTypes = {
   tournamentInfo: PropTypes.shape({
-    date: PropTypes.string.isRequired,
-  }).isRequired,
+    date: PropTypes.string.isRequired
+  }).isRequired
 }
 
 export default SpelschemaTab

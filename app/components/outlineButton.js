@@ -1,6 +1,7 @@
 import styled from 'styled-components/native'
 import ApslButton from 'apsl-react-native-button'
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 
 const Button = styled(ApslButton)`
   borderColor: #0e7afe;
@@ -16,7 +17,7 @@ const component = ({ children }) => (
 )
 
 component.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 }
 
 export default component

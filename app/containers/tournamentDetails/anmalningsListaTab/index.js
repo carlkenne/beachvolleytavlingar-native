@@ -1,36 +1,21 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { Text, View } from 'react-native'
 
-import {
-  SectionHeader,
-  SectionLabelColumn,
-  Label,
-  Row,
-  Section,
-  SectionContentColumn
-} from '../sectionComponents'
+import * as S from '../sectionComponents'
+import * as List from '../listComponents'
 
-const AnmalningsListaTab = ({ tournamentInfo }) => (
+const AnmalningsListaTab = () => (
   <View>
-    <Section>
-      <SectionHeader>Damer</SectionHeader>
-      <Row>
-        <SectionLabelColumn>
-          <Label>tider</Label>
-        </SectionLabelColumn>
-        <SectionContentColumn>
-          <Text>{tournamentInfo.date}</Text>
-          <Text>kl 11:00</Text>
-        </SectionContentColumn>
-      </Row>
-    </Section>
+    <S.Section>
+      <S.Header>Damer</S.Header>
+      <List.List>
+        <List.Row>
+          <Text>Stina Persson / Matilda Gustavsson</Text>
+          <Text>1 (1030p = 550p + 480p)</Text>
+        </List.Row>
+      </List.List>
+    </S.Section>
   </View>
 )
-
-AnmalningsListaTab.propTypes = {
-  tournamentInfo: PropTypes.shape({
-    date: PropTypes.string.isRequired
-  }).isRequired
-}
 
 export default AnmalningsListaTab

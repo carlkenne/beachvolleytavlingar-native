@@ -1,5 +1,6 @@
 'use strict'
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { ListView } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -30,11 +31,11 @@ const Separator = styled.View`
 class TournamentList extends Component {
   static propTypes = {
     actions: PropTypes.shape({
-      getTournamentList: PropTypes.func.isRequired,
+      getTournamentList: PropTypes.func.isRequired
     }).isRequired,
     tournamentList: PropTypes.shape().isRequired,
     filter: PropTypes.shape().isRequired,
-    navigator: PropTypes.shape().isRequired,
+    navigator: PropTypes.shape().isRequired
   }
 
   componentDidMount() {
@@ -53,7 +54,7 @@ class TournamentList extends Component {
     const dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-      getSectionHeaderData: this._getSectionData.bind(this),
+      getSectionHeaderData: this._getSectionData.bind(this)
     })
 
     const tournaments = {}
@@ -93,7 +94,7 @@ class TournamentList extends Component {
                 this.props.navigator.push({
                   component: TournamentDetails,
                   title: tournamentInfo.name,
-                  passProps: { tournamentInfo },
+                  passProps: { tournamentInfo }
                 })
               }}
             />
@@ -111,9 +112,9 @@ class TournamentList extends Component {
 export default connect(
   state => ({
     tournamentList: state.tournamentList,
-    filter: state.filter,
+    filter: state.filter
   }),
   dispatch => ({
-    actions: bindActionCreators(actions, dispatch),
+    actions: bindActionCreators(actions, dispatch)
   })
 )(TournamentList)

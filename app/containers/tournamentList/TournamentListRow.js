@@ -1,11 +1,12 @@
 'use strict'
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native'
 
 const backgroundColor = 'rgba(255, 255, 255, 0.6)'
 const styles = StyleSheet.create({
   title: { fontWeight: 'bold', fontSize: 16 },
-  row: { padding: 5, backgroundColor },
+  row: { padding: 5, backgroundColor }
 })
 
 function TournamentListRow({ tournamentInfo, onPress }) {
@@ -23,7 +24,7 @@ function TournamentListRow({ tournamentInfo, onPress }) {
 
 TournamentListRow.propTypes = {
   tournamentInfo: PropTypes.shape({}).isRequired,
-  onPress: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired
 }
 
 export default TournamentListRow

@@ -1,23 +1,35 @@
+import React from 'react'
 import styled from 'styled-components/native'
+import PropTypes from 'prop-types'
 
-export const Label = styled.Text`
+export const RowLabelText = styled.Text`
   fontWeight: bold;
   textAlign: right;
 `
 
-export const SectionLabelColumn = styled.View`
+const InternalRowLabel = styled.View`
   flexBasis: 60;
   marginRight: 10;
 `
 
-export const SectionContentColumn = styled.View`flex: 1;`
+export const Label = ({ children }) => (
+  <InternalRowLabel>
+    <RowLabelText>{children}</RowLabelText>
+  </InternalRowLabel>
+)
+
+Label.propTypes = {
+  children: PropTypes.node.isRequired
+}
+
+export const Content = styled.View`flex: 1;`
 
 export const Row = styled.View`
   flex: 1;
   flexDirection: row;
 `
 
-export const SectionHeader = styled.Text`
+export const Header = styled.Text`
   fontSize: 16;
   marginBottom: 10;
 `

@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { ScrollView, SegmentedControlIOS } from 'react-native'
 import styled from 'styled-components/native'
 import Separator from '../../components/separator'
@@ -26,7 +27,7 @@ class TournamentDetails extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedIndex: 0,
+      selectedIndex: 0
     }
   }
 
@@ -48,7 +49,7 @@ class TournamentDetails extends Component {
               selectedIndex={this.state.selectedIndex}
               onChange={event => {
                 this.setState({
-                  selectedIndex: event.nativeEvent.selectedSegmentIndex,
+                  selectedIndex: event.nativeEvent.selectedSegmentIndex
                 })
               }}
             />
@@ -70,7 +71,7 @@ class TournamentDetails extends Component {
 }
 
 TournamentDetails.propTypes = {
-  tournamentInfo: PropTypes.shape().isRequired,
+  tournamentInfo: PropTypes.shape().isRequired
 }
 
 export default TournamentDetails

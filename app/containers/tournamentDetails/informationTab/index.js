@@ -1,88 +1,66 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Text, View } from 'react-native'
 import OutlineButton from '../../../components/outlineButton'
-import {
-  SectionHeader,
-  SectionLabelColumn,
-  Label,
-  Row,
-  Section,
-  SectionContentColumn,
-  MarginTop,
-  SmallSeparator,
-} from '../sectionComponents'
+import * as S from '../sectionComponents'
 
 const InformationTab = ({ tournamentInfo }) => (
   <View>
-    <Section>
-      <SectionHeader>Information</SectionHeader>
-      <Row>
-        <SectionLabelColumn>
-          <Label>tider</Label>
-        </SectionLabelColumn>
-        <SectionContentColumn>
+    <S.Section>
+      <S.Header>Information</S.Header>
+      <S.Row>
+        <S.Label>tider</S.Label>
+        <S.Content>
           <Text>{tournamentInfo.date}</Text>
           <Text>kl 11:00</Text>
-        </SectionContentColumn>
-      </Row>
-      <Row>
-        <SectionLabelColumn>
-          <Label>antal</Label>
-        </SectionLabelColumn>
-        <SectionContentColumn>
+        </S.Content>
+      </S.Row>
+      <S.Row>
+        <S.Label>antal</S.Label>
+        <S.Content>
           <Text>12</Text>
-        </SectionContentColumn>
-      </Row>
-      <Row>
-        <SectionLabelColumn>
-          <Label>avgift</Label>
-        </SectionLabelColumn>
-        <SectionContentColumn>
+        </S.Content>
+      </S.Row>
+      <S.Row>
+        <S.Label>avgift</S.Label>
+        <S.Content>
           <Text>600 kr</Text>
-        </SectionContentColumn>
-      </Row>
-      <Row>
-        <SectionLabelColumn>
-          <Label>klass</Label>
-        </SectionLabelColumn>
-        <SectionContentColumn>
+        </S.Content>
+      </S.Row>
+      <S.Row>
+        <S.Label>klass</S.Label>
+        <S.Content>
           <Text>Senior, Challenger</Text>
-        </SectionContentColumn>
-      </Row>
-      <Row>
-        <SectionLabelColumn>
-          <Label>address</Label>
-        </SectionLabelColumn>
-        <SectionContentColumn>
+        </S.Content>
+      </S.Row>
+      <S.Row>
+        <S.Label>address</S.Label>
+        <S.Content>
           <Text>här, här och här... se karta</Text>
-        </SectionContentColumn>
-      </Row>
-      <Row>
-        <SectionLabelColumn>
-          <Label>kontakt</Label>
-        </SectionLabelColumn>
-        <SectionContentColumn>
+        </S.Content>
+      </S.Row>
+      <S.Row>
+        <S.Label>kontakt</S.Label>
+        <S.Content>
           <Text>tävlingsledare</Text>
           <Text>Sandra Krook</Text>
           <Text>Mail@mail.com</Text>
           <Text>0736151555</Text>
-        </SectionContentColumn>
-      </Row>
-      <Row>
-        <SectionLabelColumn>
-          <Label>anmälan</Label>
-        </SectionLabelColumn>
-        <SectionContentColumn>
+        </S.Content>
+      </S.Row>
+      <S.Row>
+        <S.Label>anmälan</S.Label>
+        <S.Content>
           <Text>Senast, kl 12 på onsdag</Text>
-          <MarginTop>
+          <S.MarginTop>
             <OutlineButton>till anmälan</OutlineButton>
-          </MarginTop>
-        </SectionContentColumn>
-      </Row>
-    </Section>
-    <SmallSeparator />
-    <Section>
-      <SectionHeader>Inbetalningsinfo</SectionHeader>
+          </S.MarginTop>
+        </S.Content>
+      </S.Row>
+    </S.Section>
+    <S.SmallSeparator />
+    <S.Section>
+      <S.Header>Inbetalningsinfo</S.Header>
       <Text>
         Anmälan är giltig först när betalningen är genomförd via PayPal. Om
         betalningen inte är gjord innan sista anmälningsdag (tidpunkten då
@@ -93,10 +71,10 @@ const InformationTab = ({ tournamentInfo }) => (
         anmälan stänger. De spelare/lag som inte tävlar för IKSU Beachvolley ska
         maila in sina kontaktuppgifter till tävlingsledaren.
       </Text>
-    </Section>
-    <SmallSeparator />
-    <Section>
-      <SectionHeader>Övrigt</SectionHeader>
+    </S.Section>
+    <S.SmallSeparator />
+    <S.Section>
+      <S.Header>Övrigt</S.Header>
       <Text>
         Samling kl 09:00. OBS! Notera att de som missar utsatt tid för samling
         kan straffas med WO i den första matchen. Avanmälan måste göras innan
@@ -107,18 +85,18 @@ const InformationTab = ({ tournamentInfo }) => (
         avanmälan se tävlingsbestämmelserna:
         http://www.volleyboll.se/beachvolley/Tavling/Reglerochbestammelser/tavlingsbestammelser2017/.
       </Text>
-    </Section>
-    <SmallSeparator />
-    <Section>
+    </S.Section>
+    <S.SmallSeparator />
+    <S.Section>
       <OutlineButton>Öppna sidan i safari..</OutlineButton>
-    </Section>
+    </S.Section>
   </View>
 )
 
 InformationTab.propTypes = {
   tournamentInfo: PropTypes.shape({
-    date: PropTypes.string.isRequired,
-  }).isRequired,
+    date: PropTypes.string.isRequired
+  }).isRequired
 }
 
 export default InformationTab

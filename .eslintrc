@@ -1,20 +1,13 @@
 {
-    "plugins": [
-        "prettier"
-    ],
-    "extends": [
-        "airbnb",
-        "react-native",
-        "prettier"
-    ],
-    "rules": {
-        "import/prefer-default-export": 0,
-        "import/no-namespace": 0,
-        "react/jsx-filename-extension": 0,
-        "react-native/no-unused-styles": 2,
-        "react-native/split-platform-components": 1,
-        "react-native/no-inline-styles": 0,
-        "react-native/no-color-literals": 1,
-        "prettier/prettier": "error"
-    }
+  "plugins": ["prettier"],
+  "extends": ["airbnb", "react-native", "prettier"],
+  "rules": {
+    "import/prefer-default-export": 0,
+    "import/no-namespace": 0,
+    "react/jsx-filename-extension": 0,
+    "react-native/no-unused-styles": 2,
+    "react-native/split-platform-components": 1,
+    "react-native/no-inline-styles": 0,
+    "react-native/no-color-literals": 1
+  }
 }
