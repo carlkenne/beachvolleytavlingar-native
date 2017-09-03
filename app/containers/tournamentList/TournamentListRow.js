@@ -1,23 +1,31 @@
 'use strict'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Text, View, StyleSheet, TouchableHighlight } from 'react-native'
+import { Text, TouchableHighlight } from 'react-native'
+import styled from 'styled-components/native'
 
-const backgroundColor = 'rgba(255, 255, 255, 0.6)'
-const styles = StyleSheet.create({
-  title: { fontWeight: 'bold', fontSize: 16 },
-  row: { padding: 5, backgroundColor }
-})
+const Title = styled.Text`
+  fontWeight: bold;
+  fontSize: 16;
+`
+
+const Row = styled.View`
+  paddingTop: 5;
+  paddingBottom: 5;
+  paddingLeft: 5;
+  paddingRight: 5;
+  backgroundColor: rgba(255, 255, 255, 0.6);
+`
 
 function TournamentListRow({ tournamentInfo, onPress }) {
   return (
     <TouchableHighlight onPress={onPress}>
-      <View style={styles.row}>
-        <Text style={styles.title}>{tournamentInfo.name}</Text>
+      <Row>
+        <Title>{tournamentInfo.name}</Title>
         <Text>
           {tournamentInfo.date} - {tournamentInfo.club}
         </Text>
-      </View>
+      </Row>
     </TouchableHighlight>
   )
 }

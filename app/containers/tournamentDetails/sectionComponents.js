@@ -24,10 +24,7 @@ Label.propTypes = {
 
 export const Content = styled.View`flex: 1;`
 
-export const Row = styled.View`
-  flex: 1;
-  flexDirection: row;
-`
+export const Row = styled.View`flexDirection: row;`
 
 export const Header = styled.Text`
   fontSize: 16;
