@@ -3,50 +3,8 @@ import {
   Text,
   View,
 } from 'react-native';
-import styled from 'styled-components/native';
 import OutlineButton from '../../../components/outlineButton';
-
-const MarginTop = styled.View`
-  marginTop: 10;
-`;
-
-const Label = styled.Text`
-  fontWeight: bold;
-  textAlign: right;
-`;
-
-const SmallSeparator = styled.View`
-  borderTopColor: lightgray;
-  borderTopWidth: 1;
-  borderStyle: solid;
-  marginLeft: 10;
-`;
-
-const Row = styled.View`
-  flex: 1;
-  flexDirection: row;
-`;
-
-const SectionLabelColumn = styled.View`
-  flexBasis: 60;
-  marginRight: 10;
-`;
-
-const SectionContentColumn = styled.View`
-  flex: 1;
-`;
-
-const SectionHeader = styled.Text`
-  fontSize: 16;
-  marginBottom: 10;
-`;
-
-const Section = styled.View`
-  marginTop: 10;
-  marginBottom: 10;
-  marginRight: 10;
-  marginLeft: 10;
-`;
+import { SectionHeader, SectionLabelColumn, Label, Row, Section, SectionContentColumn, MarginTop, SmallSeparator } from '../sectionComponents';
 
 const InformationTab = ({ tournamentInfo }) => (
   <View>
