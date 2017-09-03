@@ -7,7 +7,9 @@
     "test": "jest",
     "lint": "eslint app",
     "inspector": "react-devtools",
-    "run-ios": "react-native run-ios"
+    "run-ios": "react-native run-ios",
+    "prettier":
+      "prettier --trailing-comma es5 --write '{app,__{tests,mocks}__}/**/*.js'"
   },
   "dependencies": {
     "apsl-react-native-button": "^3.1.0",
@@ -30,6 +32,7 @@
     "babel-preset-react-native": "1.9.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
+    "eslint-config-prettier": "^2.4.0",
     "eslint-config-react": "^1.1.7",
     "eslint-config-react-native": "^1.6.0",
     "eslint-plugin-import": "^2.3.0",
@@ -38,6 +41,7 @@
     "eslint-plugin-react-native": "^2.3.2",
     "flow-bin": "^0.37.4",
     "jest": "17.0.3",
+    "prettier": "^1.6.1",
     "react-navigation": "^1.0.0-beta.11",
     "react-test-renderer": "15.4.1"
   },

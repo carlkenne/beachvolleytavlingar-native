@@ -2,11 +2,11 @@
 import React, { PropTypes } from 'react'
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native'
 
-const backgroundColor = 'rgba(255, 255, 255, 0.6)';
+const backgroundColor = 'rgba(255, 255, 255, 0.6)'
 const styles = StyleSheet.create({
   title: { fontWeight: 'bold', fontSize: 16 },
-  row: { padding: 5, backgroundColor }
-});
+  row: { padding: 5, backgroundColor },
+})
 
 function TournamentListRow({ tournamentInfo, onPress }) {
   return (
@@ -18,12 +18,12 @@ function TournamentListRow({ tournamentInfo, onPress }) {
         </Text>
       </View>
     </TouchableHighlight>
-  );
+  )
 }
 
 TournamentListRow.propTypes = {
   tournamentInfo: PropTypes.shape({}).isRequired,
-  onPress: PropTypes.func.isRequired
+  onPress: PropTypes.func.isRequired,
 }
 
 export default TournamentListRow

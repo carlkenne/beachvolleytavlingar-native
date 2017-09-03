@@ -1,5 +1,5 @@
-import * as types from './constants';
+import * as types from './constants'
 
 export const getTournamentList = () => ({
-    type: types.GET_TOURNAMENTLIST
-  })
+  type: types.GET_TOURNAMENTLIST,
+})

@@ -1,17 +1,14 @@
-import React, { PropTypes } from 'react';
-import {
-  Text,
-  View
-} from 'react-native';
+import React, { PropTypes } from 'react'
+import { Text, View } from 'react-native'
 
-import styled from 'styled-components/native';
+import styled from 'styled-components/native'
 
 const Section = styled.View`
   marginRight: 10;
   marginLeft: 10;
   marginRight: 10;
   marginLeft: 10;
-`;
+`
 
 const SpelschemaTab = ({ tournamentInfo }) => (
   <View>
@@ -26,8 +23,8 @@ const SpelschemaTab = ({ tournamentInfo }) => (
 
 SpelschemaTab.propTypes = {
   tournamentInfo: PropTypes.shape({
-    date: PropTypes.string.isRequired
+    date: PropTypes.string.isRequired,
   }).isRequired,
 }
 
-export default SpelschemaTab;
+export default SpelschemaTab

@@ -1,15 +1,19 @@
-import React, { PropTypes } from 'react';
-import {
-  Text,
-  View
-} from 'react-native';
+import React, { PropTypes } from 'react'
+import { Text, View } from 'react-native'
 
-import { SectionHeader, SectionLabelColumn, Label, Row, Section, SectionContentColumn } from '../sectionComponents';
+import {
+  SectionHeader,
+  SectionLabelColumn,
+  Label,
+  Row,
+  Section,
+  SectionContentColumn
+} from '../sectionComponents'
 
 const AnmalningsListaTab = ({ tournamentInfo }) => (
   <View>
     <Section>
-      <SectionHeader>Information</SectionHeader>
+      <SectionHeader>Damer</SectionHeader>
       <Row>
         <SectionLabelColumn>
           <Label>tider</Label>
@@ -26,7 +30,7 @@ const AnmalningsListaTab = ({ tournamentInfo }) => (
 AnmalningsListaTab.propTypes = {
   tournamentInfo: PropTypes.shape({
     date: PropTypes.string.isRequired
-  }).isRequired,
+  }).isRequired
 }
 
-export default AnmalningsListaTab;
+export default AnmalningsListaTab

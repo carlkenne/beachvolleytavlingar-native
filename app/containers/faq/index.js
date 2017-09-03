@@ -3,7 +3,7 @@ import { Text } from 'react-native'
 
 class FAQ extends Component {
   render() {
-    return (<Text> Faq </Text>)
+    return <Text> Faq </Text>
   }
 }
 

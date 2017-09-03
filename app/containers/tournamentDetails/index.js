@@ -1,39 +1,32 @@
-import React, { PropTypes, Component } from 'react';
-import {
-  ScrollView,
-  SegmentedControlIOS,
-} from 'react-native';
-import styled from 'styled-components/native';
-import Separator from '../../components/separator';
-import SideMargins from './sideMargins';
-import InformationTab from './informationTab';
-import AnmalningsListaTab from './anmalningsListaTab';
-import SpelschemaTab from './spelschemaTab';
+import React, { PropTypes, Component } from 'react'
+import { ScrollView, SegmentedControlIOS } from 'react-native'
+import styled from 'styled-components/native'
+import Separator from '../../components/separator'
+import SideMargins from './sideMargins'
+import InformationTab from './informationTab'
+import AnmalningsListaTab from './anmalningsListaTab'
+import SpelschemaTab from './spelschemaTab'
 
-const Header = styled.Text`
-  font-weight: bold;
-`;
+const Header = styled.Text`font-weight: bold;`
 
-const SubHeader = styled.Text`
-  marginBottom: 5;
-`;
+const SubHeader = styled.Text`marginBottom: 5;`
 
 const TopImage = styled.Image`
   flex: 1;
   alignSelf: stretch;
   height: 130;
-`;
+`
 
 const TopBottomMargins = styled.View`
   marginTop: 5;
   marginBottom: 5;
-`;
+`
 
 class TournamentDetails extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      selectedIndex: 0
+      selectedIndex: 0,
     }
   }
 
@@ -43,7 +36,7 @@ class TournamentDetails extends Component {
         <TopImage
           source={require('../../../resources/arenas/gbc.png')}
           style={{ width: undefined }}
-          resizeMode='contain'
+          resizeMode="contain"
         />
         <SideMargins>
           <Header>Trettondagsturneringen - Challenger (CH1)</Header>
@@ -53,24 +46,26 @@ class TournamentDetails extends Component {
             <SegmentedControlIOS
               values={['info', 'anmälningslista', 'spelschema']}
               selectedIndex={this.state.selectedIndex}
-              onChange={(event) => {
-                this.setState({ selectedIndex: event.nativeEvent.selectedSegmentIndex });
+              onChange={event => {
+                this.setState({
+                  selectedIndex: event.nativeEvent.selectedSegmentIndex,
+                })
               }}
             />
           </TopBottomMargins>
         </SideMargins>
         <Separator />
-        {this.state.selectedIndex === 0 &&
+        {this.state.selectedIndex === 0 && (
           <InformationTab tournamentInfo={this.props.tournamentInfo} />
-        }
-        {this.state.selectedIndex === 1 &&
+        )}
+        {this.state.selectedIndex === 1 && (
           <AnmalningsListaTab tournamentInfo={this.props.tournamentInfo} />
-        }
-        {this.state.selectedIndex === 2 &&
+        )}
+        {this.state.selectedIndex === 2 && (
           <SpelschemaTab tournamentInfo={this.props.tournamentInfo} />
-        }
-      </ScrollView >
-    );
+        )}
+      </ScrollView>
+    )
   }
 }
 
