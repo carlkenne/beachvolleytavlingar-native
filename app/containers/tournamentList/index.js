@@ -16,7 +16,7 @@ const SectionHeader = styled.Text`
   backgroundColor: transparent;
 `
 
-const Container = styled.Image`flex: 1;`
+const Container = styled.ImageBackground`flex: 1;`
 
 const AdjacentRowHighlighted = styled.View`
   height: 4;
