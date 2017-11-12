@@ -3,13 +3,13 @@ import styled from 'styled-components/native'
 import PropTypes from 'prop-types'
 
 export const RowLabelText = styled.Text`
-  fontWeight: bold;
-  textAlign: right;
+  font-weight: bold;
+  text-align: right;
 `
 
 const InternalRowLabel = styled.View`
-  flexBasis: 60;
-  marginRight: 10;
+  flex-basis: 60;
+  margin-right: 10;
 `
 
 export const Label = ({ children }) => (
@@ -22,27 +22,33 @@ Label.propTypes = {
   children: PropTypes.node.isRequired
 }
 
-export const Content = styled.View`flex: 1;`
+export const Content = styled.View`
+  flex: 1;
+`
 
-export const Row = styled.View`flexDirection: row;`
+export const Row = styled.View`
+  flex-direction: row;
+`
 
 export const Header = styled.Text`
-  fontSize: 16;
-  marginBottom: 10;
+  font-size: 16;
+  margin-bottom: 10;
 `
 
 export const Section = styled.View`
-  marginTop: 10;
-  marginBottom: 10;
-  marginRight: 10;
-  marginLeft: 10;
+  margin-top: 10;
+  margin-bottom: 10;
+  margin-right: 10;
+  margin-left: 10;
 `
 
-export const MarginTop = styled.View`marginTop: 10;`
+export const MarginTop = styled.View`
+  margin-top: 10;
+`
 
 export const SmallSeparator = styled.View`
-  borderTopColor: lightgray;
-  borderTopWidth: 1;
-  borderStyle: solid;
-  marginLeft: 10;
+  border-top-color: lightgray;
+  border-top-width: 1;
+  border-style: solid;
+  margin-left: 10;
 `

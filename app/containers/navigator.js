@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
-import { NavigatorIOS, StyleSheet } from 'react-native'
-import TournamentList from '../containers/tournamentList'
-import TournamentListFilter from '../containers/tournamentListFilter'
+import styled from 'styled-components/native'
+import TournamentList from '../containers/tournamentList/index'
+import TournamentListFilter from '../containers/tournamentListFilter/index'
 
-const styles = StyleSheet.create({
-  flex: { flex: 1 },
-})
+const FlexedNavigatorIOS = styled.NavigatorIOS`
+  flex: 1;
+`
 
 class Navigator extends Component {
-  _showFilterView = () => {
-    this.refs.navigator.push({
+  constructor(args) {
+    super(args)
+    this._showFilterView = this._showFilterView.bind(this)
+  }
+
+  _showFilterView() {
+    this.navigator.push({
       component: TournamentListFilter,
       title: 'filtrera',
     })
@@ -17,15 +22,14 @@ class Navigator extends Component {
 
   render() {
     return (
-      <NavigatorIOS
-        ref="navigator"
+      <FlexedNavigatorIOS
+        ref={nav => (this.navigator = nav)}
         initialRoute={{
           component: TournamentList,
           title: 'Säsongskalendern',
           rightButtonTitle: 'filtrera',
           onRightButtonPress: this._showFilterView,
         }}
-        style={styles.flex}
       />
     )
   }

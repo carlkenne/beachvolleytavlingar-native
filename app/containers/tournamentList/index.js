@@ -8,53 +8,37 @@ import styled from 'styled-components/native'
 import TournamentListRow from './TournamentListRow'
 import TournamentDetails from '../tournamentDetails'
 import * as actions from './actions'
+import { AdjacentRowHighlighted, RowSeparator } from '../listComponents'
 
 const SectionHeader = styled.Text`
-  paddingLeft: 10;
-  paddingTop: 30;
-  paddingBottom: 8;
-  backgroundColor: transparent;
+  padding-left: 10;
+  padding-top: 30;
+  padding-bottom: 8;
+  background-color: transparent;
 `
 
-const Container = styled.ImageBackground`flex: 1;`
-
-const AdjacentRowHighlighted = styled.View`
-  height: 4;
-  backgroundColor: #3b5998;
-`
-
-const Separator = styled.View`
-  height: 1;
-  backgroundColor: #cccccc;
+const Container = styled.ImageBackground`
+  flex: 1;
 `
 
 class TournamentList extends Component {
-  static propTypes = {
-    actions: PropTypes.shape({
-      getTournamentList: PropTypes.func.isRequired
-    }).isRequired,
-    tournamentList: PropTypes.shape().isRequired,
-    filter: PropTypes.shape().isRequired,
-    navigator: PropTypes.shape().isRequired
+  static _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
+    return adjacentRowHighlighted ? (
+      <AdjacentRowHighlighted key={`${sectionID}-${rowID}`} />
+    ) : (
+      <RowSeparator key={`${sectionID}-${rowID}`} />
+    )
   }
 
   componentDidMount() {
     this.props.actions.getTournamentList()
   }
 
-  _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    return adjacentRowHighlighted ? (
-      <AdjacentRowHighlighted key={`${sectionID}-${rowID}`} />
-    ) : (
-      <Separator key={`${sectionID}-${rowID}`} />
-    )
-  }
-
   _getVisibleTournaments() {
     const dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-      getSectionHeaderData: this._getSectionData.bind(this)
+      getSectionHeaderData: this._getSectionData.bind(this),
     })
 
     const tournaments = {}
@@ -67,7 +51,7 @@ class TournamentList extends Component {
         .map(lvl => lvl.type)
       for (const key in this.props.tournamentList.tournamentData) {
         tournaments[key] = this.props.tournamentList.tournamentData[key].filter(
-          td => types.indexOf(td.type) > -1
+          td => types.indexOf(td.type) > -1,
         )
       }
     }
@@ -94,7 +78,7 @@ class TournamentList extends Component {
                 this.props.navigator.push({
                   component: TournamentDetails,
                   title: tournamentInfo.name,
-                  passProps: { tournamentInfo }
+                  passProps: { tournamentInfo },
                 })
               }}
             />
@@ -109,12 +93,21 @@ class TournamentList extends Component {
   }
 }
 
+TournamentList.propTypes = {
+  actions: PropTypes.shape({
+    getTournamentList: PropTypes.func.isRequired,
+  }).isRequired,
+  tournamentList: PropTypes.shape().isRequired,
+  filter: PropTypes.shape().isRequired,
+  navigator: PropTypes.shape().isRequired,
+}
+
 export default connect(
   state => ({
     tournamentList: state.tournamentList,
-    filter: state.filter
+    filter: state.filter,
   }),
   dispatch => ({
-    actions: bindActionCreators(actions, dispatch)
-  })
+    actions: bindActionCreators(actions, dispatch),
+  }),
 )(TournamentList)

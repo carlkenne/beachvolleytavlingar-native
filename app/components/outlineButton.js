@@ -1,23 +1,26 @@
-import styled from 'styled-components/native'
-import ApslButton from 'apsl-react-native-button'
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components/native'
 
-const Button = styled(ApslButton)`
-  borderColor: #0e7afe;
-  height: 30;
+const BlueButton = styled.Button`
+  background-color: blue;
 `
 
-const ButtonText = styled.Text`color: #0e7afe;`
+BlueButton.displayName = 'BlueButton'
 
-const component = ({ children }) => (
-  <Button>
-    <ButtonText>{children}</ButtonText>
-  </Button>
+const BlueRedButton = styled(BlueButton)`
+  border-color: red;
+`
+
+BlueRedButton.displayName = 'BlueRedButton'
+
+const ButtonWrapper = ({ children, onPress }) => (
+  <BlueRedButton onPress={onPress} title={children} />
 )
 
-component.propTypes = {
-  children: PropTypes.node.isRequired
+ButtonWrapper.propTypes = {
+  children: PropTypes.node.isRequired,
+  onPress: PropTypes.func.isRequired,
 }
 
-export default component
+export default ButtonWrapper

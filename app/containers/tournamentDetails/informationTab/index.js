@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Text, View } from 'react-native'
-import OutlineButton from '../../../components/outlineButton'
 import * as S from '../sectionComponents'
+import OutlineButton from '../../../components/outlineButton'
 
 const InformationTab = ({ tournamentInfo }) => (
   <View>
@@ -53,7 +53,7 @@ const InformationTab = ({ tournamentInfo }) => (
         <S.Content>
           <Text>Senast, kl 12 på onsdag</Text>
           <S.MarginTop>
-            <OutlineButton>till anmälan</OutlineButton>
+            <OutlineButton onPress={() => {}}>till anmälan</OutlineButton>
           </S.MarginTop>
         </S.Content>
       </S.Row>
@@ -88,15 +88,15 @@ const InformationTab = ({ tournamentInfo }) => (
     </S.Section>
     <S.SmallSeparator />
     <S.Section>
-      <OutlineButton>Öppna sidan i safari..</OutlineButton>
+      <OutlineButton onPress={() => {}}>Öppna sidan i safari..</OutlineButton>
     </S.Section>
   </View>
 )
 
 InformationTab.propTypes = {
   tournamentInfo: PropTypes.shape({
-    date: PropTypes.string.isRequired
-  }).isRequired
+    date: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default InformationTab

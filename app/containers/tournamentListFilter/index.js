@@ -2,49 +2,38 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Text, ListView, Switch } from 'react-native'
+import { Text, ListView, Switch } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import styled from 'styled-components/native'
 import { toggleFilter } from './actions'
+import { RowSeparator, AdjacentRowHighlighted } from '../listComponents'
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 5
-  },
-  sectionHeader: {
-    paddingLeft: 5,
-    paddingTop: 20
-  }
-})
+const Row = styled.View`
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5;
+`
+
+const SectionHeader = styled.Text`
+  padding-left: 5;
+  padding-top: 20;
+`
 
 class TournamentListFilter extends Component {
-  static propTypes = {
-    filter: PropTypes.shape().isRequired,
-    actions: PropTypes.shape().isRequired
-  }
-
   static _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    return (
-      <View
-        key={`${sectionID}-${rowID}`}
-        style={
-          adjacentRowHighlighted ? (
-            styles.separatorAdjacentRowHighlighted
-          ) : (
-            styles.separator
-          )
-        }
-      />
+    return adjacentRowHighlighted ? (
+      <AdjacentRowHighlighted key={`${sectionID}-${rowID}`} />
+    ) : (
+      <RowSeparator key={`${sectionID}-${rowID}`} />
     )
   }
 
-  _createDataSource(state) {
+  static _createDataSource(state) {
     const sectionData = {
-      levels: 'NIVÅ'
+      levels: 'NIVÅ',
     }
 
     const _getSectionData = (data, sectionID) => sectionData[sectionID]
@@ -52,7 +41,7 @@ class TournamentListFilter extends Component {
     const dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1.value !== row2.value,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-      getSectionHeaderData: _getSectionData
+      getSectionHeaderData: _getSectionData,
     })
 
     return dataSource.cloneWithRowsAndSections(state)
@@ -65,7 +54,7 @@ class TournamentListFilter extends Component {
       <ListView
         dataSource={dataSource}
         renderRow={(rowData, sectionID, rowID) => (
-          <View style={styles.row}>
+          <Row>
             <Text> {rowData.label} </Text>
             <Switch
               value={rowData.value}
@@ -73,22 +62,27 @@ class TournamentListFilter extends Component {
                 toggleFilter(parseInt(rowID), value)
               }}
             />
-          </View>
+          </Row>
         )}
         renderSectionHeader={sectionHeader => (
-          <Text style={styles.sectionHeader}>{sectionHeader}</Text>
+          <SectionHeader>{sectionHeader}</SectionHeader>
         )}
-        renderSeparator={this._renderSeparator}
+        renderSeparator={this.renderSeparator}
       />
     )
   }
 }
 
+TournamentListFilter.propTypes = {
+  filter: PropTypes.shape().isRequired,
+  actions: PropTypes.shape().isRequired,
+}
+
 export default connect(
   state => ({
-    filter: state.filter
+    filter: state.filter,
   }),
   dispatch => ({
-    actions: bindActionCreators({ toggleFilter }, dispatch)
-  })
+    actions: bindActionCreators({ toggleFilter }, dispatch),
+  }),
 )(TournamentListFilter)

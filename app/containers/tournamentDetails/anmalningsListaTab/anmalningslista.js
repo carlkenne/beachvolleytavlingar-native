@@ -3,13 +3,22 @@ import { Text } from 'react-native'
 import PropTypes from 'prop-types'
 import styled from 'styled-components/native'
 import * as Section from '../sectionComponents'
-import * as List from '../listComponents'
+import { PreviewList, List, ListRow } from '../../listComponents'
 
 const Link = styled.Text`
   color: #0e7afe;
   flex: 1;
-  textAlign: right;
+  text-align: right;
 `
+
+const renderTeam = team => (
+  <ListRow key={team.name}>
+    <Text>{team.name}</Text>
+    <Text>
+      {team.rank} {team.points} {team.club}
+    </Text>
+  </ListRow>
+)
 
 class Anmalningslista extends Component {
   constructor(props) {
@@ -17,25 +26,19 @@ class Anmalningslista extends Component {
     this.state = { isExpanded: false }
   }
 
-  renderTeam = team => (
-    <List.Row key={team.name}>
-      <Text>{team.name}</Text>
-      <Text>
-        {team.rank} {team.points} {team.club}
-      </Text>
-    </List.Row>
-  )
-
   render() {
     return (
-      <Section.Section>
+      <Section.Section
+        ref={section => (this.section = section)}
+        {...this.props}
+      >
         <Section.Row>
           <Section.Header>{this.props.header}</Section.Header>
           {!this.state.isExpanded && (
             <Link
               onPress={() => {
                 this.setState({ isExpanded: true })
-                this.props.scrollTo({ x: 0, y: 200, animated: true })
+                this.props.scrollToList(this.props.header)
               }}
             >
               se alla {'>'}
@@ -43,14 +46,12 @@ class Anmalningslista extends Component {
           )}
         </Section.Row>
         {!this.state.isExpanded && (
-          <List.PreviewList>
-            {this.props.teams.slice(0, 3).map(team => this.renderTeam(team))}
-          </List.PreviewList>
+          <PreviewList>
+            {this.props.teams.slice(0, 3).map(renderTeam)}
+          </PreviewList>
         )}
         {this.state.isExpanded && (
-          <List.List>
-            {this.props.teams.map(team => this.renderTeam(team))}
-          </List.List>
+          <List>{this.props.teams.map(renderTeam)}</List>
         )}
       </Section.Section>
     )
@@ -60,7 +61,7 @@ class Anmalningslista extends Component {
 Anmalningslista.propTypes = {
   teams: PropTypes.arrayOf(PropTypes.shape).isRequired,
   header: PropTypes.string.isRequired,
-  scrollTo: PropTypes.func.isRequired
+  scrollToList: PropTypes.func.isRequired,
 }
 
 export default Anmalningslista
