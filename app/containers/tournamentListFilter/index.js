@@ -10,7 +10,7 @@ import { toggleFilter } from './actions'
 import { RowSeparator, AdjacentRowHighlighted } from '../listComponents'
 
 const Row = styled.View`
-  flex: 1;
+  sve: 1;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;

@@ -1,21 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components/native'
+import Button from 'apsl-react-native-button'
+import BlueText from './blueText'
 
-const BlueButton = styled.Button`
-  background-color: blue;
+const BlueOutlineButton = styled(Button)`
+  border-color: ${props => props.theme.lovingBlue};
+  height: 30px;
 `
 
-BlueButton.displayName = 'BlueButton'
-
-const BlueRedButton = styled(BlueButton)`
-  border-color: red;
-`
-
-BlueRedButton.displayName = 'BlueRedButton'
+BlueOutlineButton.displayName = 'BlueOutlineButton'
 
 const ButtonWrapper = ({ children, onPress }) => (
-  <BlueRedButton onPress={onPress} title={children} />
+  <BlueOutlineButton onPress={onPress}>
+    <BlueText>{children}</BlueText>
+  </BlueOutlineButton>
 )
 
 ButtonWrapper.propTypes = {

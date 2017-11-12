@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Text, View } from 'react-native'
 import * as S from '../sectionComponents'
 import OutlineButton from '../../../components/outlineButton'
+import Hyperlink from '../../../components/hyperlink'
 
 const InformationTab = ({ tournamentInfo }) => (
   <View>
@@ -36,7 +37,9 @@ const InformationTab = ({ tournamentInfo }) => (
       <S.Row>
         <S.Label>address</S.Label>
         <S.Content>
-          <Text>här, här och här... se karta</Text>
+          <Hyperlink link="https://maps.google.com">
+            här, här och här... se karta
+          </Hyperlink>
         </S.Content>
       </S.Row>
       <S.Row>

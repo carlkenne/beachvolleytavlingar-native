@@ -3,10 +3,10 @@ import { Text } from 'react-native'
 import PropTypes from 'prop-types'
 import styled from 'styled-components/native'
 import * as Section from '../sectionComponents'
+import BlueText from '../../../components/blueText'
 import { PreviewList, List, ListRow } from '../../listComponents'
 
-const Link = styled.Text`
-  color: #0e7afe;
+const Link = styled(BlueText)`
   flex: 1;
   text-align: right;
 `
