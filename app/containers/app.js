@@ -1,21 +1,18 @@
 import React from 'react'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, compose, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 
-import createSagaMiddleware from 'redux-saga'
 import { ThemeProvider } from 'styled-components/native'
-import reducers from '../reducers'
+import { createEpicMiddleware } from 'redux-observable';
+import reducers from './reducers'
+import { rootEpics  } from './epics'
 import MainNaviagtionTabBar from './mainNavigationTabbar'
-import sagas from './tournamentList/sagas'
 import theme from './theme'
 
-const sagaMiddleware = createSagaMiddleware()
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const createStoreWithMiddleware = applyMiddleware(sagaMiddleware)(createStore)
-const store = createStoreWithMiddleware(reducers)
-
-// Extensions
-sagaMiddleware.run(sagas)
+const epicMiddleware  = createEpicMiddleware(rootEpics)
+const store = createStore(reducers, composeEnhancers(applyMiddleware(epicMiddleware)))
 
 export default function App() {
   return (

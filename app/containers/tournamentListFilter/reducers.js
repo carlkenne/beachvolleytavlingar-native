@@ -1,5 +1,5 @@
 import { TOGGLE_FILTER } from './actions'
-import cloneObject from '../../lib/clone'
+import cloneObject from '../../utils/clone'
 
 const initialState = {
   levels: [

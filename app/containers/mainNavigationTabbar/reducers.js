@@ -1,5 +1,5 @@
 import * as consts from './constants'
-import cloneObject from '../../lib/clone'
+import cloneObject from '../../utils/clone'
 
 const initialState = {
   selectedTab: 'tournamentListTab',

@@ -38,7 +38,7 @@ const InformationTab = ({ tournamentInfo }) => (
         <S.Label>address</S.Label>
         <S.Content>
           <Hyperlink link="https://maps.google.com">
-            här, här och här... se karta
+            här, här och här... se karta {'>'}
           </Hyperlink>
         </S.Content>
       </S.Row>
@@ -47,8 +47,8 @@ const InformationTab = ({ tournamentInfo }) => (
         <S.Content>
           <Text>tävlingsledare</Text>
           <Text>Sandra Krook</Text>
-          <Text>Mail@mail.com</Text>
-          <Text>0736151555</Text>
+          <Hyperlink link="mailto:mail@mail.com">Mail@mail.com</Hyperlink>
+          <Hyperlink link="tel:mail@mail.com">0736151555</Hyperlink>
         </S.Content>
       </S.Row>
       <S.Row>
