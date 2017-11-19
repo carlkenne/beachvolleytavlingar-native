@@ -1,4 +1,9 @@
+import { ajax } from 'rxjs/observable/dom/ajax';
+import { Observable } from 'rxjs';
 import * as consts from './constants'
+
+
+const FETCH_USER_CANCELLED = 'FETCH_USER_CANCELLED'
 
 const sectionHeaders = {
   tp1: 'TP 1 (1 jan - 4 april)',
@@ -51,13 +56,28 @@ const tournamentData = {
   ],
 }
 
+const parseHTML = (response) => {
+  return { sectionHeaders, tournamentData }
+}
+
+const dispatchLoaded = payload => ({ type: consts.GET_TOURNAMENTLIST_SUCCESS, ...payload });
+
 const fetchTournamentListEpic = action$ =>
  action$.filter(action => action.type === consts.GET_TOURNAMENTLIST)
-    .mapTo({
-      type: consts.GET_TOURNAMENTLIST_SUCCESS,
-      sectionHeaders,
-      tournamentData,
-    });
+  .mergeMap(() =>
+    ajax({
+      url: 'https://www.profixio.com/fx/terminliste.php?org=SVBF.SE.SVB',
+      responseType: 'text'
+    })
+      .map(parseHTML)
+      .map(dispatchLoaded)
+      .takeUntil(action$.ofType(FETCH_USER_CANCELLED))
+      .catch(error => Observable.of({
+            type: consts.GET_TOURNAMENTLIST_FAILED,
+            payload: error.xhr.response,
+            error: true
+        }))
+  )
 
 export default fetchTournamentListEpic
 
