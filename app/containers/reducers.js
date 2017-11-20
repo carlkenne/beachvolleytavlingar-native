@@ -1,4 +1,4 @@
-import 'rxjs';
+import 'rxjs'
 import { combineReducers } from 'redux'
 import filter from '../containers/tournamentListFilter/reducers'
 import tournamentList from '../containers/tournamentList/reducers'
