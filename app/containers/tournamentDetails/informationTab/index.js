@@ -12,7 +12,7 @@ const InformationTab = ({ tournamentInfo }) => (
       <S.Row>
         <S.Label>tider</S.Label>
         <S.Content>
-          <Text>{tournamentInfo.date}</Text>
+          <Text>{tournamentInfo.date.text}</Text>
           <Text>kl 11:00</Text>
         </S.Content>
       </S.Row>
@@ -98,7 +98,7 @@ const InformationTab = ({ tournamentInfo }) => (
 
 InformationTab.propTypes = {
   tournamentInfo: PropTypes.shape({
-    date: PropTypes.string.isRequired,
+    date: PropTypes.shape().isRequired,
   }).isRequired,
 }
 

@@ -60,7 +60,9 @@ class TournamentList extends Component {
   }
 
   _getSectionData(data, sectionID) {
-    return this.props.tournamentList.sectionHeaders[sectionID]
+    // Add nuvarande...
+    const header = this.props.tournamentList.sectionHeaders[sectionID]
+    return `${header.name} (${header.date.duration})`.toUpperCase()
   }
 
   render() {

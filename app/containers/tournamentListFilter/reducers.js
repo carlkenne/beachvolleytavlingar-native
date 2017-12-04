@@ -3,9 +3,10 @@ import cloneObject from '../../utils/clone'
 
 const initialState = {
   levels: [
-    { type: 'challenger', value: true, label: 'Challenger' },
-    { type: 'opensvart', value: true, label: 'Open svart' },
-    { type: 'opengrön', value: true, label: 'Open grön' },
+    { type: 'Challenger', value: true, label: 'Challenger' },
+    { type: 'Open Svart', value: true, label: 'Open svart' },
+    { type: 'Open Grön', value: true, label: 'Open grön' },
+    { type: 'Veterantävling', value: true, label: 'Veteran' },
   ],
 }
 

@@ -24,8 +24,8 @@ const SpelschemaTab = ({ tournamentInfo }) => (
 
 SpelschemaTab.propTypes = {
   tournamentInfo: PropTypes.shape({
-    date: PropTypes.string.isRequired
-  }).isRequired
+    date: PropTypes.shape().isRequired,
+  }).isRequired,
 }
 
 export default SpelschemaTab

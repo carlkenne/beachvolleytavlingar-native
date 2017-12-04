@@ -138,7 +138,7 @@ class TournamentDetails extends Component {
           resizeMode="contain"
         />
         <SideMargins>
-          <Header>Trettondagsturneringen - Challenger (CH1)</Header>
+          <Header>{this.props.tournamentInfo.name}</Header>
           <SubHeader>{this.props.tournamentInfo.club} </SubHeader>
 
           <TopBottomMargins>
