@@ -89,6 +89,86 @@ const getSectionHeaders = year => {
   }
 }
 
+class Name {
+  constructor(name) {
+    this.name = name
+  }
+
+  replace(key, replacement) {
+    this.name = this.name.replace(new RegExp(key, 'g'), replacement || '')
+    return this
+  }
+
+  getName() {
+    return this.name.trim()
+  }
+}
+
+const parseTournamentName = name =>
+  new Name(name + ' ')
+    .replace('CH1', '')
+    .replace('CH2', '')
+    .replace('08 B', 'BBB')
+    .replace('Svart ', '')
+    .replace('Sv ', '')
+    .replace('\\(svart\\)', 'Open')
+    .replace('\\(grön\\)', 'Open Grön')
+    .replace('\\(mixed\\)', 'Mixed')
+    .replace('\\(ch\\)', 'Challenger')
+    .replace('svart ', '')
+    .replace('lö ', '')
+    .replace('Lö ', '')
+    .replace('Må ', '')
+    .replace('Sö ', '')
+    .replace('sö ', '')
+    .replace('sön ', '')
+    .replace(' tor ', '')
+    .replace(' den ', ' ')
+    .replace('Svart', '')
+    .replace('svart', '')
+    .replace(' mix ', ' Mixed ')
+    .replace(' MIX', ' Mixed')
+    .replace('Open Mix ', 'Mixed ')
+    .replace('Mixed Open', 'Mixed')
+    .replace('Open Mix', 'Mixed')
+    .replace(' Dam/Herr', '')
+    .replace('\\(open sv\\)', 'Open')
+    .replace(' open', ' Open')
+    .replace(' challenger', ' Challenger')
+    .replace(' mixed', ' Mixed')
+    .replace('Garantiplats', '')
+    .replace('Maj ', ' ')
+    .replace('maj ', ' ')
+    .replace('Juni ', ' ')
+    .replace('Jun ', ' ')
+    .replace('jun ', ' ')
+    .replace('sep', '')
+    .replace('Sep', '')
+    .replace('Juli', '')
+    .replace('juli', '')
+    .replace('aug', '')
+    .replace('0', '')
+    .replace('1', '')
+    .replace('2', '')
+    .replace('3', '')
+    .replace('4', '')
+    .replace('5', '')
+    .replace('6', '')
+    .replace('7', '')
+    .replace('8', '')
+    .replace('9', '')
+    .replace('\\(\\)', '')
+    .replace(' v ', ' ')
+    .replace(' TP', '')
+    .replace('\\)', '')
+    .replace('\\(', '')
+    .replace('\\+', '')
+    .replace('\\/', '')
+    .replace(' , ', ' ')
+    .replace('BBB', '08 B')
+    .replace('  ', ' ')
+    .getName()
+
 const parseClass = className =>
   className
     .split(',')
@@ -101,6 +181,30 @@ const parseClass = className =>
     .map(item => (item.startsWith('v40+h') ? 'v40+herr' : item))
     .map(item => (item.startsWith('v45+d') ? 'v45+dam' : item))
     .map(item => (item.startsWith('v45+h') ? 'v45+herr' : item))
+
+const getId = node => {
+  const aTag = node.getElementsByTagName('a')
+  if (aTag.length) {
+    return aTag[0].getAttribute('href').replace('vis_innbydelse.php?ib_id=', '')
+  }
+  return ''
+}
+
+const getTp = node =>
+  node.textContent
+    .split(' ')
+    .join('')
+    .toLowerCase()
+
+const getQualifier = text =>
+  text
+    .split(' ')
+    .filter(
+      word =>
+        word === 'CH1' || word === 'CH2' || word === 'CH 1' || word === 'CH 2',
+    )
+    .join()
+    .replace(' ', '')
 
 const parseHTML = data => {
   const doc = new DOMParser({
@@ -116,19 +220,21 @@ const parseHTML = data => {
     .querySelect('.maincontent tr')
     .filter(row => row.attributes.length > 0)
     .map(row => ({
+      tp: getTp(row.childNodes[4]),
+      club: row.childNodes[6].textContent,
+      qualifier: getQualifier(row.childNodes[8].textContent),
+      name: parseTournamentName(row.childNodes[8].textContent),
+      originalName: row.childNodes[8].textContent,
+      type: row.childNodes[10].textContent,
+      class: parseClass(row.childNodes[12].textContent),
+      id: getId(row.childNodes[8]),
       date: parseDate(
         row.childNodes[0].textContent,
         row.childNodes[2].textContent,
       ),
-      tp: row.childNodes[4].textContent
-        .split(' ')
-        .join('')
-        .toLowerCase(),
-      club: row.childNodes[6].textContent,
-      name: row.childNodes[8].textContent,
-      type: row.childNodes[10].textContent,
-      class: parseClass(row.childNodes[12].textContent),
     }))
+
+  console.log(rows[0]) // eslint-disable-line
 
   const groups = _.groupBy(rows, 'tp')
 

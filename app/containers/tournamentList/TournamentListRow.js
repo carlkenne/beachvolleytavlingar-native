@@ -4,9 +4,13 @@ import PropTypes from 'prop-types'
 import { Text, TouchableHighlight } from 'react-native'
 import styled from 'styled-components/native'
 import blackIcon from './icons/black.png'
+import black1Icon from './icons/black1.png'
+import black2Icon from './icons/black2.png'
 import greenIcon from './icons/green.png'
 import blueIcon from './icons/blue.png'
 import redIcon from './icons/red.png'
+import red1Icon from './icons/red1.png'
+import red2Icon from './icons/red2.png'
 import normalIcon from './icons/normal.png'
 
 const Title = styled.Text`
@@ -39,7 +43,6 @@ const Type = styled.Image`
 `
 
 const Arrow = styled.View`
-  align-content: center;
   justify-content: center;
   flex-basis: 40px;
 `
@@ -54,11 +57,15 @@ const ArrowText = styled.Text`
 const getTypeIcon = tournamentInfo => {
   switch (tournamentInfo.type) {
     case 'Open Svart':
-      return blackIcon
+      return tournamentInfo.qualifier === 'CH1'
+        ? black1Icon
+        : tournamentInfo.qualifier === 'CH2' ? black2Icon : blackIcon
     case 'Open Grön':
       return greenIcon
     case 'Challenger':
-      return redIcon
+      return tournamentInfo.qualifier === 'CH1'
+        ? red1Icon
+        : tournamentInfo.qualifier === 'CH2' ? red2Icon : redIcon
     case 'Mixed':
       return blueIcon
   }
@@ -67,14 +74,16 @@ const getTypeIcon = tournamentInfo => {
 }
 
 function TournamentListRow({ tournamentInfo, onPress }) {
+  const name = tournamentInfo.name
   return (
     <Row onPress={onPress}>
       <FlexRow>
         <Type source={getTypeIcon(tournamentInfo)} resizeMode="contain" />
         <MiddleCol>
-          <Title>{tournamentInfo.name}</Title>
+          <Title>{name}</Title>
           <Text>
-            {tournamentInfo.date.text}, {tournamentInfo.club}
+            {tournamentInfo.date.getDuration('ddd, D MMM')},{' '}
+            {tournamentInfo.club}
           </Text>
         </MiddleCol>
         <Arrow>

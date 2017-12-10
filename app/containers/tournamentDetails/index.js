@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { ScrollView, SegmentedControlIOS } from 'react-native'
+import { connect } from 'react-redux'
 import styled from 'styled-components/native'
+import { bindActionCreators } from 'redux'
 import Separator from '../../components/separator'
 import SideMargins from './sideMargins'
 import InformationTab from './informationTab'
 import AnmalningslistaTab from './anmalningsListaTab'
 import SpelschemaTab from './spelschemaTab'
+import * as actions from './actions'
 
 const Header = styled.Text`
   font-weight: bold;
@@ -34,89 +37,10 @@ class TournamentDetails extends Component {
       selectedIndex: 0,
     }
     this.scrollTo = this.scrollTo.bind(this)
+  }
 
-    this.damer = [
-      {
-        name: 'Stina Persson / Matilda Gustavsson 1',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '2',
-      },
-      {
-        name: 'Stina Persson / Matilda Gustavsson 2',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '2',
-      },
-      {
-        name: 'Stina Persson / Matilda Gustavsson 3',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '3',
-      },
-      {
-        name: 'Stina Persson / Matilda Gustavsson 4',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '4',
-      },
-      {
-        name: 'Stina Persson / Matilda Gustavsson 5',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '5',
-      },
-      {
-        name: 'Stina Persson / Matilda Gustavsson 6',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '6',
-      },
-    ]
-    this.herrar = [
-      {
-        name: 'Carl Kenne / Matilda Gustavsson 1',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '1',
-      },
-      {
-        name: 'Carl Kenne / Matilda Gustavsson 2',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '2',
-      },
-      {
-        name: 'Carl Kenne / Matilda Gustavsson 3',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '3',
-      },
-      {
-        name: 'Carl Kenne / Matilda Gustavsson 4',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '4',
-      },
-      {
-        name: 'Carl Kenne / Matilda Gustavsson 5',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '5',
-      },
-      {
-        name: 'Carl Kenne / Matilda Gustavsson 6',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '6',
-      },
-      {
-        name: 'Carl Kenne / Matilda Gustavsson 7',
-        club: 'GBC',
-        points: '(1030p = 550p + 480p)',
-        rank: '7',
-      },
-    ]
+  componentDidMount() {
+    this.props.actions.getTournamentDetails(this.props.tournamentInfo.id)
   }
 
   scrollTo(y) {
@@ -160,8 +84,6 @@ class TournamentDetails extends Component {
         {this.state.selectedIndex === 1 && (
           <AnmalningslistaTab
             tournamentInfo={this.props.tournamentInfo}
-            damer={this.damer}
-            herrar={this.herrar}
             scrollTo={this.scrollTo}
           />
         )}
@@ -175,6 +97,16 @@ class TournamentDetails extends Component {
 
 TournamentDetails.propTypes = {
   tournamentInfo: PropTypes.shape().isRequired,
+  actions: PropTypes.shape({
+    getTournamentDetails: PropTypes.func.isRequired,
+  }).isRequired,
 }
 
-export default TournamentDetails
+export default connect(
+  state => ({
+    tournamentDetails: state.tournamentDetails,
+  }),
+  dispatch => ({
+    actions: bindActionCreators(actions, dispatch),
+  }),
+)(TournamentDetails)
