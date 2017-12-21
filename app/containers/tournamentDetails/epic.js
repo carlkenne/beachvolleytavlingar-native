@@ -6,7 +6,7 @@ import parse from './parseHtml'
 import mockedData from './mocks/vis_innbydelse_php'
 import { getTournamentDetailsUrl } from '../../utils/config'
 
-const DEV_MODE = true
+const DEV_MODE = false
 
 const dispatchLoaded = payload => ({
   type: consts.GET_TOURNAMENT_DETAILS_SUCCESS,

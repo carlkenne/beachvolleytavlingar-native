@@ -2,8 +2,11 @@ import React from 'react'
 import styled from 'styled-components/native'
 import PropTypes from 'prop-types'
 
-export const RowLabelText = styled.Text`
+export const BoldText = styled.Text`
   font-weight: bold;
+`
+
+export const RowLabelText = styled(BoldText)`
   text-align: right;
 `
 
@@ -19,7 +22,7 @@ export const Label = ({ children }) => (
 )
 
 Label.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 }
 
 export const Content = styled.View`
@@ -44,6 +47,10 @@ export const Section = styled.View`
 
 export const MarginTop = styled.View`
   margin-top: 10;
+`
+
+export const ExtraSpace = styled.View`
+  padding-bottom: 5px;
 `
 
 export const SmallSeparator = styled.View`

@@ -79,7 +79,7 @@ class TournamentDetails extends Component {
         </SideMargins>
         <Separator />
         {this.state.selectedIndex === 0 && (
-          <InformationTab tournamentInfo={this.props.tournamentInfo} />
+          <InformationTab {...this.props.tournamentDetails} />
         )}
         {this.state.selectedIndex === 1 && (
           <AnmalningslistaTab
@@ -97,6 +97,7 @@ class TournamentDetails extends Component {
 
 TournamentDetails.propTypes = {
   tournamentInfo: PropTypes.shape().isRequired,
+  tournamentDetails: PropTypes.shape().isRequired,
   actions: PropTypes.shape({
     getTournamentDetails: PropTypes.func.isRequired,
   }).isRequired,
