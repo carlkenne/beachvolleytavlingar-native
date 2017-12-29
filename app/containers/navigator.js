@@ -15,7 +15,7 @@ class Navigator extends Component {
 
   _showFilterView() {
     console.log('this.navigator: ', this.navigator);
-    this.navigator.push({
+    this.navigator.root.push({
       component: TournamentListFilter,
       title: 'filtrera',
     });
@@ -24,7 +24,7 @@ class Navigator extends Component {
   render() {
     return (
       <FlexedNavigatorIOS
-        ref={nav => (this.navigator = nav.root)}
+        ref={nav => (this.navigator = nav)}
         initialRoute={{
           component: TournamentList,
           title: 'Säsongskalendern',
