@@ -1,25 +1,24 @@
-'use strict'
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { ListView } from 'react-native'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import styled from 'styled-components/native'
-import TournamentListRow from './TournamentListRow'
-import TournamentDetails from '../tournamentDetails'
-import * as actions from './actions'
-import { AdjacentRowHighlighted, RowSeparator } from '../listComponents'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { ListView } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import styled from 'styled-components/native';
+import TournamentListRow from './TournamentListRow';
+import TournamentDetails from '../tournamentDetails';
+import * as actions from './actions';
+import { AdjacentRowHighlighted, RowSeparator } from '../../components/listComponents';
 
 const SectionHeader = styled.Text`
   padding-left: 10;
   padding-top: 30;
   padding-bottom: 8;
   background-color: transparent;
-`
+`;
 
 const Container = styled.ImageBackground`
   flex: 1;
-`
+`;
 
 class TournamentList extends Component {
   static _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
@@ -27,11 +26,11 @@ class TournamentList extends Component {
       <AdjacentRowHighlighted key={`${sectionID}-${rowID}`} />
     ) : (
       <RowSeparator key={`${sectionID}-${rowID}`} />
-    )
+    );
   }
 
   componentDidMount() {
-    this.props.actions.getTournamentList()
+    this.props.actions.getTournamentList();
   }
 
   _getVisibleTournaments() {
@@ -39,30 +38,23 @@ class TournamentList extends Component {
       rowHasChanged: (row1, row2) => row1 !== row2,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
       getSectionHeaderData: this._getSectionData.bind(this),
-    })
+    });
 
-    const tournaments = {}
-    if (
-      this.props.tournamentList.loaded &&
-      this.props.tournamentList.tournamentData
-    ) {
-      const types = this.props.filter.levels
-        .filter(lvl => lvl.value === true)
-        .map(lvl => lvl.type)
+    const tournaments = {};
+    if (this.props.tournamentList.loaded && this.props.tournamentList.tournamentData) {
+      const types = this.props.filter.levels.filter(lvl => lvl.value === true).map(lvl => lvl.type);
       for (const key in this.props.tournamentList.tournamentData) {
-        tournaments[key] = this.props.tournamentList.tournamentData[key].filter(
-          td => types.indexOf(td.type) > -1,
-        )
+        tournaments[key] = this.props.tournamentList.tournamentData[key].filter(td => types.indexOf(td.type) > -1);
       }
     }
 
-    return dataSource.cloneWithRowsAndSections(tournaments)
+    return dataSource.cloneWithRowsAndSections(tournaments);
   }
 
   _getSectionData(data, sectionID) {
     // Add nuvarande...
-    const header = this.props.tournamentList.sectionHeaders[sectionID]
-    return `${header.name} (${header.date.getDuration('D MMM')})`.toUpperCase()
+    const header = this.props.tournamentList.sectionHeaders[sectionID];
+    return `${header.name} (${header.date.getDuration('D MMM')})`.toUpperCase();
   }
 
   render() {
@@ -81,17 +73,15 @@ class TournamentList extends Component {
                   component: TournamentDetails,
                   title: tournamentInfo.name,
                   passProps: { tournamentInfo },
-                })
+                });
               }}
             />
           )}
-          renderSectionHeader={sectionHeader => (
-            <SectionHeader>{sectionHeader}</SectionHeader>
-          )}
+          renderSectionHeader={sectionHeader => <SectionHeader>{sectionHeader}</SectionHeader>}
           renderSeparator={this._renderSeparator}
         />
       </Container>
-    )
+    );
   }
 }
 
@@ -102,7 +92,7 @@ TournamentList.propTypes = {
   tournamentList: PropTypes.shape().isRequired,
   filter: PropTypes.shape().isRequired,
   navigator: PropTypes.shape().isRequired,
-}
+};
 
 export default connect(
   state => ({
@@ -112,4 +102,4 @@ export default connect(
   dispatch => ({
     actions: bindActionCreators(actions, dispatch),
   }),
-)(TournamentList)
+)(TournamentList);

@@ -1,8 +1,8 @@
-import { DOMParser } from 'react-native-html-parser'
-import { _ } from 'lodash'
-import { parseDate } from '../../utils/date'
+import { DOMParser } from 'react-native-html-parser';
+import { _ } from 'lodash';
+import { parseDate } from '../../utils/date';
 
-const getSectionHeaders = year => {
+const getSectionHeaders = (year) => {
   if (year === '2017') {
     return {
       tp01: {
@@ -85,27 +85,27 @@ const getSectionHeaders = year => {
         number: 16,
         date: parseDate('16 oct 2017', '31 dec 2017'),
       },
-    }
+    };
   }
-}
+};
 
 class Name {
   constructor(name) {
-    this.name = name
+    this.name = name;
   }
 
   replace(key, replacement) {
-    this.name = this.name.replace(new RegExp(key, 'g'), replacement || '')
-    return this
+    this.name = this.name.replace(new RegExp(key, 'g'), replacement || '');
+    return this;
   }
 
   getName() {
-    return this.name.trim()
+    return this.name.trim();
   }
 }
 
 const parseTournamentName = name =>
-  new Name(name + ' ')
+  new Name(`${name} `)
     .replace('CH1', '')
     .replace('CH2', '')
     .replace('08 B', 'BBB')
@@ -167,7 +167,7 @@ const parseTournamentName = name =>
     .replace(' , ', ' ')
     .replace('BBB', '08 B')
     .replace('  ', ' ')
-    .getName()
+    .getName();
 
 const parseClass = className =>
   className
@@ -180,33 +180,30 @@ const parseClass = className =>
     .map(item => (item.startsWith('v40+d') ? 'v40+dam' : item))
     .map(item => (item.startsWith('v40+h') ? 'v40+herr' : item))
     .map(item => (item.startsWith('v45+d') ? 'v45+dam' : item))
-    .map(item => (item.startsWith('v45+h') ? 'v45+herr' : item))
+    .map(item => (item.startsWith('v45+h') ? 'v45+herr' : item));
 
-const getId = node => {
-  const aTag = node.getElementsByTagName('a')
+const getId = (node) => {
+  const aTag = node.getElementsByTagName('a');
   if (aTag.length) {
-    return aTag[0].getAttribute('href').replace('vis_innbydelse.php?ib_id=', '')
+    return aTag[0].getAttribute('href').replace('vis_innbydelse.php?ib_id=', '');
   }
-  return ''
-}
+  return '';
+};
 
 const getTp = node =>
   node.textContent
     .split(' ')
     .join('')
-    .toLowerCase()
+    .toLowerCase();
 
 const getQualifier = text =>
   text
     .split(' ')
-    .filter(
-      word =>
-        word === 'CH1' || word === 'CH2' || word === 'CH 1' || word === 'CH 2',
-    )
+    .filter(word => word === 'CH1' || word === 'CH2' || word === 'CH 1' || word === 'CH 2')
     .join()
-    .replace(' ', '')
+    .replace(' ', '');
 
-const parseHTML = data => {
+const parseHTML = (data) => {
   const doc = new DOMParser({
     locator: {},
     errorHandler: {
@@ -214,7 +211,7 @@ const parseHTML = data => {
       error: e => console.log(e), // eslint-disable-line
       fatalError: fe => console.log(fe), // eslint-disable-line
     },
-  }).parseFromString(data.response, 'text/html')
+  }).parseFromString(data.response, 'text/html');
 
   const rows = doc
     .querySelect('.maincontent tr')
@@ -225,20 +222,21 @@ const parseHTML = data => {
       qualifier: getQualifier(row.childNodes[8].textContent),
       name: parseTournamentName(row.childNodes[8].textContent),
       originalName: row.childNodes[8].textContent,
-      type: row.childNodes[10].textContent,
+      type: row.childNodes[10].textContent.trim(),
       class: parseClass(row.childNodes[12].textContent),
       id: getId(row.childNodes[8]),
-      date: parseDate(
-        row.childNodes[0].textContent,
-        row.childNodes[2].textContent,
-      ),
-    }))
+      date: parseDate(row.childNodes[0].textContent, row.childNodes[2].textContent),
+    }));
 
   console.log(rows[0]) // eslint-disable-line
+  const groups = _.groupBy(rows, 'tp');
+  const types = new Set(rows.map(r => r.type).filter(r => r !== ''));
 
-  const groups = _.groupBy(rows, 'tp')
+  return {
+    sectionHeaders: getSectionHeaders('2017'),
+    tournamentData: groups,
+    types: [...types],
+  };
+};
 
-  return { sectionHeaders: getSectionHeaders('2017'), tournamentData: groups }
-}
-
-export default parseHTML
+export default parseHTML;

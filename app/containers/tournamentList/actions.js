@@ -1,5 +1,5 @@
-import * as types from './constants'
+import * as consts from './epic';
 
 export const getTournamentList = () => ({
-  type: types.GET_TOURNAMENTLIST,
-})
+  type: consts.GET_TOURNAMENTLIST,
+});

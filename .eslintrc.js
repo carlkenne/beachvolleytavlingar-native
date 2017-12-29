@@ -8,7 +8,7 @@ module.exports = {
   extends: ['airbnb', 'react-native', 'prettier'],
   plugins: ['prettier'],
   rules: {
-    'react/prefer-stateless-function': 1,
+    'react/prefer-stateless-function': 0,
     'import/prefer-default-export': 0,
     'import/no-namespace': 0,
     'react/jsx-filename-extension': 0,
