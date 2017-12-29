@@ -19,16 +19,14 @@ const SectionHeader = styled.Text`
 const Container = styled.ImageBackground`
   flex: 1;
 `;
+const renderSeparator = (sectionID, rowID, adjacentRowHighlighted) =>
+  (adjacentRowHighlighted ? (
+    <AdjacentRowHighlighted key={`${sectionID}-${rowID}`} />
+  ) : (
+    <RowSeparator key={`${sectionID}-${rowID}`} />
+  ));
 
 class TournamentList extends Component {
-  static _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    return adjacentRowHighlighted ? (
-      <AdjacentRowHighlighted key={`${sectionID}-${rowID}`} />
-    ) : (
-      <RowSeparator key={`${sectionID}-${rowID}`} />
-    );
-  }
-
   componentDidMount() {
     this.props.actions.getTournamentList();
   }
@@ -78,7 +76,7 @@ class TournamentList extends Component {
             />
           )}
           renderSectionHeader={sectionHeader => <SectionHeader>{sectionHeader}</SectionHeader>}
-          renderSeparator={this._renderSeparator}
+          renderSeparator={renderSeparator}
         />
       </Container>
     );
