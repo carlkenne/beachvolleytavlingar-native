@@ -80,7 +80,11 @@ class TournamentDetails extends Component {
         <Separator />
         {this.state.selectedIndex === 0 && <DetailsTab {...this.props.tournamentDetails} />}
         {this.state.selectedIndex === 1 && (
-          <AnmalningslistaTab tournamentInfo={this.props.tournamentInfo} scrollTo={this.scrollTo} />
+          <AnmalningslistaTab
+            navigator={this.props.navigator}
+            tournamentInfo={this.props.tournamentInfo}
+            scrollTo={this.scrollTo}
+          />
         )}
         {this.state.selectedIndex === 2 && (
           <SpelschemaTab tournamentInfo={this.props.tournamentInfo} />
@@ -96,6 +100,7 @@ TournamentDetails.propTypes = {
   actions: PropTypes.shape({
     getTournamentDetails: PropTypes.func.isRequired,
   }).isRequired,
+  navigator: PropTypes.shape().isRequired,
 };
 
 export default connect(

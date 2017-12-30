@@ -7,8 +7,7 @@ import {
 
 const initialState = {
   loading: false,
-  damer: [],
-  herrar: [],
+  classes: [],
 };
 
 export default function (state = initialState, action = {}) {

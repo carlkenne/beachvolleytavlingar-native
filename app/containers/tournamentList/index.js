@@ -71,7 +71,7 @@ class TournamentList extends Component {
                 this.props.navigator.push({
                   component: TournamentDetails,
                   title: tournamentInfo.name,
-                  passProps: { tournamentInfo },
+                  passProps: { tournamentInfo, navigator: this.props.navigator },
                 });
               }}
             />

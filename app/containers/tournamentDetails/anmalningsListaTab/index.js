@@ -5,59 +5,50 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Separator from '../../../components/separator';
 import Loading from '../../../components/loading';
-import Anmalningslista from './anmalningslista';
+import KortAnmalningslista from './kortAnmalningslista';
 import { fetchAnmalningslista } from './epic';
-
-const HEADER_HEIGHT = 270;
+import fullAnmalningslista from './fullAnmalningslista';
 
 class AnmalningslistaTab extends Component {
   constructor(args) {
     super(args);
-    this.scrollToList = this.scrollToList.bind(this);
+    this.seAll = this.seAll.bind(this);
   }
 
   componentDidMount() {
     this.props.actions.fetchAnmalningslista();
   }
 
-  scrollToList(header) {
-    if (header === 'Damer') {
-      this.props.scrollTo(HEADER_HEIGHT);
-    } else if (header === 'Herrar') {
-      this.props.scrollTo(HEADER_HEIGHT + this.damerListHeight);
-    }
+  seAll(header) {
+    this.props.navigator.push({
+      component: fullAnmalningslista,
+      title: header,
+      passProps: {
+        teams: this.props.classes.find(c => c.name === header).teams,
+      },
+    });
   }
 
   render() {
     if (this.props.loading) {
       return <Loading />;
     }
+    const classes = this.props.classes.map(c => (
+      <KortAnmalningslista key={c.name} header={c.name} teams={c.teams} seAll={this.seAll} />
+    ));
     return (
       <View>
-        <Anmalningslista
-          header="Damer"
-          teams={this.props.damer}
-          scrollToList={this.scrollToList}
-          onLayout={(event) => {
-            this.damerListHeight = event.nativeEvent.layout.height;
-          }}
-        />
+        {classes}
         <Separator />
-        <Anmalningslista
-          header="Herrar"
-          teams={this.props.herrar}
-          scrollToList={this.scrollToList}
-        />
       </View>
     );
   }
 }
 
 AnmalningslistaTab.propTypes = {
-  damer: PropTypes.arrayOf(PropTypes.shape).isRequired,
-  herrar: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  classes: PropTypes.arrayOf(PropTypes.shape).isRequired,
   loading: PropTypes.bool.isRequired,
-  scrollTo: PropTypes.func.isRequired,
+  navigator: PropTypes.shape().isRequired,
   actions: PropTypes.shape({
     fetchAnmalningslista: PropTypes.func.isRequired,
   }).isRequired,
