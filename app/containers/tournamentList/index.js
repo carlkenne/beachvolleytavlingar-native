@@ -19,6 +19,7 @@ const SectionHeader = styled.Text`
 const Container = styled.ImageBackground`
   flex: 1;
 `;
+
 const renderSeparator = (sectionID, rowID, adjacentRowHighlighted) =>
   (adjacentRowHighlighted ? (
     <AdjacentRowHighlighted key={`${sectionID}-${rowID}`} />

@@ -23,7 +23,7 @@ const MiddleCol = styled.View`
 function TournamentListRow({ tournamentInfo, onPress }) {
   const name = tournamentInfo.name;
   return (
-    <Row onPress={onPress}>
+    <Row onPress={onPress} underlayColor="white">
       <ListRow>
         <TournamentTypeIcon type={tournamentInfo.type} qualifier={tournamentInfo.qualifier} />
         <MiddleCol>

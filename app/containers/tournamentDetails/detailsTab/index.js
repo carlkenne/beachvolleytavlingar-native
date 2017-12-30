@@ -1,17 +1,11 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Text, View } from 'react-native'
-import * as S from '../sectionComponents'
-import OutlineButton from '../../../components/outlineButton'
-import Hyperlink from '../../../components/hyperlink'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Text, View } from 'react-native';
+import * as S from '../sectionComponents';
+import OutlineButton from '../../../components/outlineButton';
+import Hyperlink from '../../../components/hyperlink';
 
-const render = (prefix = '', value, suffix = '') => {
-  if (value) {
-    return prefix + value + suffix
-  }
-}
-
-const hasAnyNoOfPaticipants = details => details.noOfHerr || details.noOfDam
+const hasAnyNoOfPaticipants = details => details.noOfHerr || details.noOfDam;
 
 const renderNoOfParticipants = details =>
   hasAnyNoOfPaticipants(details) && (
@@ -21,20 +15,20 @@ const renderNoOfParticipants = details =>
         {details.noOfDam && (
           <Text>
             Dam: {details.noOfDam}
-            {details.priceDam && ', ' + details.priceDam + ' :-'}
+            {details.priceDam && `, ${details.priceDam} :-`}
           </Text>
         )}
         {details.noOfHerr && (
           <Text>
             Herr: {details.noOfHerr}
-            {details.priceHerr && ', ' + details.priceHerr + ' :-'}
+            {details.priceHerr && `, ${details.priceHerr} :-`}
           </Text>
         )}
       </S.Content>
     </S.Row>
-  )
+  );
 
-const InformationTab = ({ loaded, details }) =>
+const DetailsTab = ({ loaded, details }) =>
   loaded && (
     <View>
       <S.Section>
@@ -49,9 +43,7 @@ const InformationTab = ({ loaded, details }) =>
         <S.Row>
           <S.Label>address</S.Label>
           <S.Content>
-            <Hyperlink link="https://maps.google.com">
-              här, här och här... se karta {'>'}
-            </Hyperlink>
+            <Hyperlink link="https://maps.google.com">här, här och här... se karta {'>'}</Hyperlink>
           </S.Content>
         </S.Row>
         <S.Row>
@@ -62,12 +54,8 @@ const InformationTab = ({ loaded, details }) =>
             {details.contacts.map(contact => (
               <S.Content key={contact.id}>
                 <Text>{contact.name}</Text>
-                <Hyperlink link={`mailto:${contact.email}`}>
-                  {contact.email}
-                </Hyperlink>
-                <Hyperlink link={`tel:${contact.phone}`}>
-                  {contact.phone}
-                </Hyperlink>
+                <Hyperlink link={`mailto:${contact.email}`}>{contact.email}</Hyperlink>
+                <Hyperlink link={`tel:${contact.phone}`}>{contact.phone}</Hyperlink>
                 <S.ExtraSpace />
               </S.Content>
             ))}
@@ -76,9 +64,7 @@ const InformationTab = ({ loaded, details }) =>
         <S.Row>
           <S.Label>anmälan</S.Label>
           <S.Content>
-            <Text>
-              Senast {details.deadline.getDuration('ddd, D MMM hh:mm')}
-            </Text>
+            <Text>Senast {details.deadline.getDuration('ddd, D MMM hh:mm')}</Text>
             <S.MarginTop>
               <OutlineButton onPress={() => {}}>till anmälan</OutlineButton>
             </S.MarginTop>
@@ -100,13 +86,13 @@ const InformationTab = ({ loaded, details }) =>
         <OutlineButton onPress={() => {}}>Öppna sidan i safari..</OutlineButton>
       </S.Section>
     </View>
-  )
+  );
 
-InformationTab.propTypes = {
+DetailsTab.propTypes = {
   details: PropTypes.shape({
     date: PropTypes.shape(),
   }),
   loaded: PropTypes.bool,
-}
+};
 
-export default InformationTab
+export default DetailsTab;
