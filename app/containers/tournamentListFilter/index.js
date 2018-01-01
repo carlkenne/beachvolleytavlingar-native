@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components/native';
 import { toggleFilter } from './actions';
-import { RowSeparator, AdjacentRowHighlighted, ListRow } from '../../components/listComponents';
+import { renderSeparator, ListRow } from '../../components/listComponents';
 import TournamentTypeIcon from '../../components/tournamentTypeIcon';
 
 const Title = styled.Text`
@@ -22,13 +22,6 @@ const SectionHeader = styled.Text`
 const StyledSwitch = styled(Switch)`
   flex-basis: 50px;
 `;
-
-const renderSeparator = (sectionID, rowID, adjacentRowHighlighted) =>
-  (adjacentRowHighlighted ? (
-    <AdjacentRowHighlighted key={`${sectionID}-${rowID}`} />
-  ) : (
-    <RowSeparator key={`${sectionID}-${rowID}`} />
-  ));
 
 const createDataSource = (state) => {
   const sectionData = {

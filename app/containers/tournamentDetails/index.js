@@ -87,7 +87,10 @@ class TournamentDetails extends Component {
           />
         )}
         {this.state.selectedIndex === 2 && (
-          <SpelschemaTab tournamentInfo={this.props.tournamentInfo} />
+          <SpelschemaTab
+            navigator={this.props.navigator}
+            tournamentInfo={this.props.tournamentInfo}
+          />
         )}
       </ScrollView>
     );

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ListView } from 'react-native';
 import styled from 'styled-components/native';
 import { renderSeparator } from '../../../components/listComponents';
-import AnmalningslistaRow from './anmalningslistaRow';
+import AnmalningslistaRow from '../anmalningsListaTab/anmalningslistaRow';
 
 const SectionHeader = styled.Text`
   padding-left: 10;
@@ -16,7 +16,7 @@ const Container = styled.View`
   flex: 1;
 `;
 
-class FullAnmalningslista extends Component {
+class PreliminartSpelschema extends Component {
   _getVisibleTournaments() {
     const dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1.value !== row2.value,
@@ -42,8 +42,8 @@ class FullAnmalningslista extends Component {
   }
 }
 
-FullAnmalningslista.propTypes = {
+PreliminartSpelschema.propTypes = {
   teams: PropTypes.arrayOf(PropTypes.shape).isRequired,
 };
 
-export default FullAnmalningslista;
+export default PreliminartSpelschema;

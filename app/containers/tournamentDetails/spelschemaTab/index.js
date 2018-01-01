@@ -1,28 +1,37 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { Text, View } from 'react-native';
+import PropTypes from 'prop-types';
+import { Section } from '../sectionComponents';
+import BlueText from '../../../components/blueText';
+import fullAnmalningslista from '../anmalningsListaTab/fullAnmalningslista';
 
-import styled from 'styled-components/native';
-
-const Section = styled.View`
-  margin-right: 10;
-  margin-left: 10;
-  margin-right: 10;
-  margin-left: 10;
-`;
-
-const SpelschemaTab = ({ tournamentInfo }) => (
-  <View>
-    <Section>
-      <Text>Spelschemat...</Text>
-    </Section>
-  </View>
-);
+class SpelschemaTab extends Component {
+  render() {
+    return (
+      <View>
+        <Section>
+          <Text>Tyvärr finns det inget officiellt spelschema ännu...</Text>
+        </Section>
+        <Section>
+          <Text>Orkar du inte vänta?</Text>
+          <BlueText
+            onPress={() =>
+              this.props.navigator.push({
+                component: fullAnmalningslista,
+                title: 'preliminärt spelschema',
+              })
+            }
+          >
+            skapa ditt eget schema {'>'}
+          </BlueText>
+        </Section>
+      </View>
+    );
+  }
+}
 
 SpelschemaTab.propTypes = {
-  tournamentInfo: PropTypes.shape({
-    date: PropTypes.shape().isRequired,
-  }).isRequired,
+  navigator: PropTypes.shape().isRequired,
 };
 
 export default SpelschemaTab;

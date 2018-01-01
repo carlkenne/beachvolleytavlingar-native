@@ -7,7 +7,7 @@ import styled from 'styled-components/native';
 import TournamentListRow from './TournamentListRow';
 import TournamentDetails from '../tournamentDetails';
 import * as actions from './actions';
-import { AdjacentRowHighlighted, RowSeparator } from '../../components/listComponents';
+import { renderSeparator } from '../../components/listComponents';
 
 const SectionHeader = styled.Text`
   padding-left: 10;
@@ -20,25 +20,12 @@ const Container = styled.ImageBackground`
   flex: 1;
 `;
 
-const renderSeparator = (sectionID, rowID, adjacentRowHighlighted) =>
-  (adjacentRowHighlighted ? (
-    <AdjacentRowHighlighted key={`${sectionID}-${rowID}`} />
-  ) : (
-    <RowSeparator key={`${sectionID}-${rowID}`} />
-  ));
-
 class TournamentList extends Component {
   componentDidMount() {
     this.props.actions.getTournamentList();
   }
 
   _getVisibleTournaments() {
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-      sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-      getSectionHeaderData: this._getSectionData.bind(this),
-    });
-
     const tournaments = {};
     if (this.props.tournamentList.loaded && this.props.tournamentList.tournamentData) {
       const types = this.props.filter.levels.filter(lvl => lvl.value === true).map(lvl => lvl.type);
@@ -47,10 +34,16 @@ class TournamentList extends Component {
       }
     }
 
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (row1, row2) => row1 !== row2,
+      sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+      getSectionHeaderData: this._getSectionHeader.bind(this),
+    });
+
     return dataSource.cloneWithRowsAndSections(tournaments);
   }
 
-  _getSectionData(data, sectionID) {
+  _getSectionHeader(data, sectionID) {
     // Add nuvarande...
     const header = this.props.tournamentList.sectionHeaders[sectionID];
     return `${header.name} (${header.date.getDuration('D MMM')})`.toUpperCase();
