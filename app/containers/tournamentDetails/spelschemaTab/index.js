@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Section } from '../sectionComponents';
 import BlueText from '../../../components/blueText';
-import fullAnmalningslista from '../anmalningsListaTab/fullAnmalningslista';
+import preliminartSpelschema from './preliminartSpelschema';
 
 class SpelschemaTab extends Component {
   render() {
@@ -17,7 +17,7 @@ class SpelschemaTab extends Component {
           <BlueText
             onPress={() =>
               this.props.navigator.push({
-                component: fullAnmalningslista,
+                component: preliminartSpelschema,
                 title: 'preliminärt spelschema',
               })
             }

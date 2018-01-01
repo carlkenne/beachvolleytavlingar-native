@@ -1,41 +1,39 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ListView } from 'react-native';
 import styled from 'styled-components/native';
-import { renderSeparator } from '../../../components/listComponents';
+import { Text } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import Loading from '../../../components/loading';
 import AnmalningslistaRow from '../anmalningsListaTab/anmalningslistaRow';
-
-const SectionHeader = styled.Text`
-  padding-left: 10;
-  padding-top: 30;
-  padding-bottom: 8;
-  background-color: transparent;
-`;
+import { ListView } from '../../../components/listView';
+import { fetchAnmalningslista } from '../anmalningsListaTab/epic';
 
 const Container = styled.View`
   flex: 1;
 `;
 
 class PreliminartSpelschema extends Component {
-  _getVisibleTournaments() {
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1.value !== row2.value,
-      sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-      getSectionHeaderData: () => '',
-      enableEmptySections: true,
-    });
-
-    return dataSource.cloneWithRowsAndSections({ all: this.props.teams });
+  componentDidMount() {
+    this.props.actions.fetchAnmalningslista();
   }
 
   render() {
+    if (this.props.loading) {
+      return <Loading />;
+    }
+    if(!this.props.classes) return null;
+    const data = this.props.classes.reduce((prev, c) => {
+      prev[c.name] = c.teams
+      return prev;
+    }, {})
+
     return (
       <Container>
         <ListView
-          dataSource={this._getVisibleTournaments()}
+          data={data}
           renderRow={team => <AnmalningslistaRow team={team} />}
-          renderSectionHeader={sectionHeader => <SectionHeader>{sectionHeader}</SectionHeader>}
-          renderSeparator={renderSeparator}
+          getSectionHeader={(array, sectionId) => sectionId}
         />
       </Container>
     );
@@ -43,7 +41,18 @@ class PreliminartSpelschema extends Component {
 }
 
 PreliminartSpelschema.propTypes = {
-  teams: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  classes: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  loading: PropTypes.bool,
+  actions: PropTypes.shape({
+    fetchAnmalningslista: PropTypes.func.isRequired
+  }).isRequired
 };
 
-export default PreliminartSpelschema;
+export default connect(
+  state => ({
+    ...state.anmalningslista,
+  }),
+  dispatch => ({
+    actions: bindActionCreators({ fetchAnmalningslista }, dispatch),
+  }),
+)(PreliminartSpelschema);

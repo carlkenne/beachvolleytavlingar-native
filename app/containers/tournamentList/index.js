@@ -1,26 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ListView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components/native';
 import TournamentListRow from './TournamentListRow';
 import TournamentDetails from '../tournamentDetails';
 import * as actions from './actions';
-import { renderSeparator } from '../../components/listComponents';
-
-const SectionHeader = styled.Text`
-  padding-left: 10;
-  padding-top: 30;
-  padding-bottom: 8;
-  background-color: transparent;
-`;
+import { ListView } from '../../components/listView';
 
 const Container = styled.ImageBackground`
   flex: 1;
 `;
 
 class TournamentList extends Component {
+  constructor(args) {
+      super(args);
+      this._getSectionHeader = this._getSectionHeader.bind(this);
+  }
+
   componentDidMount() {
     this.props.actions.getTournamentList();
   }
@@ -34,13 +31,7 @@ class TournamentList extends Component {
       }
     }
 
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
-      sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-      getSectionHeaderData: this._getSectionHeader.bind(this),
-    });
-
-    return dataSource.cloneWithRowsAndSections(tournaments);
+    return tournaments
   }
 
   _getSectionHeader(data, sectionID) {
@@ -56,7 +47,7 @@ class TournamentList extends Component {
         style={{ width: null, height: null }}
       >
         <ListView
-          dataSource={this._getVisibleTournaments()}
+          data={this._getVisibleTournaments()}
           renderRow={tournamentInfo => (
             <TournamentListRow
               tournamentInfo={tournamentInfo}
@@ -69,8 +60,7 @@ class TournamentList extends Component {
               }}
             />
           )}
-          renderSectionHeader={sectionHeader => <SectionHeader>{sectionHeader}</SectionHeader>}
-          renderSeparator={renderSeparator}
+          getSectionHeader={this._getSectionHeader}
         />
       </Container>
     );
