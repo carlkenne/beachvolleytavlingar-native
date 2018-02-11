@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Text } from 'react-native';
-import { ListRowStacked } from '../../../components/listComponents';
+import React from 'react'
+import { Text } from 'react-native'
+import { ListRowStacked } from '../../../components/listComponents'
+import { teamShape } from '../propTypes'
 
 const AnmalningslistaRow = ({ team }) => (
   <ListRowStacked key={team.name}>
@@ -10,15 +10,10 @@ const AnmalningslistaRow = ({ team }) => (
       {team.rank} {team.points} {team.club}
     </Text>
   </ListRowStacked>
-);
+)
 
 AnmalningslistaRow.propTypes = {
-  team: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    rank: PropTypes.string.isRequired,
-    points: PropTypes.string.isRequired,
-    club: PropTypes.string.isRequired,
-  }).isRequired,
-};
+  team: teamShape.isRequired,
+}
 
-export default AnmalningslistaRow;
+export default AnmalningslistaRow

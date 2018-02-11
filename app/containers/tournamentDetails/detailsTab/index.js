@@ -1,32 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Text, View } from 'react-native';
-import * as S from '../sectionComponents';
-import OutlineButton from '../../../components/outlineButton';
-import Hyperlink from '../../../components/hyperlink';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Text, View } from 'react-native'
+import * as S from '../sectionComponents'
+import OutlineButton from '../../../components/outlineButton'
+import Hyperlink from '../../../components/hyperlink'
+import { tournamentDetailsShape } from '../propTypes'
 
-const hasAnyNoOfPaticipants = details => details.noOfHerr || details.noOfDam;
+const hasAnyNoOfPaticipants = details => details.noOfHerr || details.noOfDam
 
 const renderNoOfParticipants = details =>
   hasAnyNoOfPaticipants(details) && (
     <S.Row>
-      <S.Label>Klasser</S.Label>
+      <S.Label>klasser</S.Label>
       <S.Content>
-        {details.noOfDam && (
-          <Text>
-            Dam: {details.noOfDam}
-            {details.priceDam && `, ${details.priceDam} :-`}
-          </Text>
-        )}
-        {details.noOfHerr && (
-          <Text>
-            Herr: {details.noOfHerr}
-            {details.priceHerr && `, ${details.priceHerr} :-`}
-          </Text>
-        )}
+        {details.noOfDam && <Text>dam: {details.noOfDam} lag</Text>}
+        {details.noOfHerr && <Text>herr: {details.noOfHerr} lag</Text>}
       </S.Content>
     </S.Row>
-  );
+  )
+
+const hasPrice = details => details.priceDam || details.priceHerr
+
+const renderPrice = details =>
+  hasPrice(details) && (
+    <S.Row>
+      <S.Label>pris</S.Label>
+      <S.Content>
+        <Text>{details.priceDam || details.priceHerr} kr/lag</Text>
+      </S.Content>
+    </S.Row>
+  )
 
 const DetailsTab = ({ loaded, details }) =>
   loaded && (
@@ -36,14 +39,18 @@ const DetailsTab = ({ loaded, details }) =>
         <S.Row>
           <S.Label>tider</S.Label>
           <S.Content>
-            <Text>{details.date.getDuration('ddd, D MMM hh:mm')}</Text>
+            <Text>{details.date.getDetailedDuration()}</Text>
           </S.Content>
         </S.Row>
         {renderNoOfParticipants(details)}
+        {renderPrice(details)}
         <S.Row>
           <S.Label>address</S.Label>
           <S.Content>
-            <Hyperlink link="https://maps.google.com">här, här och här... se karta {'>'}</Hyperlink>
+            <Hyperlink link={details.location.url}>
+              {details.location.text}
+              {' (se karta >)'}
+            </Hyperlink>
           </S.Content>
         </S.Row>
         <S.Row>
@@ -54,8 +61,16 @@ const DetailsTab = ({ loaded, details }) =>
             {details.contacts.map(contact => (
               <S.Content key={contact.id}>
                 <Text>{contact.name}</Text>
-                <Hyperlink link={`mailto:${contact.email}`}>{contact.email}</Hyperlink>
-                <Hyperlink link={`tel:${contact.phone}`}>{contact.phone}</Hyperlink>
+                {contact.email && (
+                  <Hyperlink link={`mailto:${contact.email}`}>
+                    {contact.email}
+                  </Hyperlink>
+                )}
+                {contact.phone && (
+                  <Hyperlink link={`tel:${contact.phone}`}>
+                    {contact.phone}
+                  </Hyperlink>
+                )}
                 <S.ExtraSpace />
               </S.Content>
             ))}
@@ -64,9 +79,11 @@ const DetailsTab = ({ loaded, details }) =>
         <S.Row>
           <S.Label>anmälan</S.Label>
           <S.Content>
-            <Text>Senast {details.deadline.getDuration('ddd, D MMM hh:mm')}</Text>
+            <Text>Senast {details.deadline.getDetailedDuration()}</Text>
             <S.MarginTop>
-              <OutlineButton onPress={() => {}}>till anmälan</OutlineButton>
+              <OutlineButton onPress={() => {}}>
+                <Hyperlink link="http://google.com">till anmälan</Hyperlink>
+              </OutlineButton>
             </S.MarginTop>
           </S.Content>
         </S.Row>
@@ -86,13 +103,11 @@ const DetailsTab = ({ loaded, details }) =>
         <OutlineButton onPress={() => {}}>Öppna sidan i safari..</OutlineButton>
       </S.Section>
     </View>
-  );
+  )
 
 DetailsTab.propTypes = {
-  details: PropTypes.shape({
-    date: PropTypes.shape(),
-  }),
+  details: tournamentDetailsShape,
   loaded: PropTypes.bool,
-};
+}
 
-export default DetailsTab;
+export default DetailsTab

@@ -1,46 +1,63 @@
-import { ajax } from 'rxjs/observable/dom/ajax';
-import 'rxjs/add/observable/of';
-import { Observable } from 'rxjs';
-import parse from './parseHtml';
-import mockedData from './mocks/vis_innbydelse_php';
-import { getAnmalningslistaUrl } from '../../../utils/config';
-import DEV_MODE from '../../../utils/devmode';
+import { ajax } from 'rxjs/observable/dom/ajax'
+import 'rxjs/add/observable/of'
+import { Observable } from 'rxjs'
+import parse from './parseHtml'
+import mockedData from './mocks/vis_innbydelse_php'
+import { getAnmalningslistaUrl } from '../../../utils/config'
+import DEV_MODE from '../../../utils/devmode'
 
-export const GET_ANMALNINGSLISTA_SUCCESS = 'GET_ANMALNINGSLISTA_SUCCESS';
-export const GET_ANMALNINGSLISTA_FAILED = 'GET_ANMALNINGSLISTA_FAILED';
-export const GET_ANMALNINGSLISTA = 'GET_ANMALNINGSLISTA';
+export const GET_ANMALNINGSLISTA_SUCCESS = 'GET_ANMALNINGSLISTA_SUCCESS'
+export const GET_ANMALNINGSLISTA_FAILED = 'GET_ANMALNINGSLISTA_FAILED'
+export const GET_ANMALNINGSLISTA = 'GET_ANMALNINGSLISTA'
 
-export const fetchAnmalningslista = id => ({
+export const fetchAnmalningslista = tournamentDetails => ({
   type: GET_ANMALNINGSLISTA,
-  id,
-});
+  tournamentDetails,
+})
 
 const dispatchLoaded = payload => ({
   type: GET_ANMALNINGSLISTA_SUCCESS,
   payload,
-});
+})
 
-const getData = id =>
-  (DEV_MODE
+const getData = (id, cookie) =>
+  DEV_MODE
     ? Observable.of({ response: mockedData })
     : ajax({
-      url: getAnmalningslistaUrl(id),
-      responseType: 'text',
-    }));
+        url: getAnmalningslistaUrl(),
+        responseType: 'text',
+        headers: {
+          Cookie: cookie.replace('path=/,', '').replace('path=/', ''),
+        },
+      })
 
-const fetchTournamentListEpic = action$ =>
+const setServerSideCookie = link =>
+  DEV_MODE
+    ? Observable.of({ response: mockedData })
+    : ajax({
+        url: link,
+        responseType: 'text',
+      })
+
+const fetchAnmalningsListaEpic = action$ =>
   action$
     .filter(action => action.type === GET_ANMALNINGSLISTA)
     .debug('get anmalningslista')
     .mergeMap(action =>
-      getData(action.id)
-        .map(parse)
-        .map(dispatchLoaded)
-        .catch(error =>
-          Observable.of({
-            type: GET_ANMALNINGSLISTA_FAILED,
-            payload: error,
-            error: true,
-          })));
+      setServerSideCookie(action.tournamentDetails.registrationLink)
+        .debug('response')
+        .mergeMap(resp =>
+          getData(action.id, resp.xhr.responseHeaders['Set-Cookie'])
+            .map(parse)
+            .map(dispatchLoaded)
+            .catch(error =>
+              Observable.of({
+                type: GET_ANMALNINGSLISTA_FAILED,
+                payload: error,
+                error: true,
+              }),
+            ),
+        ),
+    )
 
-export default fetchTournamentListEpic;
+export default fetchAnmalningsListaEpic

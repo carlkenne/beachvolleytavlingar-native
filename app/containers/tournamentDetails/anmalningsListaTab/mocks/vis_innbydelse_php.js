@@ -7,7 +7,7 @@ const response = {
           name: 'Stina Persson / Matilda Gustavsson 1',
           club: 'GBC',
           points: '(1030p = 550p + 480p)',
-          rank: '2',
+          rank: '1',
         },
         {
           name: 'Stina Persson / Matilda Gustavsson 2',
@@ -86,9 +86,33 @@ const response = {
           points: '(1030p = 550p + 480p)',
           rank: '7',
         },
+        {
+          name: 'Carl Kenne / Matilda Gustavsson 8',
+          club: 'GBC',
+          points: '(1030p = 550p + 480p)',
+          rank: '8',
+        },
+        {
+          name: 'Carl Kenne / Matilda Gustavsson 9',
+          club: 'GBC',
+          points: '(1030p = 550p + 480p)',
+          rank: '9',
+        },
+        {
+          name: 'Carl Kenne / Matilda Gustavsson 10',
+          club: 'GBC',
+          points: '(1030p = 550p + 480p)',
+          rank: '10',
+        },
+        {
+          name: 'Carl Kenne / Matilda Gustavsson 11',
+          club: 'GBC',
+          points: '(1030p = 550p + 480p)',
+          rank: '11',
+        },
       ],
     },
   ],
-};
+}
 
-export default response;
+export default response

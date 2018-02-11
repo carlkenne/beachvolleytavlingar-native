@@ -1,6 +1,7 @@
 import { DOMParser } from 'react-native-html-parser'
 import { _ } from 'lodash'
 import { parseDate } from '../../utils/date'
+import { getLocation } from './locations'
 
 export const get = (array, key, pos = 0, format = f => f) => {
   const result = _.find(array, obj => obj.key.startsWith(key))
@@ -22,7 +23,17 @@ const getContact = (parsed, pos) => {
   return contact.name ? [contact] : []
 }
 
+const extractOnClickLink = doc => {
+  const link = _.flatMap(
+    doc
+      .querySelect('input[onClick]')
+      .map(tag => Array.from(tag.attributes).map(attr => attr.value || '')),
+  ).find(attr => attr.includes('window.open("../pamelding/redirect.php'))
+  return link.replace('window.open("..', '').replace('", "_blank")', '')
+}
+
 const parseHTML = data => {
+  console.log('data.response: ', data.response)
   const doc = new DOMParser({
     locator: {},
     errorHandler: {
@@ -45,13 +56,15 @@ const parseHTML = data => {
   }))
   console.log('parsed: ', parsed)
 
+  const club = get(parsed, 'Arrangör')
+
   const tournamentDetails = {
     arena: get(parsed, 'Spelplats/hall'),
     resultatLink: get(parsed, 'Spelschema och resultat'),
     registrationLink: get(parsed, 'Anmälan'),
     link: 'to me',
     table: 'table',
-    setServerSessionCookieUrl: '',
+    setServerSessionCookieUrl: extractOnClickLink(doc),
     date: parseDate(
       get(parsed, 'Från:') + ' ' + get(parsed, 'kl:').replace('.', ':'),
       get(parsed, 'Till:') + ' ' + get(parsed, 'ca kl:').replace('.', ':'),
@@ -61,9 +74,10 @@ const parseHTML = data => {
     deadline: parseDate(get(parsed, 'Sista anmäliningsdag')),
     noOfDam: get(parsed, 'Dam'),
     noOfHerr: get(parsed, 'Herr'),
-    priceDam: get(parsed, 'Dam', 2, value => value.remove('.00')),
-    priceHerr: get(parsed, 'Herr', 2, value => value.remove('.00')),
+    priceDam: get(parsed, 'Dam', 2, value => value.replace('.00', '')),
+    priceHerr: get(parsed, 'Herr', 2, value => value.replace('.00', '')),
     contacts: [...getContact(parsed, 0), ...getContact(parsed, 1)],
+    location: getLocation(club),
   }
 
   console.log('tournamentDetails: ', tournamentDetails)

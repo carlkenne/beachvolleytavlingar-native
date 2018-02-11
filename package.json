@@ -7,8 +7,11 @@
     "test": "jest",
     "lint": "eslint app",
     "inspector": "react-devtools",
-    "run-ios": "react-native run-ios",
-    "prettier": "prettier --trailing-comma es5 --write '{app,__{tests,mocks}__}/**/*.js'"
+    "start:ios": "react-native run-ios",
+    "start:ios-clean":
+      "rm -rf ios/build/; kill $(lsof -t -i:8081); react-native run-ios",
+    "prettier":
+      "prettier --trailing-comma es5 --write '{app,__{tests,mocks}__}/**/*.js'"
   },
   "dependencies": {
     "apsl-react-native-button": "^3.1.0",
