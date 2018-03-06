@@ -4,10 +4,11 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Separator from '../../../components/separator'
 import Loading from '../../../components/loading'
-import KortAnmalningslista from './kortAnmalningslista'
+import KortAnmalningslista from '../kortLista'
 import { fetchAnmalningslista } from './epic'
 import fullAnmalningslista from './fullAnmalningslista'
 import { tournamentDetailsShape, teamShape } from '../propTypes'
+import AnmalningslistaRow from './anmalningslistaRow'
 
 class AnmalningslistaTab extends Component {
   constructor(args) {
@@ -24,8 +25,8 @@ class AnmalningslistaTab extends Component {
       component: fullAnmalningslista,
       title: header,
       passProps: {
-        teams: this.props.classes.find(c => c.name === header).teams,
-      },
+        teams: this.props.classes.find(c => c.name === header).teams
+      }
     })
   }
 
@@ -38,8 +39,9 @@ class AnmalningslistaTab extends Component {
       <KortAnmalningslista
         key={c.name}
         header={c.name}
-        teams={c.teams}
+        rows={c.teams}
         seAll={this.seAll}
+        rowComponent={AnmalningslistaRow}
       />
     ))
     return (
@@ -55,20 +57,20 @@ AnmalningslistaTab.propTypes = {
   classes: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      teams: PropTypes.arrayOf(teamShape).isRequired,
-    }),
+      teams: PropTypes.arrayOf(teamShape).isRequired
+    })
   ).isRequired,
   loading: PropTypes.bool.isRequired,
   navigator: PropTypes.shape().isRequired,
-  tournamentDetails: tournamentDetailsShape.isRequired,
-  fetchAnmalningslista: PropTypes.func.isRequired,
+  tournamentDetails: tournamentDetailsShape.isRequired, //eslint-disable-line react/no-typos
+  fetchAnmalningslista: PropTypes.func.isRequired
 }
 
 export default connect(
   state => ({
-    ...state.anmalningslista,
+    ...state.anmalningslista
   }),
   {
-    fetchAnmalningslista,
-  },
+    fetchAnmalningslista
+  }
 )(AnmalningslistaTab)

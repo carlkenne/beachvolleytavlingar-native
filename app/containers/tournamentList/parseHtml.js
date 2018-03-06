@@ -1,6 +1,6 @@
-import { DOMParser } from 'react-native-html-parser'
 import { _ } from 'lodash'
 import { parseDate } from '../../utils/date'
+import { getDomParser } from '../../utils/parser'
 
 const getSectionHeaders = year => {
   if (year === '2017') {
@@ -8,83 +8,83 @@ const getSectionHeaders = year => {
       tp01: {
         name: 'TP 01',
         number: 1,
-        date: parseDate('1 jan 2017', '2 april 2017'),
+        date: parseDate('1 jan 2017', '2 april 2017')
       },
       tp02: {
         name: 'TP 02',
         number: 2,
-        date: parseDate('3 april 2017', '21 may 2017'),
+        date: parseDate('3 april 2017', '21 may 2017')
       },
       tp03: {
         name: 'TP 03',
         number: 3,
-        date: parseDate('22 may 2017', '4 jun 2017'),
+        date: parseDate('22 may 2017', '4 jun 2017')
       },
       tp04: {
         name: 'TP 04',
         number: 4,
-        date: parseDate('5 jun 2017', '11 jun 2017'),
+        date: parseDate('5 jun 2017', '11 jun 2017')
       },
       tp05: {
         name: 'TP 05',
         number: 5,
-        date: parseDate('12 jun 2017', '25 jun 2017'),
+        date: parseDate('12 jun 2017', '25 jun 2017')
       },
       tp06: {
         name: 'TP 06',
         number: 6,
-        date: parseDate('26 jun 2017', '2 jul 2017'),
+        date: parseDate('26 jun 2017', '2 jul 2017')
       },
       tp07: {
         name: 'TP 07',
         number: 7,
-        date: parseDate('3 jul 2017', '9 jul 2017'),
+        date: parseDate('3 jul 2017', '9 jul 2017')
       },
       tp08: {
         name: 'TP 08',
         number: 8,
-        date: parseDate('10 jul 2017', '16 jul 2017'),
+        date: parseDate('10 jul 2017', '16 jul 2017')
       },
       tp09: {
         name: 'TP 09',
         number: 9,
-        date: parseDate('17 jul 2017', '23 jul 2017'),
+        date: parseDate('17 jul 2017', '23 jul 2017')
       },
       tp10: {
         name: 'TP 10',
         number: 10,
-        date: parseDate('24 jul 2017', '30 jul 2017'),
+        date: parseDate('24 jul 2017', '30 jul 2017')
       },
       tp11: {
         name: 'TP 11',
         number: 11,
-        date: parseDate('31 jul 2017', '6 aug 2017'),
+        date: parseDate('31 jul 2017', '6 aug 2017')
       },
       tp12: {
         name: 'TP 12',
         number: 12,
-        date: parseDate('7 aug 2017', '13 aug 2017'),
+        date: parseDate('7 aug 2017', '13 aug 2017')
       },
       tp13: {
         name: 'TP 13',
         number: 13,
-        date: parseDate('14 aug 2017', '20 aug 2017'),
+        date: parseDate('14 aug 2017', '20 aug 2017')
       },
       tp14: {
         name: 'TP 14',
         number: 14,
-        date: parseDate('21 aug 2017', '3 sep 2017'),
+        date: parseDate('21 aug 2017', '3 sep 2017')
       },
       tp15: {
         name: 'TP 15',
         number: 15,
-        date: parseDate('4 sep 2017', '15 oct 2017'),
+        date: parseDate('4 sep 2017', '15 oct 2017')
       },
       tp16: {
         name: 'TP 16',
         number: 16,
-        date: parseDate('16 oct 2017', '31 dec 2017'),
-      },
+        date: parseDate('16 oct 2017', '31 dec 2017')
+      }
     }
   }
 }
@@ -207,14 +207,7 @@ const getQualifier = text => {
 }
 
 const parseHTML = data => {
-  const doc = new DOMParser({
-    locator: {},
-    errorHandler: {
-      warning: w => console.log(w), // eslint-disable-line
-      error: e => console.log(e), // eslint-disable-line
-      fatalError: fe => console.log(fe), // eslint-disable-line
-    },
-  }).parseFromString(data.response, 'text/html')
+  const doc = getDomParser(data.response)
 
   const rows = doc
     .querySelect('.maincontent tr')
@@ -230,8 +223,8 @@ const parseHTML = data => {
       id: getId(row.childNodes[8]),
       date: parseDate(
         row.childNodes[0].textContent,
-        row.childNodes[2].textContent,
-      ),
+        row.childNodes[2].textContent
+      )
     }))
 
   console.log(rows[0]) // eslint-disable-line
@@ -241,7 +234,7 @@ const parseHTML = data => {
   return {
     sectionHeaders: getSectionHeaders('2017'),
     tournamentData: groups,
-    types: [...types],
+    types: [...types]
   }
 }
 

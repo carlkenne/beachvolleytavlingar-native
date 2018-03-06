@@ -1,19 +1,21 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Text } from 'react-native'
 import { ListRowStacked } from '../../../components/listComponents'
-import { teamShape } from '../propTypes'
 
 const AnmalningslistaRow = ({ item }) => (
-  <ListRowStacked key={item.name}>
-    <Text>{item.name}</Text>
+  <ListRowStacked>
     <Text>
-      {item.rank}: {item.points}p {item.club}
+      {item.position}: {item.team}
     </Text>
   </ListRowStacked>
 )
 
 AnmalningslistaRow.propTypes = {
-  item: teamShape.isRequired // eslint-disable-line react/no-typos
+  item: PropTypes.shape({
+    position: PropTypes.string.isRequired,
+    team: PropTypes.string.isRequired
+  }).isRequired
 }
 
 export default AnmalningslistaRow

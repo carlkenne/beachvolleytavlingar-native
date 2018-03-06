@@ -1,6 +1,6 @@
-import { DOMParser } from 'react-native-html-parser'
 import { _ } from 'lodash'
 import { parseDate } from '../../utils/date'
+import { getDomParser } from '../../utils/parser'
 import { getLocation } from './locations'
 
 export const get = (array, key, pos = 0, format = f => f) => {
@@ -18,7 +18,7 @@ const getContact = (parsed, pos) => {
     name: get(parsed, 'Namn', pos),
     phone: get(parsed, 'Telefon', pos),
     email: get(parsed, 'Epost', pos),
-    id: pos,
+    id: pos
   }
   return contact.name ? [contact] : []
 }
@@ -27,21 +27,13 @@ const extractOnClickLink = doc => {
   const link = _.flatMap(
     doc
       .querySelect('input[onClick]')
-      .map(tag => Array.from(tag.attributes).map(attr => attr.value || '')),
+      .map(tag => Array.from(tag.attributes).map(attr => attr.value || ''))
   ).find(attr => attr.includes('window.open("../pamelding/redirect.php'))
   return link.replace('window.open("..', '').replace('", "_blank")', '')
 }
 
 const parseHTML = data => {
-  console.log('data.response: ', data.response)
-  const doc = new DOMParser({
-    locator: {},
-    errorHandler: {
-      warning: w => console.log(w), // eslint-disable-line
-      error: e => console.log(e), // eslint-disable-line
-      fatalError: fe => console.log(fe), // eslint-disable-line
-    },
-  }).parseFromString(data.response, 'text/html')
+  const doc = getDomParser(data.response)
 
   const iterateSiblings = el => {
     if (el) {
@@ -52,7 +44,7 @@ const parseHTML = data => {
 
   const parsed = doc.querySelect('td[class="uh"]').map(uhTag => ({
     key: uhTag.textContent.trim(),
-    values: iterateSiblings(uhTag.nextSibling),
+    values: iterateSiblings(uhTag.nextSibling)
   }))
   console.log('parsed: ', parsed)
 
@@ -67,7 +59,7 @@ const parseHTML = data => {
     setServerSessionCookieUrl: extractOnClickLink(doc),
     date: parseDate(
       get(parsed, 'Från:') + ' ' + get(parsed, 'kl:').replace('.', ':'),
-      get(parsed, 'Till:') + ' ' + get(parsed, 'ca kl:').replace('.', ':'),
+      get(parsed, 'Till:') + ' ' + get(parsed, 'ca kl:').replace('.', ':')
     ),
     paymentInfo: get(parsed, 'Inbetalningsinfo'),
     info: get(parsed, 'Övrig info'),
@@ -77,7 +69,7 @@ const parseHTML = data => {
     priceDam: get(parsed, 'Dam', 2, value => value.replace('.00', '')),
     priceHerr: get(parsed, 'Herr', 2, value => value.replace('.00', '')),
     contacts: [...getContact(parsed, 0), ...getContact(parsed, 1)],
-    location: getLocation(club),
+    location: getLocation(club)
   }
 
   console.log('tournamentDetails: ', tournamentDetails)

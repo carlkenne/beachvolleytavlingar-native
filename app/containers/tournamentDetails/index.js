@@ -35,7 +35,7 @@ class TournamentDetails extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedIndex: 0,
+      selectedIndex: 0
     }
     this.scrollTo = this.scrollTo.bind(this)
   }
@@ -73,7 +73,7 @@ class TournamentDetails extends Component {
               selectedIndex={this.state.selectedIndex}
               onChange={event => {
                 this.setState({
-                  selectedIndex: event.nativeEvent.selectedSegmentIndex,
+                  selectedIndex: event.nativeEvent.selectedSegmentIndex
                 })
               }}
             />
@@ -87,14 +87,13 @@ class TournamentDetails extends Component {
           <AnmalningslistaTab
             tournamentDetails={this.props.tournamentDetails.details}
             navigator={this.props.navigator}
-            tournamentInfo={this.props.tournamentInfo}
             scrollTo={this.scrollTo}
           />
         )}
         {this.state.selectedIndex === 2 && (
           <SpelschemaTab
+            tournamentDetails={this.props.tournamentDetails.details}
             navigator={this.props.navigator}
-            tournamentInfo={this.props.tournamentInfo}
           />
         )}
       </ScrollView>
@@ -107,19 +106,19 @@ TournamentDetails.propTypes = {
   tournamentDetails: PropTypes.shape({
     details: tournamentDetailsShape, // eslint-disable-line
     loding: PropTypes.bool,
-    loaded: PropTypes.bool,
+    loaded: PropTypes.bool
   }).isRequired,
   actions: PropTypes.shape({
-    getTournamentDetails: PropTypes.func.isRequired,
+    getTournamentDetails: PropTypes.func.isRequired
   }).isRequired,
-  navigator: PropTypes.shape().isRequired,
+  navigator: PropTypes.shape().isRequired
 }
 
 export default connect(
   state => ({
-    tournamentDetails: state.tournamentDetails,
+    tournamentDetails: state.tournamentDetails
   }),
   dispatch => ({
-    actions: bindActionCreators({ getTournamentDetails }, dispatch),
-  }),
+    actions: bindActionCreators({ getTournamentDetails }, dispatch)
+  })
 )(TournamentDetails)

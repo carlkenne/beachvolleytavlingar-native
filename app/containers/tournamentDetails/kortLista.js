@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components/native'
-import * as Section from '../sectionComponents'
-import BlueText from '../../../components/blueText'
-import { PreviewList } from '../../../components/listComponents'
-import AnmalningslistaRow from './anmalningslistaRow'
-import { teamShape } from '../propTypes'
+import * as Section from './sectionComponents'
+import BlueText from '../../components/blueText'
+import { PreviewList } from '../../components/listComponents'
 
 const Link = styled(BlueText)`
   flex: 1;
@@ -30,9 +28,9 @@ class KortAnmalningslista extends Component {
           </Link>
         </Section.Row>
         <PreviewList>
-          {this.props.teams
-            .slice(0, 3)
-            .map(team => <AnmalningslistaRow key={team.name} team={team} />)}
+          {this.props.rows
+            .slice(0, this.props.rowCount)
+            .map(row => <this.props.rowComponent key={row.id} item={row} />)}
         </PreviewList>
       </Section.Section>
     )
@@ -40,9 +38,16 @@ class KortAnmalningslista extends Component {
 }
 
 KortAnmalningslista.propTypes = {
-  teams: PropTypes.arrayOf(teamShape).isRequired,
+  rows: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string.isRequired }))
+    .isRequired,
   header: PropTypes.string.isRequired,
   seAll: PropTypes.func.isRequired,
+  rowComponent: PropTypes.func.isRequired,
+  rowCount: PropTypes.number
+}
+
+KortAnmalningslista.defaultProps = {
+  rowCount: 3
 }
 
 export default KortAnmalningslista

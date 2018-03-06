@@ -12,31 +12,31 @@ export const GET_ANMALNINGSLISTA = 'GET_ANMALNINGSLISTA'
 
 export const fetchAnmalningslista = tournamentDetails => ({
   type: GET_ANMALNINGSLISTA,
-  tournamentDetails,
+  tournamentDetails
 })
 
 const dispatchLoaded = payload => ({
   type: GET_ANMALNINGSLISTA_SUCCESS,
-  payload,
+  payload
 })
 
-const getData = (id, cookie) =>
+const getData = cookie =>
   DEV_MODE
     ? Observable.of({ response: mockedData })
     : ajax({
         url: getAnmalningslistaUrl(),
         responseType: 'text',
         headers: {
-          Cookie: cookie.replace('path=/,', '').replace('path=/', ''),
-        },
+          Cookie: cookie.replace('path=/,', '').replace('path=/', '')
+        }
       })
 
 const setServerSideCookie = link =>
   DEV_MODE
-    ? Observable.of({ response: mockedData })
+    ? Observable.of({ xhr: { responseHeaders: { 'Set-Cookie': 'cookie' } } })
     : ajax({
         url: link,
-        responseType: 'text',
+        responseType: 'text'
       })
 
 const fetchAnmalningsListaEpic = action$ =>
@@ -47,17 +47,18 @@ const fetchAnmalningsListaEpic = action$ =>
       setServerSideCookie(action.tournamentDetails.registrationLink)
         .debug('response')
         .mergeMap(resp =>
-          getData(action.id, resp.xhr.responseHeaders['Set-Cookie'])
+          getData(resp.xhr.responseHeaders['Set-Cookie'])
             .map(parse)
             .map(dispatchLoaded)
-            .catch(error =>
-              Observable.of({
+            .catch(error => {
+              console.log('error: ', error)
+              return Observable.of({
                 type: GET_ANMALNINGSLISTA_FAILED,
                 payload: error,
-                error: true,
-              }),
-            ),
-        ),
+                error: true
+              })
+            })
+        )
     )
 
 export default fetchAnmalningsListaEpic
