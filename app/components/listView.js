@@ -32,7 +32,7 @@ export class ListView extends Component {
     const dataSource = new RNListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
       sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-      getSectionHeaderData: this.props.getSectionHeader || (() => ''),
+      getSectionHeaderData: this.props.getSectionHeader || (() => '')
     })
 
     return dataSource.cloneWithRowsAndSections(this.props.data)
@@ -44,7 +44,9 @@ export class ListView extends Component {
     return (
       <RNListView
         dataSource={this.getDataSource()}
-        renderRow={this.props.renderRow}
+        renderRow={(data, header, index) =>
+          this.props.renderRow(data, index % 2 === 0)
+        }
         renderSectionHeader={this.props.renderSectionHeader || header}
         renderSeparator={renderSeparator}
       />
@@ -56,5 +58,5 @@ ListView.propTypes = {
   renderRow: PropTypes.func.isRequired,
   renderSectionHeader: PropTypes.func,
   getSectionHeader: PropTypes.func,
-  data: PropTypes.shape().isRequired,
+  data: PropTypes.shape().isRequired
 }

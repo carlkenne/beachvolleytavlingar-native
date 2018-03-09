@@ -1,5 +1,5 @@
-import * as consts from './epic';
+import * as consts from './epic'
 
-export const getTournamentList = () => ({
-  type: consts.GET_TOURNAMENTLIST,
-});
+export const fetchTournamentList = () => ({
+  type: consts.FETCH_TOURNAMENTLIST
+})

@@ -9,7 +9,7 @@ const initialState = {
 
 export default function (state = initialState, action = {}) {
   switch (action.type) {
-    case consts.GET_TOURNAMENTLIST_SUCCESS: {
+    case consts.FETCH_TOURNAMENTLIST_SUCCESS: {
       let _state = cloneObject(state);
       _state = {
         ..._state,
@@ -19,7 +19,7 @@ export default function (state = initialState, action = {}) {
       };
       return _state;
     }
-    case consts.GET_TOURNAMENTLIST_FAILED: {
+    case consts.FETCH_TOURNAMENTLIST_FAILED: {
       let __state = cloneObject(state);
       __state = {
         ...state,

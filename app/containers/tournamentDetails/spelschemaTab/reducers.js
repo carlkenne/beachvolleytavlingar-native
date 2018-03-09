@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   loading: false,
-  results: []
+  results: undefined
 }
 
 export default function(state = initialState, action = {}) {

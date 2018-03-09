@@ -2,7 +2,7 @@ import { _ } from 'lodash'
 import { getNameForClass } from '../../../utils/classTypes'
 import { getHrefByTitle, getDomParser } from '../../../utils/parser'
 
-const getClassType = (links, data) => {
+const getClass = (links, data) => {
   if (data.request.url.includes(links.herrarLink)) {
     return getNameForClass('H')
   }
@@ -18,6 +18,15 @@ export const parseKlassLinks = data => {
   const damerLink = getHrefByTitle(doc, 'Damer')
   const herrarLink = getHrefByTitle(doc, 'Herrar')
   return { herrarLink, damerLink }
+}
+
+const getTeam = teamName => {
+  // sometimes teamnames are duplicated
+  const halfTeam = teamName.substring(teamName.length / 2)
+  if (teamName === `${halfTeam}${halfTeam}`) {
+    return halfTeam
+  }
+  return teamName
 }
 
 const parse = (links, data) => {
@@ -40,12 +49,12 @@ const parse = (links, data) => {
     .map(row => row.querySelect('td'))
     .map((tds, index) => ({
       position: tds[0].textContent,
-      team: tds[1].textContent,
+      team: getTeam(tds[1].textContent),
       id: index.toString()
     }))
 
   return {
-    classType: getClassType(links, data),
+    class: getClass(links, data),
     teams,
     top4Teams: _.take(teams, 4)
   }

@@ -3,7 +3,7 @@ import { parseDate } from '../../utils/date'
 import { getDomParser } from '../../utils/parser'
 import { getLocation } from './locations'
 
-export const get = (array, key, pos = 0, format = f => f) => {
+export const getExtended = (array, key, pos = 0, format = f => f) => {
   const result = _.find(array, obj => obj.key.startsWith(key))
   return result &&
     result.values &&
@@ -13,15 +13,52 @@ export const get = (array, key, pos = 0, format = f => f) => {
     : undefined
 }
 
+export const get = (array, key, _default = undefined) => {
+  const result = getExtended(array, key)
+  return result || _default
+}
+
 const getContact = (parsed, pos) => {
   const contact = {
-    name: get(parsed, 'Namn', pos),
-    phone: get(parsed, 'Telefon', pos),
-    email: get(parsed, 'Epost', pos),
+    name: getExtended(parsed, 'Namn', pos),
+    phone: getExtended(parsed, 'Telefon', pos),
+    email: getExtended(parsed, 'Epost', pos),
     id: pos
   }
   return contact.name ? [contact] : []
 }
+
+const getContacts = parsed => {
+  const c1 = getContact(parsed, 0)
+  const c2 = getContact(parsed, 1)
+  return [...c1, ...c2]
+}
+
+const getClass = (parsed, className) => {
+  const amount = get(parsed, className)
+  return amount
+    ? [
+        {
+          className,
+          amount,
+          price: getExtended(parsed, className, 2, value =>
+            value.replace('.00', '')
+          )
+        }
+      ]
+    : []
+}
+
+const getClasses = parsed => [
+  ...getClass(parsed, 'Dam'),
+  ...getClass(parsed, 'Herr'),
+  ...getClass(parsed, 'V35+ D'),
+  ...getClass(parsed, 'V35+ H'),
+  ...getClass(parsed, 'V40+ D'),
+  ...getClass(parsed, 'V40+ H'),
+  ...getClass(parsed, 'V45+ D'),
+  ...getClass(parsed, 'V45+ H')
+]
 
 const extractOnClickLink = doc => {
   const link = _.flatMap(
@@ -49,7 +86,7 @@ const parseHTML = data => {
   console.log('parsed: ', parsed)
 
   const club = get(parsed, 'Arrangör')
-
+  const classes = getClasses(parsed)
   const tournamentDetails = {
     arena: get(parsed, 'Spelplats/hall'),
     resultatLink: get(parsed, 'Spelschema och resultat'),
@@ -62,13 +99,10 @@ const parseHTML = data => {
       get(parsed, 'Till:') + ' ' + get(parsed, 'ca kl:').replace('.', ':')
     ),
     paymentInfo: get(parsed, 'Inbetalningsinfo'),
-    info: get(parsed, 'Övrig info'),
+    info: get(parsed, 'Övrig info', ''),
     deadline: parseDate(get(parsed, 'Sista anmäliningsdag')),
-    noOfDam: get(parsed, 'Dam'),
-    noOfHerr: get(parsed, 'Herr'),
-    priceDam: get(parsed, 'Dam', 2, value => value.replace('.00', '')),
-    priceHerr: get(parsed, 'Herr', 2, value => value.replace('.00', '')),
-    contacts: [...getContact(parsed, 0), ...getContact(parsed, 1)],
+    classes,
+    contacts: getContacts(parsed),
     location: getLocation(club)
   }
 

@@ -206,6 +206,41 @@ const getQualifier = text => {
   return ''
 }
 
+const getActive = node => node.getElementsByTagName('a').length > 0
+const getType = node => {
+  const rawType = node.childNodes[10].textContent.trim()
+  if (rawType) {
+    return rawType
+  }
+  const name = node.childNodes[8].textContent
+  if (name.toLowerCase().includes('mix')) {
+    return 'Mixed'
+  }
+  if (name.toLowerCase().includes('grön')) {
+    return 'Open Grön'
+  }
+  if (
+    name.toLowerCase().includes('svart') ||
+    name.toLowerCase().includes('open')
+  ) {
+    return 'Open Svart'
+  }
+  if (name.toLowerCase().includes('challenger')) {
+    return 'Challenger'
+  }
+  if (
+    name.toLowerCase().includes('ungdom') ||
+    name.toLowerCase().includes('minior')
+  ) {
+    return 'Ungdomstävling'
+  }
+  if (name.toLowerCase().includes('veteran')) {
+    return 'Veterantävling'
+  }
+  console.log('could not identify ', name)
+  return 'Open Svart'
+}
+
 const parseHTML = data => {
   const doc = getDomParser(data.response)
 
@@ -218,16 +253,21 @@ const parseHTML = data => {
       qualifier: getQualifier(row.childNodes[8].textContent),
       name: parseTournamentName(row.childNodes[8].textContent),
       originalName: row.childNodes[8].textContent,
-      type: row.childNodes[10].textContent.trim(),
+      type: getType(row),
       class: parseClass(row.childNodes[12].textContent),
       id: getId(row.childNodes[8]),
       date: parseDate(
         row.childNodes[0].textContent,
         row.childNodes[2].textContent
-      )
+      ),
+      active: getActive(row.childNodes[8])
     }))
-
-  console.log(rows[0]) // eslint-disable-line
+  console.log(
+    'raw list',
+    doc
+      .querySelect('.maincontent tr')
+      .filter(row => row.attributes.length > 0)[1]
+  )
   const groups = _.groupBy(rows, 'tp')
   const types = new Set(rows.map(r => r.type).filter(r => r !== ''))
 

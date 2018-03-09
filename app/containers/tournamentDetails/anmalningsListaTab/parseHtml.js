@@ -13,13 +13,13 @@ const parseHTML = data => {
       id: arr[0].trim(),
       name: arr[0].trim(),
       club: arr[1],
-      classType: arr[2],
+      class: arr[2],
       points: Number(arr[5]),
       ok: arr[6]
     }))
 
-  console.log('allTeams: ', _.groupBy(allTeams, 'classType'))
-  const groups = _.groupBy(allTeams, 'classType')
+  console.log('allTeams: ', _.groupBy(allTeams, 'class'))
+  const groups = _.groupBy(allTeams, 'class')
   const classes = _.keys(groups).map(key => ({
     name: getNameForClass(key),
     teams: _.orderBy(groups[key], 'points', 'desc').map((team, index) => {

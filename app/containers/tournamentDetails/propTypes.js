@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { dateShape } from '../propTypes'
 
 export const teamShape = PropTypes.shape({
   id: PropTypes.string.isRequired,
@@ -6,13 +7,6 @@ export const teamShape = PropTypes.shape({
   rank: PropTypes.number.isRequired,
   points: PropTypes.number.isRequired,
   club: PropTypes.string.isRequired
-})
-
-export const dateShape = PropTypes.shape({
-  from: PropTypes.shape().isRequired,
-  to: PropTypes.shape().isRequired,
-  getDuration: PropTypes.func.isRequired,
-  getDetailedDuration: PropTypes.func.isRequired
 })
 
 export const tournamentDetailsShape = PropTypes.shape({
@@ -32,13 +26,21 @@ export const tournamentDetailsShape = PropTypes.shape({
     url: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired
   }).isRequired,
-  noOfDam: PropTypes.string,
-  priceDam: PropTypes.string,
-  noOfHerr: PropTypes.string,
-  priceHerr: PropTypes.string,
+  classes: PropTypes.arrayOf(
+    PropTypes.shape({
+      price: PropTypes.string.isRequired,
+      amount: PropTypes.string.isRequired,
+      className: PropTypes.string.isRequired
+    })
+  ).isRequired,
   paymentInfo: PropTypes.string,
   registrationLink: PropTypes.string,
   setServerSessionCookieUrl: PropTypes.string,
   resultatLink: PropTypes.string,
   table: PropTypes.string
+})
+
+export const resultTeamShape = PropTypes.shape({
+  position: PropTypes.string.isRequired,
+  team: PropTypes.string.isRequired
 })

@@ -4,25 +4,20 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Separator from '../../../components/separator'
 import Loading from '../../../components/loading'
-import KortAnmalningslista from '../kortLista'
+import ShortAnmalningslista from '../shortList'
 import { fetchAnmalningslista } from './epic'
-import fullAnmalningslista from './fullAnmalningslista'
+import FullAnmalningslista from './fullAnmalningslistaPage'
 import { tournamentDetailsShape, teamShape } from '../propTypes'
 import AnmalningslistaRow from './anmalningslistaRow'
 
 class AnmalningslistaTab extends Component {
-  constructor(args) {
-    super(args)
-    this.seAll = this.seAll.bind(this)
-  }
-
   componentDidMount() {
     this.props.fetchAnmalningslista(this.props.tournamentDetails)
   }
 
-  seAll(header) {
+  seAll = header => {
     this.props.navigator.push({
-      component: fullAnmalningslista,
+      component: FullAnmalningslista,
       title: header,
       passProps: {
         teams: this.props.classes.find(c => c.name === header).teams
@@ -31,17 +26,18 @@ class AnmalningslistaTab extends Component {
   }
 
   render() {
-    console.log('this.props.classes: ', this.props.classes)
     if (this.props.loading) {
       return <Loading />
     }
     const classes = this.props.classes.map(c => (
-      <KortAnmalningslista
+      <ShortAnmalningslista
         key={c.name}
         header={c.name}
         rows={c.teams}
         seAll={this.seAll}
-        rowComponent={AnmalningslistaRow}
+        renderRow={(team, even) => (
+          <AnmalningslistaRow key={team.id} item={team} even={even} />
+        )}
       />
     ))
     return (
@@ -60,9 +56,9 @@ AnmalningslistaTab.propTypes = {
       teams: PropTypes.arrayOf(teamShape).isRequired
     })
   ).isRequired,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
   navigator: PropTypes.shape().isRequired,
-  tournamentDetails: tournamentDetailsShape.isRequired, //eslint-disable-line react/no-typos
+  tournamentDetails: tournamentDetailsShape.isRequired,
   fetchAnmalningslista: PropTypes.func.isRequired
 }
 

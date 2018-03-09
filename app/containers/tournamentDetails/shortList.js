@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components/native'
-import * as Section from './sectionComponents'
+import { Section, Row, Header } from './sectionComponents'
 import BlueText from '../../components/blueText'
 import { PreviewList } from '../../components/listComponents'
 
@@ -10,15 +10,12 @@ const Link = styled(BlueText)`
   text-align: right;
 `
 
-class KortAnmalningslista extends Component {
+class ShortAnmalningslista extends Component {
   render() {
     return (
-      <Section.Section
-        ref={section => (this.section = section)}
-        {...this.props}
-      >
-        <Section.Row>
-          <Section.Header>{this.props.header}</Section.Header>
+      <Section ref={section => (this.section = section)} {...this.props}>
+        <Row>
+          <Header>{this.props.header}</Header>
           <Link
             onPress={() => {
               this.props.seAll(this.props.header)
@@ -26,28 +23,29 @@ class KortAnmalningslista extends Component {
           >
             se alla {'>'}
           </Link>
-        </Section.Row>
+        </Row>
         <PreviewList>
           {this.props.rows
             .slice(0, this.props.rowCount)
-            .map(row => <this.props.rowComponent key={row.id} item={row} />)}
+            .map((item, index) => this.props.renderRow(item, index % 2 === 0))}
         </PreviewList>
-      </Section.Section>
+      </Section>
     )
   }
 }
 
-KortAnmalningslista.propTypes = {
+ShortAnmalningslista.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string.isRequired }))
     .isRequired,
   header: PropTypes.string.isRequired,
   seAll: PropTypes.func.isRequired,
-  rowComponent: PropTypes.func.isRequired,
-  rowCount: PropTypes.number
+  renderRow: PropTypes.func.isRequired,
+  rowCount: PropTypes.number,
+  even: PropTypes.bool
 }
 
-KortAnmalningslista.defaultProps = {
+ShortAnmalningslista.defaultProps = {
   rowCount: 3
 }
 
-export default KortAnmalningslista
+export default ShortAnmalningslista

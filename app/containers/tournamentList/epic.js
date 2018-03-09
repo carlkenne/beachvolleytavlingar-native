@@ -7,15 +7,15 @@ import { getTournamentListUrl } from '../../utils/config'
 import DEV_MODE from '../../utils/devmode'
 
 const FETCH_USER_CANCELLED = 'FETCH_USER_CANCELLED'
-export const GET_TOURNAMENTLIST_SUCCESS =
-  'tournamentList/GET_TOURNAMENTLIST_SUCCESS'
-export const GET_TOURNAMENTLIST_FAILED =
-  'tournamentList/GET_TOURNAMENTLIST_FAILED'
-export const GET_TOURNAMENTLIST = 'tournamentList/GET_TOURNAMENTLIST'
+export const FETCH_TOURNAMENTLIST_SUCCESS =
+  'tournamentList/FETCH_TOURNAMENTLIST_SUCCESS'
+export const FETCH_TOURNAMENTLIST_FAILED =
+  'tournamentList/FETCH_TOURNAMENTLIST_FAILED'
+export const FETCH_TOURNAMENTLIST = 'tournamentList/FETCH_TOURNAMENTLIST'
 
 const dispatchLoaded = payload => ({
-  type: GET_TOURNAMENTLIST_SUCCESS,
-  ...payload,
+  type: FETCH_TOURNAMENTLIST_SUCCESS,
+  ...payload
 })
 
 const getData = () =>
@@ -23,12 +23,12 @@ const getData = () =>
     ? Observable.of({ response: mockedData })
     : ajax({
         url: getTournamentListUrl(),
-        responseType: 'text',
+        responseType: 'text'
       })
 
 const fetchTournamentListEpic = action$ =>
   action$
-    .filter(action => action.type === GET_TOURNAMENTLIST)
+    .filter(action => action.type === FETCH_TOURNAMENTLIST)
     .debug('get list')
     .mergeMap(() =>
       getData()
@@ -37,11 +37,11 @@ const fetchTournamentListEpic = action$ =>
         .takeUntil(action$.ofType(FETCH_USER_CANCELLED))
         .catch(error =>
           Observable.of({
-            type: GET_TOURNAMENTLIST_FAILED,
+            type: FETCH_TOURNAMENTLIST_FAILED,
             payload: error,
-            error: true,
-          }),
-        ),
+            error: true
+          })
+        )
     )
 
 export default fetchTournamentListEpic

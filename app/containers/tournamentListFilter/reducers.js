@@ -1,6 +1,6 @@
 import { TOGGLE_FILTER } from './actions';
 import cloneObject from '../../utils/clone';
-import { GET_TOURNAMENTLIST_SUCCESS } from '../tournamentList/epic';
+import { FETCH_TOURNAMENTLIST_SUCCESS } from '../tournamentList/epic';
 
 const find = (array, predicate, _default) => {
   const result = array.find(predicate);
@@ -16,7 +16,7 @@ const getLabelFor = type => type;
 
 export default function (state = initialState, action = {}) {
   switch (action.type) {
-    case GET_TOURNAMENTLIST_SUCCESS: {
+    case FETCH_TOURNAMENTLIST_SUCCESS: {
       const _state = cloneObject(state);
       _state.levels = action.types.map(t => ({
         type: t,

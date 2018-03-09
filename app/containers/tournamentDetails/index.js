@@ -9,8 +9,10 @@ import SideMargins from './sideMargins'
 import DetailsTab from './detailsTab'
 import AnmalningslistaTab from './anmalningsListaTab'
 import SpelschemaTab from './spelschemaTab'
-import { getTournamentDetails } from './epic'
+import { fetchTournamentDetails } from './epic'
 import { tournamentDetailsShape } from './propTypes'
+import { tournamentInfoShape } from '../propTypes'
+import { isOldDate } from '../../utils/date'
 
 const Header = styled.Text`
   font-weight: bold;
@@ -37,27 +39,20 @@ class TournamentDetails extends Component {
     this.state = {
       selectedIndex: 0
     }
-    this.scrollTo = this.scrollTo.bind(this)
   }
 
   componentDidMount() {
-    this.props.actions.getTournamentDetails(this.props.tournamentInfo.id)
-  }
-
-  scrollTo(y) {
-    const NAVBAR_HEIGHT = 64
-    this.scrollView.scrollTo({ x: 0, y: y - NAVBAR_HEIGHT * 2, animated: true })
+    this.props.actions.fetchTournamentDetails(this.props.tournamentInfo.id)
   }
 
   render() {
-    console.log('this.props.tournamentDetails: ', this.props.tournamentDetails)
+    const tabs = [
+      'info',
+      'anmälningslista',
+      isOldDate(this.props.tournamentInfo.date) ? 'resultat' : 'spelschema'
+    ]
     return (
-      <ScrollView
-        classNames="aff"
-        ref={view => {
-          this.scrollView = view
-        }}
-      >
+      <ScrollView>
         <TopImage
           source={require('../../../resources/arenas/gbc.png')}
           style={{ width: undefined }}
@@ -66,10 +61,9 @@ class TournamentDetails extends Component {
         <SideMargins>
           <Header>{this.props.tournamentInfo.originalName}</Header>
           <SubHeader>{this.props.tournamentInfo.club} </SubHeader>
-
           <TopBottomMargins>
             <SegmentedControlIOS
-              values={['info', 'anmälningslista', 'spelschema']}
+              values={tabs}
               selectedIndex={this.state.selectedIndex}
               onChange={event => {
                 this.setState({
@@ -87,7 +81,6 @@ class TournamentDetails extends Component {
           <AnmalningslistaTab
             tournamentDetails={this.props.tournamentDetails.details}
             navigator={this.props.navigator}
-            scrollTo={this.scrollTo}
           />
         )}
         {this.state.selectedIndex === 2 && (
@@ -102,14 +95,14 @@ class TournamentDetails extends Component {
 }
 
 TournamentDetails.propTypes = {
-  tournamentInfo: PropTypes.shape().isRequired,
+  tournamentInfo: tournamentInfoShape.isRequired,
   tournamentDetails: PropTypes.shape({
-    details: tournamentDetailsShape, // eslint-disable-line
-    loding: PropTypes.bool,
+    details: tournamentDetailsShape,
+    loading: PropTypes.bool,
     loaded: PropTypes.bool
   }).isRequired,
   actions: PropTypes.shape({
-    getTournamentDetails: PropTypes.func.isRequired
+    fetchTournamentDetails: PropTypes.func.isRequired
   }).isRequired,
   navigator: PropTypes.shape().isRequired
 }
@@ -119,6 +112,6 @@ export default connect(
     tournamentDetails: state.tournamentDetails
   }),
   dispatch => ({
-    actions: bindActionCreators({ getTournamentDetails }, dispatch)
+    actions: bindActionCreators({ fetchTournamentDetails }, dispatch)
   })
 )(TournamentDetails)

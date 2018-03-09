@@ -22,7 +22,7 @@ export const Label = ({ children }) => (
 )
 
 Label.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 }
 
 export const Content = styled.View`
@@ -31,6 +31,7 @@ export const Content = styled.View`
 
 export const Row = styled.View`
   flex-direction: row;
+  margin-top: 5;
 `
 
 export const Header = styled.Text`

@@ -5,23 +5,27 @@ import PropTypes from 'prop-types'
 import { Section } from '../sectionComponents'
 import BlueText from '../../../components/blueText'
 import preliminartSpelschema from './preliminartSpelschema'
-import { tournamentDetailsShape } from '../propTypes'
+import { tournamentDetailsShape, resultTeamShape } from '../propTypes'
 import { fetchSpelschema } from './epic'
 import Loading from '../../../components/loading'
 import Separator from '../../../components/separator'
-import KortAnmalningslista from '../kortLista'
-import ResultatRow from './resultatRow'
+import ShortResultList from '../shortList'
+import ResultRow from './resultRow'
+import ResultPage from './resultPage'
 
 class SpelschemaTab extends Component {
   componentDidMount() {
-    this.props.fetchSpelschema(this.props.tournamentDetails)
+    if (this.props.tournamentDetails.resultatLink) {
+      this.props.fetchSpelschema(this.props.tournamentDetails)
+    }
   }
 
-  seAll(header) {
+  seAll = header => {
     this.props.navigator.push({
       title: header,
+      component: ResultPage,
       passProps: {
-        teams: this.props.results.find(c => c.classType === header).teams
+        teams: this.props.results.find(c => c.class === header).teams
       }
     })
   }
@@ -30,6 +34,7 @@ class SpelschemaTab extends Component {
     if (this.props.loading) {
       return <Loading />
     }
+    console.log('this.props.results: ', this.props.results)
     if (this.props.results === undefined) {
       return (
         <View>
@@ -53,12 +58,12 @@ class SpelschemaTab extends Component {
       )
     }
     const classes = this.props.results.map(c => (
-      <KortAnmalningslista
-        key={c.classType}
-        header={c.classType}
+      <ShortResultList
+        key={c.class}
+        header={c.class}
         rows={c.top4Teams}
         seAll={this.seAll}
-        rowComponent={ResultatRow}
+        renderRow={team => <ResultRow key={team.id} item={team} />}
         rowCount={4}
       />
     ))
@@ -73,13 +78,13 @@ class SpelschemaTab extends Component {
 
 SpelschemaTab.propTypes = {
   navigator: PropTypes.shape().isRequired,
-  tournamentDetails: tournamentDetailsShape.isRequired, // eslint-disable-line react/no-typos
+  tournamentDetails: tournamentDetailsShape.isRequired,
   fetchSpelschema: PropTypes.func.isRequired,
   results: PropTypes.arrayOf(
     PropTypes.shape({
-      classType: PropTypes.string,
-      teams: PropTypes.arrayOf(PropTypes.shape({})),
-      top4Teams: PropTypes.arrayOf(PropTypes.shape({}))
+      class: PropTypes.string,
+      teams: PropTypes.arrayOf(resultTeamShape),
+      top4Teams: PropTypes.arrayOf(resultTeamShape)
     })
   ),
   loading: PropTypes.bool

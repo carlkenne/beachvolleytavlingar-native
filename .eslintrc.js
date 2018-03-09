@@ -10,6 +10,7 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     'no-console': 1,
+    'no-invalid-this': 0,
     'react/prefer-stateless-function': 0,
     'import/prefer-default-export': 0,
     'import/no-namespace': 0,
@@ -19,6 +20,7 @@ module.exports = {
     'react-native/no-inline-styles': 0,
     'react-native/no-color-literals': 1,
     'react/require-default-props': 0,
+    'react/no-typos': 0,
     'jsx-a11y/anchor-is-valid': 0
   }
 }

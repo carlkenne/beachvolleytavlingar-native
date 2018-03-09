@@ -16,7 +16,7 @@ const getDetailedDuration = (from, to) => {
     from.toString() !== to.toString()
   ) {
     return `${moment(from).format(detailedFormat)} - ${moment(to).format(
-      'HH:mm',
+      'HH:mm'
     )}`
   }
   return getDuration(from, to, detailedFormat)
@@ -33,6 +33,8 @@ export const parseDate = (fromString, toString = fromString) => {
     from,
     to,
     getDuration: format => getDuration(from, to, format),
-    getDetailedDuration: () => getDetailedDuration(from, to),
+    getDetailedDuration: () => getDetailedDuration(from, to)
   }
 }
+
+export const isOldDate = date => date.from < new Date()

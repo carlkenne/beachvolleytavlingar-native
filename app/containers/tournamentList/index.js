@@ -1,43 +1,50 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import styled from 'styled-components/native';
-import TournamentListRow from './TournamentListRow';
-import TournamentDetails from '../tournamentDetails';
-import * as actions from './actions';
-import { ListView } from '../../components/listView';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import styled from 'styled-components/native'
+import TournamentListRow from './TournamentListRow'
+import TournamentDetails from '../tournamentDetails'
+import * as actions from './actions'
+import { ListView } from '../../components/listView'
 
 const Container = styled.ImageBackground`
   flex: 1;
-`;
+`
 
 class TournamentList extends Component {
-  constructor(args) {
-      super(args);
-      this._getSectionHeader = this._getSectionHeader.bind(this);
-  }
-
   componentDidMount() {
-    this.props.actions.getTournamentList();
+    this.props.actions.fetchTournamentList()
   }
 
   _getVisibleTournaments() {
-    const tournaments = {};
-    if (this.props.tournamentList.loaded && this.props.tournamentList.tournamentData) {
-      const types = this.props.filter.levels.filter(lvl => lvl.value === true).map(lvl => lvl.type);
+    const tournaments = {}
+    if (
+      this.props.tournamentList.loaded &&
+      this.props.tournamentList.tournamentData
+    ) {
+      const types = this.props.filter.levels
+        .filter(lvl => lvl.value === true)
+        .map(lvl => lvl.type)
       for (const key in this.props.tournamentList.tournamentData) {
-        tournaments[key] = this.props.tournamentList.tournamentData[key].filter(td => types.indexOf(td.type) > -1);
+        tournaments[key] = this.props.tournamentList.tournamentData[key].filter(
+          td => types.indexOf(td.type) > -1
+        )
       }
     }
+    console.log(
+      'this.props.tournamentList: ',
+      this.props.tournamentList.tournamentData
+    )
+    console.log('tournaments: ', tournaments)
 
     return tournaments
   }
 
-  _getSectionHeader(data, sectionID) {
+  _getSectionHeader = (data, sectionID) => {
     // Add nuvarande...
-    const header = this.props.tournamentList.sectionHeaders[sectionID];
-    return `${header.name} (${header.date.getDuration('D MMM')})`.toUpperCase();
+    const header = this.props.tournamentList.sectionHeaders[sectionID]
+    return `${header.name} (${header.date.getDuration('D MMM')})`.toUpperCase()
   }
 
   render() {
@@ -52,36 +59,43 @@ class TournamentList extends Component {
             <TournamentListRow
               tournamentInfo={tournamentInfo}
               onPress={() => {
-                this.props.navigator.push({
-                  component: TournamentDetails,
-                  title: tournamentInfo.name,
-                  passProps: { tournamentInfo, navigator: this.props.navigator },
-                });
-              }}
+                  this.props.navigator.push({
+                    component: TournamentDetails,
+                    title: tournamentInfo.name,
+                    passProps: {
+                      tournamentInfo,
+                      navigator: this.props.navigator
+                    }
+                  })
+                }}
             />
-          )}
+            )}
           getSectionHeader={this._getSectionHeader}
         />
       </Container>
-    );
+    )
   }
 }
 
 TournamentList.propTypes = {
   actions: PropTypes.shape({
-    getTournamentList: PropTypes.func.isRequired,
+    fetchTournamentList: PropTypes.func.isRequired
   }).isRequired,
-  tournamentList: PropTypes.shape().isRequired,
+  tournamentList: PropTypes.shape({
+    sectionHeaders: PropTypes.shape({}).isRequired,
+    tournamentData: PropTypes.shape({}),
+    loaded: PropTypes.bool
+  }).isRequired,
   filter: PropTypes.shape().isRequired,
-  navigator: PropTypes.shape().isRequired,
-};
+  navigator: PropTypes.shape().isRequired
+}
 
 export default connect(
   state => ({
     tournamentList: state.tournamentList,
-    filter: state.filter,
+    filter: state.filter
   }),
   dispatch => ({
-    actions: bindActionCreators(actions, dispatch),
-  }),
-)(TournamentList);
+    actions: bindActionCreators(actions, dispatch)
+  })
+)(TournamentList)
