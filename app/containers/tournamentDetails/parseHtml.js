@@ -86,9 +86,10 @@ const parseHTML = data => {
   console.log('parsed: ', parsed)
 
   const club = get(parsed, 'Arrangör')
+  const arena = get(parsed, 'Spelplats/hall')
   const classes = getClasses(parsed)
   const tournamentDetails = {
-    arena: get(parsed, 'Spelplats/hall'),
+    arena,
     resultatLink: get(parsed, 'Spelschema och resultat'),
     registrationLink: get(parsed, 'Anmälan'),
     link: 'to me',
@@ -103,7 +104,8 @@ const parseHTML = data => {
     deadline: parseDate(get(parsed, 'Sista anmäliningsdag')),
     classes,
     contacts: getContacts(parsed),
-    location: getLocation(club)
+    club,
+    location: getLocation(club, arena)
   }
 
   console.log('tournamentDetails: ', tournamentDetails)
