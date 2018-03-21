@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import styled from 'styled-components/native'
+import Loading from '../../components/loading'
 import TournamentListRow from './TournamentListRow'
 import TournamentDetails from '../tournamentDetails'
 import * as actions from './actions'
@@ -48,6 +49,7 @@ class TournamentList extends Component {
         source={require('../../../resources/sand.png')}
         style={{ width: null, height: null }}
       >
+        {this.props.tournamentList.loading && <Loading />}
         <ListView
           data={this._getVisibleTournaments()}
           renderRow={tournamentInfo => (
@@ -79,7 +81,8 @@ TournamentList.propTypes = {
   tournamentList: PropTypes.shape({
     sectionHeaders: PropTypes.shape({}).isRequired,
     tournamentData: PropTypes.shape({}),
-    loaded: PropTypes.bool
+    loaded: PropTypes.bool,
+    loading: PropTypes.bool
   }).isRequired,
   filter: PropTypes.shape().isRequired,
   navigator: PropTypes.shape().isRequired

@@ -25,7 +25,6 @@ const renderClasses = details => {
 }
 
 const DetailsTab = ({ loading, loaded, details }) => {
-  console.log('loading: ', loading)
   if (loading) {
     return <Loading />
   }
