@@ -1,35 +1,40 @@
-import * as consts from './epic';
-import cloneObject from '../../utils/clone';
+import * as consts from './epic'
+import cloneObject from '../../utils/clone'
 
 const initialState = {
   loaded: false,
+  loading: false,
   sectionHeaders: {},
-  tournamentData: {},
-};
+  tournamentData: {}
+}
 
-export default function (state = initialState, action = {}) {
+export default function(state = initialState, action = {}) {
+  console.log('action: ', action)
   switch (action.type) {
+    case consts.FETCH_TOURNAMENTLIST: {
+      let _state = cloneObject(state)
+      _state = {
+        ..._state,
+        loaded: false,
+        loading: true
+      }
+      return _state
+    }
     case consts.FETCH_TOURNAMENTLIST_SUCCESS: {
-      let _state = cloneObject(state);
+      let _state = cloneObject(state)
       _state = {
         ..._state,
         loaded: true,
+        loading: false,
         sectionHeaders: action.sectionHeaders,
-        tournamentData: action.tournamentData,
-      };
-      return _state;
+        tournamentData: action.tournamentData
+      }
+      return _state
     }
     case consts.FETCH_TOURNAMENTLIST_FAILED: {
-      let __state = cloneObject(state);
-      __state = {
-        ...state,
-        loaded: false,
-        sectionHeaders: action.sectionHeaders,
-        tournamentData: action.tournamentData,
-      };
-      return __state;
+      return initialState
     }
     default:
-      return state;
+      return state
   }
 }

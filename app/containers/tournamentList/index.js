@@ -32,11 +32,6 @@ class TournamentList extends Component {
         )
       }
     }
-    console.log(
-      'this.props.tournamentList: ',
-      this.props.tournamentList.tournamentData
-    )
-    console.log('tournaments: ', tournaments)
 
     return tournaments
   }
@@ -59,17 +54,17 @@ class TournamentList extends Component {
             <TournamentListRow
               tournamentInfo={tournamentInfo}
               onPress={() => {
-                  this.props.navigator.push({
-                    component: TournamentDetails,
-                    title: tournamentInfo.name,
-                    passProps: {
-                      tournamentInfo,
-                      navigator: this.props.navigator
-                    }
-                  })
-                }}
+                this.props.navigator.push({
+                  component: TournamentDetails,
+                  title: tournamentInfo.name,
+                  passProps: {
+                    tournamentInfo,
+                    navigator: this.props.navigator
+                  }
+                })
+              }}
             />
-            )}
+          )}
           getSectionHeader={this._getSectionHeader}
         />
       </Container>

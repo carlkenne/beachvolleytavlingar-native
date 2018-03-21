@@ -6,6 +6,7 @@ export const teamShape = PropTypes.shape({
   name: PropTypes.string.isRequired,
   rank: PropTypes.number.isRequired,
   points: PropTypes.number.isRequired,
+  adress: '',
   club: PropTypes.string.isRequired
 })
 

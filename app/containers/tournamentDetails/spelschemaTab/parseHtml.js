@@ -14,10 +14,23 @@ const getClass = (links, data) => {
 
 export const parseKlassLinks = data => {
   const doc = getDomParser(data.response)
+  const links = [
+    'Damer',
+    'Herrar',
+    'V35+ H', // check this
+    'V35+ D', // check this
+    'V40+ H', // check this
+    'V40+ D', // check this
+    'V45+ H', // check this
+    'V45+ D' // check this
+  ]
+    .map(className => ({
+      url: getHrefByTitle(doc, className),
+      className
+    }))
+    .filter(link => link.url !== '')
 
-  const damerLink = getHrefByTitle(doc, 'Damer')
-  const herrarLink = getHrefByTitle(doc, 'Herrar')
-  return { herrarLink, damerLink }
+  return links
 }
 
 const getTeam = teamName => {

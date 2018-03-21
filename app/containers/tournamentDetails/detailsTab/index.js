@@ -41,7 +41,7 @@ const DetailsTab = ({ loading, loaded, details }) => {
           </S.Row>
           {renderClasses(details)}
           <S.Row>
-            <S.Label>address</S.Label>
+            <S.Label>adress</S.Label>
             <S.Content>
               <Hyperlink link={details.location.url}>
                 {details.location.text}

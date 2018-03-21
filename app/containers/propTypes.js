@@ -9,6 +9,7 @@ export const dateShape = PropTypes.shape({
 
 export const tournamentInfoShape = PropTypes.shape({
   tp: PropTypes.string.isRequired,
+  adress: '',
   club: PropTypes.string.isRequired,
   qualifier: PropTypes.string,
   name: PropTypes.string.isRequired,

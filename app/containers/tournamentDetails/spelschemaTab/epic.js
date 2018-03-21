@@ -40,8 +40,12 @@ const fetchSpelschemaEpic = action$ =>
         .debug('klasslinks')
         .mergeMap(links =>
           Observable.forkJoin(
-            getData('https://www.profixio.com' + links.herrarLink),
-            getData('https://www.profixio.com' + links.damerLink)
+            ...links.map(
+              link => getData('https://www.profixio.com' + link.url)
+              //.map(reponse => ({ response, link }))
+            )
+            // getData('https://www.profixio.com' + links[0].url),
+            // getData('https://www.profixio.com' + links[1].url)
           )
             .debug('result')
             .map(parseHtml(links))

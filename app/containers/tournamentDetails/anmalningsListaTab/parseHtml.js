@@ -12,6 +12,7 @@ const parseHTML = data => {
     .map(arr => ({
       id: arr[0].trim(),
       name: arr[0].trim(),
+      adress: '',
       club: arr[1],
       class: arr[2],
       points: Number(arr[5]),

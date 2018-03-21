@@ -242,26 +242,33 @@ const getType = node => {
 }
 
 const parseHTML = data => {
+  console.log('data: ', data)
   const doc = getDomParser(data.response)
+
+  console.log('doc: ', doc)
 
   const rows = doc
     .querySelect('.maincontent tr')
     .filter(row => row.attributes.length > 0)
-    .map(row => ({
-      tp: getTp(row.childNodes[4]),
-      club: row.childNodes[6].textContent,
-      qualifier: getQualifier(row.childNodes[8].textContent),
-      name: parseTournamentName(row.childNodes[8].textContent),
-      originalName: row.childNodes[8].textContent,
-      type: getType(row),
-      class: parseClass(row.childNodes[12].textContent),
-      id: getId(row.childNodes[8]),
-      date: parseDate(
-        row.childNodes[0].textContent,
-        row.childNodes[2].textContent
-      ),
-      active: getActive(row.childNodes[8])
-    }))
+    .map(row => {
+      console.log('row: ', row)
+      return {
+        tp: getTp(row.childNodes[4]),
+        adress: '',
+        club: row.childNodes[6].textContent,
+        qualifier: getQualifier(row.childNodes[8].textContent),
+        name: parseTournamentName(row.childNodes[8].textContent),
+        originalName: row.childNodes[8].textContent,
+        type: getType(row),
+        class: parseClass(row.childNodes[12].textContent),
+        id: getId(row.childNodes[8]),
+        date: parseDate(
+          row.childNodes[0].textContent,
+          row.childNodes[2].textContent
+        ),
+        active: getActive(row.childNodes[8])
+      }
+    })
   console.log(
     'raw list',
     doc
