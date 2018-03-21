@@ -1,22 +1,13 @@
 import { _ } from 'lodash'
-import { getNameForClass } from '../../../utils/classTypes'
 import { getHrefByTitle, getDomParser } from '../../../utils/parser'
-
-const getClass = (links, data) => {
-  if (data.request.url.includes(links.herrarLink)) {
-    return getNameForClass('H')
-  }
-  if (data.request.url.includes(links.damerLink)) {
-    return getNameForClass('D')
-  }
-  return getNameForClass()
-}
 
 export const parseKlassLinks = data => {
   const doc = getDomParser(data.response)
+  console.log('data.response: ', data)
   const links = [
     'Damer',
     'Herrar',
+    'Mixed',
     'V35+ H', // check this
     'V35+ D', // check this
     'V40+ H', // check this
@@ -42,8 +33,9 @@ const getTeam = teamName => {
   return teamName
 }
 
-const parse = (links, data) => {
-  const doc = getDomParser(data.response)
+const parse = data => {
+  console.log('data: ', data)
+  const doc = getDomParser(data.response.response)
   const tables = doc.querySelect(`tbody`)
 
   const table = tables
@@ -67,14 +59,14 @@ const parse = (links, data) => {
     }))
 
   return {
-    class: getClass(links, data),
+    className: data.link.className,
     teams,
     top4Teams: _.take(teams, 4)
   }
 }
 
-const parseHTML = links => datas => ({
-  results: [parse(links, datas[0]), parse(links, datas[1])]
+const parseHTML = datas => ({
+  results: datas.map(parse)
 })
 
 export default parseHTML

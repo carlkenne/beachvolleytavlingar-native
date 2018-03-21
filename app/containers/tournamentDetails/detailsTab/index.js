@@ -13,6 +13,7 @@ const renderClasses = details => {
       {item.className}: {item.amount} lag ({item.price} kr)
     </Text>
   ))
+  console.log('renderClasses: ', classes)
   return (
     details.classes.length && (
       <S.Row>
@@ -28,6 +29,7 @@ const DetailsTab = ({ loading, loaded, details }) => {
   if (loading) {
     return <Loading />
   }
+  console.log('details: ', details)
   return (
     loaded && (
       <View>

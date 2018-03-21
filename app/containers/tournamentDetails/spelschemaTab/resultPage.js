@@ -15,7 +15,7 @@ class ResultPage extends Component {
       <Container>
         <ListView
           data={{ all: this.props.teams }}
-          renderRow={team => <ResultRow item={team} />}
+          renderRow={(team, even) => <ResultRow item={team} even={even} />}
         />
       </Container>
     )

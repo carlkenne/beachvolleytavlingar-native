@@ -25,7 +25,7 @@ class SpelschemaTab extends Component {
       title: header,
       component: ResultPage,
       passProps: {
-        teams: this.props.results.find(c => c.class === header).teams
+        teams: this.props.results.find(c => c.className === header).teams
       }
     })
   }
@@ -34,7 +34,6 @@ class SpelschemaTab extends Component {
     if (this.props.loading) {
       return <Loading />
     }
-    console.log('this.props.results: ', this.props.results)
     if (this.props.results === undefined) {
       return (
         <View>
@@ -59,11 +58,13 @@ class SpelschemaTab extends Component {
     }
     const classes = this.props.results.map(c => (
       <ShortResultList
-        key={c.class}
-        header={c.class}
+        key={c.className}
+        header={c.className}
         rows={c.top4Teams}
         seAll={this.seAll}
-        renderRow={team => <ResultRow key={team.id} item={team} />}
+        renderRow={(team, even) => (
+          <ResultRow key={team.id} item={team} even={even} />
+        )}
         rowCount={4}
       />
     ))
@@ -82,7 +83,7 @@ SpelschemaTab.propTypes = {
   fetchSpelschema: PropTypes.func.isRequired,
   results: PropTypes.arrayOf(
     PropTypes.shape({
-      class: PropTypes.string,
+      className: PropTypes.string,
       teams: PropTypes.arrayOf(resultTeamShape),
       top4Teams: PropTypes.arrayOf(resultTeamShape)
     })

@@ -57,7 +57,8 @@ const getClasses = parsed => [
   ...getClass(parsed, 'V40+ D'),
   ...getClass(parsed, 'V40+ H'),
   ...getClass(parsed, 'V45+ D'),
-  ...getClass(parsed, 'V45+ H')
+  ...getClass(parsed, 'V45+ H'),
+  ...getClass(parsed, 'Mixed')
 ]
 
 const extractOnClickLink = doc => {
