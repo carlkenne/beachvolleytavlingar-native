@@ -35,13 +35,14 @@ const fetchTournamentListEpic = action$ =>
         .map(parseHtml)
         .map(dispatchLoaded)
         .takeUntil(action$.ofType(FETCH_USER_CANCELLED))
-        .catch(error =>
+        .catch(error => {
+          console.warn('error in epic: ', error)
           Observable.of({
             type: FETCH_TOURNAMENTLIST_FAILED,
             payload: error,
             error: true
           })
-        )
+        })
     )
 
 export default fetchTournamentListEpic

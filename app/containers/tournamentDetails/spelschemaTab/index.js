@@ -15,9 +15,7 @@ import ResultPage from './resultPage'
 
 class SpelschemaTab extends Component {
   componentDidMount() {
-    if (this.props.tournamentDetails.resultatLink) {
-      this.props.fetchSpelschema(this.props.tournamentDetails)
-    }
+    this.props.fetchSpelschema(this.props.tournamentDetails)
   }
 
   seAll = header => {

@@ -13,10 +13,9 @@ const prepareSelectors = html =>
   )
 
 export const parseKlassLinks = data => {
-  console.log(
-    'prepareSelectors(data.response): ',
-    prepareSelectors(data.response)
-  )
+  if (data.status !== 200) {
+    throw { message: '' }
+  }
   const doc = getDomParser(prepareSelectors(data.response))
   console.log('data.response: ', data)
 

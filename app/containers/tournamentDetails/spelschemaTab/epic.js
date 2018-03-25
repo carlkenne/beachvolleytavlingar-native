@@ -50,15 +50,15 @@ const fetchSpelschemaEpic = action$ =>
             .debug('result')
             .map(parseHtml)
         )
+        .map(dispatchLoaded)
+        .catch(error => {
+          console.warn('error in epic: ', error)
+          return Observable.of({
+            type: FETCH_SPELSCHEMA_FAILED,
+            payload: error,
+            error: true
+          })
+        })
     )
-    .map(dispatchLoaded)
-    .catch(error => {
-      console.error('epic: ', error)
-      return Observable.of({
-        type: FETCH_SPELSCHEMA_FAILED,
-        payload: error,
-        error: true
-      })
-    })
 
 export default fetchSpelschemaEpic

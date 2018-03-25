@@ -40,13 +40,14 @@ const fetchTournamentListEpic = action$ =>
       getData(action.id)
         .map(parse)
         .map(dispatchLoaded)
-        .catch(error =>
+        .catch(error => {
+          console.warn('error in epic: ', error)
           Observable.of({
             type: FETCH_TOURNAMENT_DETAILS_FAILED,
             payload: error,
             error: true
           })
-        )
+        })
     )
 
 export default fetchTournamentListEpic
