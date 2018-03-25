@@ -1,26 +1,33 @@
 import { _ } from 'lodash'
 import { getHrefByTitle, getDomParser } from '../../../utils/parser'
+import { getClassNameSelectors } from '../../../utils/classTypes'
+
+const prepareSelectors = html =>
+  getClassNameSelectors().reduce(
+    (modifiedHtml, classNameSelector) =>
+      modifiedHtml.replace(
+        `title="${classNameSelector.selector}"`,
+        `title="${classNameSelector.renamedSelector}"`
+      ),
+    html
+  )
 
 export const parseKlassLinks = data => {
-  const doc = getDomParser(data.response)
+  console.log(
+    'prepareSelectors(data.response): ',
+    prepareSelectors(data.response)
+  )
+  const doc = getDomParser(prepareSelectors(data.response))
   console.log('data.response: ', data)
-  const links = [
-    'Damer',
-    'Herrar',
-    'Mixed',
-    'V35+ H', // check this
-    'V35+ D', // check this
-    'V40+ H', // check this
-    'V40+ D', // check this
-    'V45+ H', // check this
-    'V45+ D' // check this
-  ]
-    .map(className => ({
-      url: getHrefByTitle(doc, className),
-      className
-    }))
-    .filter(link => link.url !== '')
 
+  const links = getClassNameSelectors()
+    .map(className => ({
+      url: getHrefByTitle(doc, className.renamedSelector),
+      className: className.displayName
+    }))
+    .filter(link => link.url !== '' && link.url !== '#')
+
+  console.log('links: ', links)
   return links
 }
 
@@ -49,6 +56,9 @@ const parse = data => {
         _.get(t, 'childNodes[1].childNodes[3].firstChild.nodeValue') ===
         'Lagnavn'
     )
+  if (!table) {
+    return undefined
+  }
 
   const teams = _.drop(table.querySelect('tr'), 1)
     .map(row => row.querySelect('td'))
@@ -66,7 +76,7 @@ const parse = data => {
 }
 
 const parseHTML = datas => ({
-  results: datas.map(parse)
+  results: datas.map(parse).filter(result => result !== undefined)
 })
 
 export default parseHTML

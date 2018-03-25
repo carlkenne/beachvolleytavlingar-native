@@ -29,8 +29,8 @@ export const tournamentDetailsShape = PropTypes.shape({
   }).isRequired,
   classes: PropTypes.arrayOf(
     PropTypes.shape({
-      price: PropTypes.string.isRequired,
-      amount: PropTypes.string.isRequired,
+      price: PropTypes.string,
+      amount: PropTypes.Number,
       className: PropTypes.string.isRequired
     })
   ).isRequired,

@@ -47,18 +47,17 @@ const fetchAnmalningsListaEpic = action$ =>
       setServerSideCookie(action.tournamentDetails.registrationLink)
         .debug('response')
         .mergeMap(resp =>
-          getData(resp.xhr.responseHeaders['Set-Cookie'])
-            .map(parse)
-            .map(dispatchLoaded)
-            .catch(error => {
-              console.log('error: ', error)
-              return Observable.of({
-                type: GET_ANMALNINGSLISTA_FAILED,
-                payload: error,
-                error: true
-              })
-            })
+          getData(resp.xhr.responseHeaders['Set-Cookie']).map(parse)
         )
     )
+    .map(dispatchLoaded)
+    .catch(error => {
+      console.log('error: ', error)
+      return Observable.of({
+        type: GET_ANMALNINGSLISTA_FAILED,
+        payload: error,
+        error: true
+      })
+    })
 
 export default fetchAnmalningsListaEpic

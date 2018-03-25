@@ -1,5 +1,6 @@
 import { _ } from 'lodash'
 import { parseDate } from '../../utils/date'
+import { parseClass, getLevel } from '../../utils/classTypes'
 import { getDomParser } from '../../utils/parser'
 
 const getSectionHeaders = year => {
@@ -109,6 +110,9 @@ const parseTournamentName = name =>
     .replace('CH1', '')
     .replace('CH2', '')
     .replace('08 B', 'BBB')
+    .replace('U20', 'UTJUGO')
+    .replace('U18', 'UARTON')
+    .replace('U16', 'USEXTON')
     .replace('Svart ', '')
     .replace('Sv ', '')
     .replace('\\(svart\\)', 'Open')
@@ -166,21 +170,11 @@ const parseTournamentName = name =>
     .replace('\\/', '')
     .replace(' , ', ' ')
     .replace('BBB', '08 B')
+    .replace('UTJUGO', 'U20')
+    .replace('UARTON', 'U18')
+    .replace('USEXTON', 'U16')
     .replace('  ', ' ')
     .getName()
-
-const parseClass = className =>
-  className
-    .split(',')
-    .map(item => item.replace(/\s/g, '').toLowerCase())
-    .filter(item => item !== 'd')
-    .filter(item => item !== 'h')
-    .map(item => (item.startsWith('v35+d') ? 'v35+dam' : item))
-    .map(item => (item.startsWith('v35+h') ? 'v35+herr' : item))
-    .map(item => (item.startsWith('v40+d') ? 'v40+dam' : item))
-    .map(item => (item.startsWith('v40+h') ? 'v40+herr' : item))
-    .map(item => (item.startsWith('v45+d') ? 'v45+dam' : item))
-    .map(item => (item.startsWith('v45+h') ? 'v45+herr' : item))
 
 const getId = node => {
   const aTag = node.getElementsByTagName('a')
@@ -207,39 +201,6 @@ const getQualifier = text => {
 }
 
 const getActive = node => node.getElementsByTagName('a').length > 0
-const getType = node => {
-  const rawType = node.childNodes[10].textContent.trim()
-  if (rawType) {
-    return rawType
-  }
-  const name = node.childNodes[8].textContent
-  if (name.toLowerCase().includes('mix')) {
-    return 'Mixed'
-  }
-  if (name.toLowerCase().includes('grön')) {
-    return 'Open Grön'
-  }
-  if (
-    name.toLowerCase().includes('svart') ||
-    name.toLowerCase().includes('open')
-  ) {
-    return 'Open Svart'
-  }
-  if (name.toLowerCase().includes('challenger')) {
-    return 'Challenger'
-  }
-  if (
-    name.toLowerCase().includes('ungdom') ||
-    name.toLowerCase().includes('minior')
-  ) {
-    return 'Ungdomstävling'
-  }
-  if (name.toLowerCase().includes('veteran')) {
-    return 'Veterantävling'
-  }
-  console.log('could not identify ', name)
-  return 'Open Svart'
-}
 
 const parseHTML = data => {
   console.log('data: ', data)
@@ -251,7 +212,8 @@ const parseHTML = data => {
     .querySelect('.maincontent tr')
     .filter(row => row.attributes.length > 0)
     .map(row => {
-      console.log('row: ', row)
+      // console.log('row: ', row)
+      const classes = parseClass(row.childNodes[12].textContent)
       return {
         tp: getTp(row.childNodes[4]),
         adress: '',
@@ -259,8 +221,12 @@ const parseHTML = data => {
         qualifier: getQualifier(row.childNodes[8].textContent),
         name: parseTournamentName(row.childNodes[8].textContent),
         originalName: row.childNodes[8].textContent,
-        type: getType(row),
-        class: parseClass(row.childNodes[12].textContent),
+        type: getLevel(
+          row.childNodes[10].textContent,
+          classes,
+          row.childNodes[8].textContent
+        ),
+        class: classes,
         id: getId(row.childNodes[8]),
         date: parseDate(
           row.childNodes[0].textContent,

@@ -1,5 +1,6 @@
 import { _ } from 'lodash'
 import { parseDate } from '../../utils/date'
+import { getClassNames } from '../../utils/classTypes'
 import { getDomParser } from '../../utils/parser'
 import { getLocation } from './locations'
 
@@ -36,30 +37,22 @@ const getContacts = parsed => {
 
 const getClass = (parsed, className) => {
   const amount = get(parsed, className)
+
   return amount
-    ? [
-        {
-          className,
-          amount,
-          price: getExtended(parsed, className, 2, value =>
-            value.replace('.00', '')
-          )
-        }
-      ]
-    : []
+    ? {
+        className,
+        amount: Number.parseInt(amount) || undefined,
+        price: getExtended(parsed, className, 2, value =>
+          value.replace('.00', '')
+        )
+      }
+    : undefined
 }
 
-const getClasses = parsed => [
-  ...getClass(parsed, 'Dam'),
-  ...getClass(parsed, 'Herr'),
-  ...getClass(parsed, 'V35+ D'),
-  ...getClass(parsed, 'V35+ H'),
-  ...getClass(parsed, 'V40+ D'),
-  ...getClass(parsed, 'V40+ H'),
-  ...getClass(parsed, 'V45+ D'),
-  ...getClass(parsed, 'V45+ H'),
-  ...getClass(parsed, 'Mixed')
-]
+const getClasses = parsed =>
+  getClassNames()
+    .map(className => getClass(parsed, className))
+    .filter(classObj => classObj !== undefined)
 
 const extractOnClickLink = doc => {
   const link = _.flatMap(

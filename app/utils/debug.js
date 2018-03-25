@@ -8,7 +8,7 @@ Observable.prototype.debug = function(message: string) {
   return this.do(
     next => {
       if (debuggerOn) {
-        console.log(message, next)
+        console.log('DEBUG >>> ' + message, next)
       }
     },
     err => {
@@ -20,6 +20,6 @@ Observable.prototype.debug = function(message: string) {
       if (debuggerOn) {
         console.log('Completed.')
       }
-    },
+    }
   )
 }

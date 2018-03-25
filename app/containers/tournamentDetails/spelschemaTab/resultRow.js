@@ -1,15 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components/native'
 import { Text } from 'react-native'
 import { ListRowStacked } from '../../../components/listComponents'
 import { resultTeamShape } from '../propTypes'
 
+const MoreRoom = styled(ListRowStacked)`
+  padding-top: 6px;
+  padding-bottom: 6px;
+`
+
 const ResultRow = ({ item, even }) => (
-  <ListRowStacked even={even}>
+  <MoreRoom even={even}>
     <Text>
       {item.position}: {item.team}
     </Text>
-  </ListRowStacked>
+  </MoreRoom>
 )
 
 ResultRow.propTypes = {

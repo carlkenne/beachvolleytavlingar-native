@@ -7,21 +7,26 @@ import Hyperlink from '../../../components/hyperlink'
 import { tournamentDetailsShape } from '../propTypes'
 import Loading from '../../../components/loading'
 
+const Render = ({ _if, children }) => (_if ? children : null)
+
 const renderClasses = details => {
   const classes = details.classes.map(item => (
     <Text key={item.className}>
-      {item.className}: {item.amount} lag ({item.price} kr)
+      {item.className}
+      <Render _if={item.amount}>
+        {': '}
+        {item.amount} lag
+        <Render _if={item.price}> ({item.price} kr)</Render>
+      </Render>
     </Text>
   ))
   console.log('renderClasses: ', classes)
-  return (
-    details.classes.length && (
-      <S.Row>
-        <S.Label>klasser</S.Label>
-        <S.Content>{classes}</S.Content>
-      </S.Row>
-    )
-  )
+  return details.classes.length ? (
+    <S.Row>
+      <S.Label>klasser</S.Label>
+      <S.Content>{classes}</S.Content>
+    </S.Row>
+  ) : null
 }
 
 const DetailsTab = ({ loading, loaded, details }) => {
@@ -29,6 +34,7 @@ const DetailsTab = ({ loading, loaded, details }) => {
     return <Loading />
   }
   console.log('details: ', details)
+  console.log('loaded: ', loaded)
   return (
     loaded && (
       <View>
