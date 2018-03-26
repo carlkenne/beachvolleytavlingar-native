@@ -14,7 +14,7 @@ const prepareSelectors = html =>
 
 export const parseKlassLinks = data => {
   if (data.status !== 200) {
-    throw { message: '' }
+    throw new Error('no links for results available')
   }
   const doc = getDomParser(prepareSelectors(data.response))
   console.log('data.response: ', data)
@@ -26,6 +26,9 @@ export const parseKlassLinks = data => {
     }))
     .filter(link => link.url !== '' && link.url !== '#')
 
+  if (links.length === 0) {
+    throw new Error('no links for results available')
+  }
   console.log('links: ', links)
   return links
 }

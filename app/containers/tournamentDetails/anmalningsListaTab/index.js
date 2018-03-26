@@ -15,6 +15,15 @@ class AnmalningslistaTab extends Component {
     this.props.fetchAnmalningslista(this.props.tournamentDetails)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.classes === undefined &&
+      this.props.tournamentDetails !== nextProps.tournamentDetails
+    ) {
+      this.props.fetchAnmalningslista(this.props.tournamentDetails)
+    }
+  }
+
   seAll = header => {
     this.props.navigator.push({
       component: FullAnmalningslista,

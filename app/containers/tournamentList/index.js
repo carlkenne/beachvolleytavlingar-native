@@ -40,7 +40,7 @@ class TournamentList extends Component {
   _getSectionHeader = (data, sectionID) => {
     // Add nuvarande...
     const header = this.props.tournamentList.sectionHeaders[sectionID]
-    return `${header.name} (${header.date.getDuration('D MMM')})`.toUpperCase()
+    return `${header.names} (${header.date.getDuration('D MMM')})`.toUpperCase()
   }
 
   render() {

@@ -6,8 +6,8 @@ import { ListRowStacked } from '../../../components/listComponents'
 import { resultTeamShape } from '../propTypes'
 
 const MoreRoom = styled(ListRowStacked)`
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 `
 
 const ResultRow = ({ item, even }) => (

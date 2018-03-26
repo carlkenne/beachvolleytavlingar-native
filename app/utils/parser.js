@@ -2,7 +2,6 @@ import { _ } from 'lodash'
 import { DOMParser } from 'react-native-html-parser'
 
 export const getHrefByTitle = (doc, title) => {
-  console.log('title: ', title)
   const href = _.flatMap(
     doc
       .querySelect('a[title="' + title + '"]')
