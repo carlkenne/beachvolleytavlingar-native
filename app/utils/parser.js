@@ -15,8 +15,8 @@ export const getDomParser = htmlString =>
   new DOMParser({
     locator: {},
     errorHandler: {
-      warning: w => console.log(w), // eslint-disable-line
-      error: e => console.log(e), // eslint-disable-line
-      fatalError: fe => console.log(fe) // eslint-disable-line
+      warning: w => console.warn(w), // eslint-disable-line
+      error: e => console.error(e), // eslint-disable-line
+      fatalError: fe => console.error(fe) // eslint-disable-line
     }
   }).parseFromString(htmlString, 'text/html')

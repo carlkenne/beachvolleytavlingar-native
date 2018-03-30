@@ -6,7 +6,6 @@ import mockedData from './mocks/terminliste_php'
 import { getTournamentListUrl } from '../../utils/config'
 import DEV_MODE from '../../utils/devmode'
 
-const FETCH_USER_CANCELLED = 'FETCH_USER_CANCELLED'
 export const FETCH_TOURNAMENTLIST_SUCCESS =
   'tournamentList/FETCH_TOURNAMENTLIST_SUCCESS'
 export const FETCH_TOURNAMENTLIST_FAILED =
@@ -18,26 +17,30 @@ const dispatchLoaded = payload => ({
   ...payload
 })
 
-const getData = () =>
-  DEV_MODE
+const getData = () => {
+  console.warn('getData')
+  console.log('do not remove')
+  // throw new Error('could not connect')
+
+  return DEV_MODE
     ? Observable.of({ response: mockedData })
     : ajax({
         url: getTournamentListUrl(),
         responseType: 'text'
       })
+}
 
 const fetchTournamentListEpic = action$ =>
   action$
-    .filter(action => action.type === FETCH_TOURNAMENTLIST)
+    .ofType(FETCH_TOURNAMENTLIST)
     .debug('get list')
     .mergeMap(() =>
       getData()
         .map(parseHtml)
         .map(dispatchLoaded)
-        .takeUntil(action$.ofType(FETCH_USER_CANCELLED))
         .catch(error => {
           console.warn('error in epic: ', error)
-          Observable.of({
+          return Observable.of({
             type: FETCH_TOURNAMENTLIST_FAILED,
             payload: error,
             error: true
