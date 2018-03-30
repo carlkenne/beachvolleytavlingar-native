@@ -240,8 +240,14 @@ export const getLocation = (clubName, arenaName) => {
     }
   }
 
+  console.log(
+    'arena: ',
+    `https://www.google.com/maps/@${arena.long},${arena.lat}`
+  )
   return {
-    url: `https://maps.google.com?lat=${arena.lat}&long=${arena.long}`,
+    url: `https://www.google.com/maps/search/?api=1&query=${arena.lat},${
+      arena.long
+    }`,
     text: `${arena.name}, ${arena.adress}`
   }
 }
