@@ -5,7 +5,8 @@ const initialState = {
   loaded: false,
   loading: false,
   sectionHeaders: {},
-  tournamentData: {}
+  tournamentData: {},
+  error: 'no error'
 }
 
 export default function(state = initialState, action = {}) {
@@ -32,7 +33,10 @@ export default function(state = initialState, action = {}) {
       return _state
     }
     case consts.FETCH_TOURNAMENTLIST_FAILED: {
-      return initialState
+      return {
+        ...initialState,
+        error: 'error ' + JSON.stringify(action.payload)
+      }
     }
     default:
       return state
