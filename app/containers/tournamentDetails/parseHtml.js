@@ -1,7 +1,12 @@
 import { _ } from 'lodash'
 import { parseDate } from '../../utils/date'
 import { getClassNames } from '../../utils/classTypes'
-import { getDomParser, getText } from '../../utils/parser'
+import {
+  getDomParser,
+  getText,
+  getAttribute,
+  hasClass
+} from '../../utils/parser'
 import { getLocation } from './locations'
 
 export const getExtended = (array, key, pos = 0, format = f => f) => {
@@ -54,29 +59,28 @@ const getClasses = parsed =>
     .map(className => getClass(parsed, className))
     .filter(classObj => classObj !== undefined)
 
-const extractOnClickLink = doc => {
-  const link = _.flatMap(
-    doc
-      .querySelect('input[onClick]')
-      .map(tag => Array.from(tag.attrs).map(attr => attr.value || ''))
-  ).find(attr => attr.includes('window.open("../pamelding/redirect.php'))
-  return link.replace('window.open("..', '').replace('", "_blank")', '')
+const extractOnClickLink = parser => {
+  const input = parser.querySelect(
+    'input[onClick=window.open("../pamelding/redirect.php]'
+  )
+  if (input.length > 0) {
+    return getAttribute(input[0], 'onClick')
+      .value.replace('window.open("..', '')
+      .replace('", "_blank")', '')
+  }
+  return ''
 }
 
 const parseHTML = data => {
-  const doc = getDomParser(data.response)
+  const parser = getDomParser(data.response)
 
-  const iterateSiblings = el => {
-    if (el) {
-      return [getText(el).trim(), ...iterateSiblings(el.nextSibling)]
-    }
-    return []
-  }
-
-  const parsed = doc.querySelect('td[class="uh"]').map(uhTag => ({
-    key: getText(uhTag).trim(),
-    values: iterateSiblings(uhTag.nextSibling)
+  const parsed = parser.querySelect('td.uh').map(td => ({
+    key: getText(td).trim(),
+    values: td.parentNode.childNodes
+      .filter(child => !hasClass(child, 'uh'))
+      .map(child => getText(child).trim())
   }))
+
   console.log('parsed: ', parsed)
 
   const club = get(parsed, 'Arrangör')
@@ -88,10 +92,10 @@ const parseHTML = data => {
     registrationLink: get(parsed, 'Anmälan'),
     link: 'to me',
     table: 'table',
-    setServerSessionCookieUrl: extractOnClickLink(doc),
+    setServerSessionCookieUrl: extractOnClickLink(parser),
     date: parseDate(
-      get(parsed, 'Från:') + ' ' + get(parsed, 'kl:').replace('.', ':'),
-      get(parsed, 'Till:') + ' ' + get(parsed, 'ca kl:').replace('.', ':')
+      get(parsed, 'Från:') + 'T' + get(parsed, 'kl:').replace('.', ':'),
+      get(parsed, 'Till:') + 'T' + get(parsed, 'ca kl:').replace('.', ':')
     ),
     paymentInfo: get(parsed, 'Inbetalningsinfo'),
     info: get(parsed, 'Övrig info', ''),

@@ -7,15 +7,25 @@ const get = (value, _default) => (value === undefined ? _default : value)
 export const getAttribute = (node, name) =>
   get(node.attrs, []).find(attr => attr.name === name).value
 
-const hasAttributeValue = (node, attributeName, value) =>
+const hasAttributeValueExact = (node, attributeName, value) =>
   get(node.attrs, []).find(
     attr => attr.name === attributeName && attr.value.split(' ').includes(value)
   )
 
+export const hasClass = (node, className) =>
+  hasAttributeValueExact(node, 'class', className)
+
+const includesAttributeValue = (node, attributeName, value) =>
+  get(node.attrs, []).find(
+    attr =>
+      attr.name === attributeName &&
+      attr.value.split(' ').find(attrValue => attrValue.includes(value))
+  )
+
 const byClassName = className => node =>
-  hasAttributeValue(node, 'class', className)
+  hasAttributeValueExact(node, 'class', className)
 const byAttribute = (attributeName, attributeValue) => node =>
-  hasAttributeValue(node, attributeName, attributeValue)
+  includesAttributeValue(node, attributeName, attributeValue)
 const byTagName = tagName => node => node.tagName === tagName
 const byNodeName = nodeName => node => node.nodeName === nodeName
 
@@ -39,16 +49,12 @@ const getComparator = selector => {
       byTagName(selectors[0])(node) && byClassName(selectors[1])(node)
   }
   // a[title="name"] or .uh[title="name"]
-  // untested
   if (selector.includes('[')) {
-    const selectors = selector.split('[')
-    const attributes = selector[1]
+    const selectors = selector
       .split(']')
       .join('')
-      .split('"')
-      .join('')
-      .split('=')
-
+      .split('[')
+    const attributes = selectors[1].split('=')
     return node =>
       getComparator(selectors[0])(node) &&
       byAttribute(attributes[0], attributes[1])(node)

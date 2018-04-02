@@ -4,7 +4,7 @@ import 'moment/locale/sv'
 moment.locale('sv')
 
 const formatDMMM = date => moment(date).format('D MMM')
-const getSafeDate = dateString => moment(dateString.split('.').join(''))
+const getSafeDate = dateString => moment(dateString.split('.').join('-'))
 const getDuration = (from, to, format) =>
   [...new Set([from, to].map(date => moment(date).format(format)))].join(' - ')
 

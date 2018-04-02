@@ -205,11 +205,8 @@ const getQualifier = text => {
 const parseHTML = data => {
   const parser = getDomParser(data.response)
 
-  console.log('doc: ', parser)
-
   const trList = parser.querySelect('.maincontent tr')
   const rows = trList.filter(row => row.attrs.length > 0).map(row => {
-    // console.log('row: ', row)
     const classes = parseClass(getText(row.childNodes[12]))
     return {
       tp: getTp(getText(row.childNodes[4])),
