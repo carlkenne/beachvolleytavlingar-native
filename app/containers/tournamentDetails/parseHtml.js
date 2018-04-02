@@ -1,7 +1,7 @@
 import { _ } from 'lodash'
 import { parseDate } from '../../utils/date'
 import { getClassNames } from '../../utils/classTypes'
-import { getDomParser } from '../../utils/parser'
+import { getDomParser, getText } from '../../utils/parser'
 import { getLocation } from './locations'
 
 export const getExtended = (array, key, pos = 0, format = f => f) => {
@@ -58,7 +58,7 @@ const extractOnClickLink = doc => {
   const link = _.flatMap(
     doc
       .querySelect('input[onClick]')
-      .map(tag => Array.from(tag.attributes).map(attr => attr.value || ''))
+      .map(tag => Array.from(tag.attrs).map(attr => attr.value || ''))
   ).find(attr => attr.includes('window.open("../pamelding/redirect.php'))
   return link.replace('window.open("..', '').replace('", "_blank")', '')
 }
@@ -68,13 +68,13 @@ const parseHTML = data => {
 
   const iterateSiblings = el => {
     if (el) {
-      return [el.textContent.trim(), ...iterateSiblings(el.nextSibling)]
+      return [getText(el).trim(), ...iterateSiblings(el.nextSibling)]
     }
     return []
   }
 
   const parsed = doc.querySelect('td[class="uh"]').map(uhTag => ({
-    key: uhTag.textContent.trim(),
+    key: getText(uhTag).trim(),
     values: iterateSiblings(uhTag.nextSibling)
   }))
   console.log('parsed: ', parsed)

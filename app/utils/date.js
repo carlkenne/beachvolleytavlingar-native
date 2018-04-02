@@ -4,7 +4,7 @@ import 'moment/locale/sv'
 moment.locale('sv')
 
 const formatDMMM = date => moment(date).format('D MMM')
-const getSafeDate = dateString => new Date(dateString)
+const getSafeDate = dateString => moment(dateString.split('.').join(''))
 const getDuration = (from, to, format) =>
   [...new Set([from, to].map(date => moment(date).format(format)))].join(' - ')
 
@@ -23,11 +23,14 @@ const getDetailedDuration = (from, to) => {
 }
 
 export const parseDate = (fromString, toString = fromString) => {
+  console.log('fromString', fromString)
+  console.log('toString', toString)
+
   const from = getSafeDate(fromString)
   const to =
     toString.split('.').length === 3
       ? getSafeDate(toString)
-      : getSafeDate(toString + '.' + from.getFullYear())
+      : getSafeDate(from.year() + '.' + toString)
 
   return {
     from,
@@ -37,4 +40,4 @@ export const parseDate = (fromString, toString = fromString) => {
   }
 }
 
-export const isOldDate = date => date.from < new Date()
+export const isOldDate = date => date.from < moment()

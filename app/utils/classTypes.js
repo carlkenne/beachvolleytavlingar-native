@@ -157,22 +157,22 @@ export const getLevel = (level, classes, tournamentName) => {
   }
   if (
     tournamentName.toLowerCase().includes('svart') ||
-    name.toLowerCase().includes('open')
+    tournamentName.toLowerCase().includes('open')
   ) {
     return 'Open Svart'
   }
-  if (name.toLowerCase().includes('challenger')) {
+  if (tournamentName.toLowerCase().includes('challenger')) {
     return 'Challenger'
   }
   if (
-    name.toLowerCase().includes('ungdom') ||
-    name.toLowerCase().includes('minior')
+    tournamentName.toLowerCase().includes('ungdom') ||
+    tournamentName.toLowerCase().includes('minior')
   ) {
     return 'Ungdomstävling'
   }
-  if (name.toLowerCase().includes('veteran')) {
+  if (tournamentName.toLowerCase().includes('veteran')) {
     return 'Veterantävling'
   }
-  console.log('could not identify ', name)
+  console.log('could not identify ', tournamentName)
   return 'Open Svart'
 }

@@ -1,5 +1,5 @@
 import { _ } from 'lodash'
-import { getHrefByTitle, getDomParser } from '../../../utils/parser'
+import { getDomParser } from '../../../utils/parser'
 import { getClassNameSelectors } from '../../../utils/classTypes'
 
 const prepareSelectors = html =>
@@ -12,16 +12,25 @@ const prepareSelectors = html =>
     html
   )
 
+const getUrl = (parser, name) => {
+  const elements = parser.querySelect('a[title="' + name + '"]')
+  const href = _.flatMap(elements.map(el => el.attrs)).find(
+    attr => attr.name === 'href'
+  )
+  return href ? href.value : ''
+}
+
 export const parseKlassLinks = data => {
   if (data.status !== 200) {
     throw new Error('no links for results available')
   }
-  const doc = getDomParser(prepareSelectors(data.response))
+  const parser = getDomParser(prepareSelectors(data.response))
+
   console.log('data.response: ', data)
 
   const links = getClassNameSelectors()
     .map(className => ({
-      url: getHrefByTitle(doc, className.renamedSelector),
+      url: getUrl(parser, className.renamedSelector),
       className: className.displayName
     }))
     .filter(link => link.url !== '' && link.url !== '#')
