@@ -1,5 +1,5 @@
 import { _ } from 'lodash'
-import { getDomParser } from '../../../utils/parser'
+import { getDomParser, getText } from '../../../utils/parser'
 import { getClassNameSelectors } from '../../../utils/classTypes'
 
 const prepareSelectors = html =>
@@ -13,7 +13,7 @@ const prepareSelectors = html =>
   )
 
 const getUrl = (parser, name) => {
-  const elements = parser.querySelect('a[title="' + name + '"]')
+  const elements = parser.querySelect('a[title=' + name + ']')
   const href = _.flatMap(elements.map(el => el.attrs)).find(
     attr => attr.name === 'href'
   )
@@ -56,26 +56,28 @@ const parse = data => {
   const doc = getDomParser(data.response.response)
   const tables = doc.querySelect(`tbody`)
 
+  console.log(tables)
+
   const table = tables
     .filter(
       t =>
-        _.get(t, 'childNodes[1].childNodes[1].firstChild.nodeValue') ===
+        _.get(t, 'childNodes[1].childNodes[1].childNodes[0].value') ===
         'Position'
     )
     .find(
       t =>
-        _.get(t, 'childNodes[1].childNodes[3].firstChild.nodeValue') ===
+        _.get(t, 'childNodes[1].childNodes[3].childNodes[0].value') ===
         'Lagnavn'
     )
   if (!table) {
     return undefined
   }
 
-  const teams = _.drop(table.querySelect('tr'), 1)
-    .map(row => row.querySelect('td'))
+  const teams = _.drop(doc.querySelect('tr', table), 1)
+    .map(row => doc.querySelect('td', row))
     .map((tds, index) => ({
-      position: tds[0].textContent,
-      team: getTeam(tds[1].textContent),
+      position: getText(tds[0]),
+      team: getTeam(getText(tds[1])),
       id: index.toString()
     }))
 

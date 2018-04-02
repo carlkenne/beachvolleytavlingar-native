@@ -1,13 +1,13 @@
 import { _ } from 'lodash'
 import { getNameForClass } from '../../../utils/classTypes'
-import { getDomParser } from '../../../utils/parser'
+import { getDomParser, getText } from '../../../utils/parser'
 
 const parseHTML = data => {
   const doc = getDomParser(data.response)
   const rows = doc.querySelect('table tr')
 
   const allTeams = _.drop(rows, 1)
-    .map(r => r.querySelect('td').map(td => td.textContent))
+    .map(r => doc.querySelect('td', r).map(getText))
     .filter(arr => arr.length === 8)
     .map(arr => ({
       id: arr[0].trim(),
