@@ -18,7 +18,6 @@ const dispatchLoaded = payload => ({
 })
 
 const getData = () => {
-  console.warn('getData')
   console.log('do not remove')
   // throw new Error('could not connect')
 
