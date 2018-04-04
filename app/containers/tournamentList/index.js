@@ -15,7 +15,7 @@ const Container = styled.ImageBackground`
 
 class TournamentList extends Component {
   componentDidMount() {
-    this.props.actions.fetchTournamentList()
+    requestAnimationFrame(() => this.props.actions.fetchTournamentList())
   }
 
   _getVisibleTournaments() {

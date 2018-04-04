@@ -7,28 +7,14 @@ import BlueText from '../../../components/blueText'
 import preliminartSpelschema from './preliminartSpelschema'
 import { tournamentDetailsShape, resultTeamShape } from '../propTypes'
 import { fetchSpelschema } from './epic'
-import Loading from '../../../components/loading'
 import Separator from '../../../components/separator'
 import ShortResultList from '../shortList'
 import ResultRow from './resultRow'
 import ResultPage from './resultPage'
+import TabLoader from '../tabLoader'
 
+/* eslint-disable react/no-multi-comp */
 class SpelschemaTab extends Component {
-  componentDidMount() {
-    if (this.props.tournamentDetails) {
-      this.props.fetchSpelschema(this.props.tournamentDetails)
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.props.results === undefined &&
-      this.props.tournamentDetails !== nextProps.tournamentDetails
-    ) {
-      this.props.fetchSpelschema(this.props.tournamentDetails)
-    }
-  }
-
   seAll = header => {
     this.props.navigator.push({
       title: header,
@@ -40,9 +26,6 @@ class SpelschemaTab extends Component {
   }
 
   render() {
-    if (this.props.loading) {
-      return <Loading />
-    }
     if (this.props.results === undefined) {
       return (
         <View>
@@ -88,15 +71,31 @@ class SpelschemaTab extends Component {
 
 SpelschemaTab.propTypes = {
   navigator: PropTypes.shape().isRequired,
-  tournamentDetails: tournamentDetailsShape.isRequired,
-  fetchSpelschema: PropTypes.func.isRequired,
   results: PropTypes.arrayOf(
     PropTypes.shape({
       className: PropTypes.string,
       teams: PropTypes.arrayOf(resultTeamShape),
       top4Teams: PropTypes.arrayOf(resultTeamShape)
     })
-  ),
+  )
+}
+
+class SpelschemaTabLoader extends Component {
+  render() {
+    return (
+      <TabLoader
+        fetch={() => this.props.fetchSpelschema(this.props.tournamentDetails)}
+        {...this.props}
+        component={SpelschemaTab}
+      />
+    )
+  }
+}
+
+SpelschemaTabLoader.propTypes = {
+  navigator: PropTypes.shape().isRequired,
+  tournamentDetails: tournamentDetailsShape,
+  fetchSpelschema: PropTypes.func.isRequired,
   loading: PropTypes.bool
 }
 
@@ -105,4 +104,4 @@ export default connect(
     ...state.spelschema
   }),
   { fetchSpelschema }
-)(SpelschemaTab)
+)(SpelschemaTabLoader)

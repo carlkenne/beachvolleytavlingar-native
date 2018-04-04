@@ -22,10 +22,16 @@ const getDetailedDuration = (from, to) => {
   return getDuration(from, to, detailedFormat)
 }
 
-export const parseDate = (fromString, toString = fromString) => {
-  console.log('fromString', fromString)
-  console.log('toString', toString)
+const toTime = time =>
+  time
+    .split('.')
+    .join(':')
+    .split(':')
+    .map(t => (t.length === 1 ? `0${t}` : t))
+    .join(':')
 
+export const toISO = (date, time) => `${date}T${toTime(time)}`
+export const parseDate = (fromString, toString = fromString) => {
   const from = getSafeDate(fromString)
   const to =
     toString.split('.').length === 3

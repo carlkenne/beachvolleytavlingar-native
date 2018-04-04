@@ -45,7 +45,7 @@ export class ListView extends Component {
       <RNListView
         dataSource={this.getDataSource()}
         renderRow={(data, header, index) =>
-          this.props.renderRow(data, index % 2 === 0)
+          this.props.renderRow(data, index % 2 === 0, index)
         }
         renderSectionHeader={this.props.renderSectionHeader || header}
         renderSeparator={renderSeparator}

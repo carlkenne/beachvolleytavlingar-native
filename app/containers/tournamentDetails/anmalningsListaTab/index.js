@@ -3,27 +3,15 @@ import { View } from 'react-native'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Separator from '../../../components/separator'
-import Loading from '../../../components/loading'
 import ShortAnmalningslista from '../shortList'
 import { fetchAnmalningslista } from './epic'
 import FullAnmalningslista from './fullAnmalningslistaPage'
 import { tournamentDetailsShape, teamShape } from '../propTypes'
 import AnmalningslistaRow from './anmalningslistaRow'
+import TabLoader from '../tabLoader'
 
+/* eslint-disable react/no-multi-comp */
 class AnmalningslistaTab extends Component {
-  componentDidMount() {
-    this.props.fetchAnmalningslista(this.props.tournamentDetails)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.props.classes === undefined &&
-      this.props.tournamentDetails !== nextProps.tournamentDetails
-    ) {
-      this.props.fetchAnmalningslista(this.props.tournamentDetails)
-    }
-  }
-
   seAll = header => {
     this.props.navigator.push({
       component: FullAnmalningslista,
@@ -35,9 +23,6 @@ class AnmalningslistaTab extends Component {
   }
 
   render() {
-    if (this.props.loading) {
-      return <Loading />
-    }
     const classes = this.props.classes.map(c => (
       <ShortAnmalningslista
         key={c.name}
@@ -65,9 +50,24 @@ AnmalningslistaTab.propTypes = {
       teams: PropTypes.arrayOf(teamShape).isRequired
     })
   ).isRequired,
+  navigator: PropTypes.shape().isRequired
+}
+
+class AnmalningslistaTabLoader extends Component {
+  render() {
+    return (
+      <TabLoader
+        fetch={this.props.fetchAnmalningslista}
+        {...this.props}
+        component={AnmalningslistaTab}
+      />
+    )
+  }
+}
+
+AnmalningslistaTabLoader.propTypes = {
   loading: PropTypes.bool,
-  navigator: PropTypes.shape().isRequired,
-  tournamentDetails: tournamentDetailsShape.isRequired,
+  tournamentDetails: tournamentDetailsShape,
   fetchAnmalningslista: PropTypes.func.isRequired
 }
 
@@ -78,4 +78,4 @@ export default connect(
   {
     fetchAnmalningslista
   }
-)(AnmalningslistaTab)
+)(AnmalningslistaTabLoader)

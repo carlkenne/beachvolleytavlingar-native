@@ -20,7 +20,6 @@ const renderClasses = details => {
       </Render>
     </Text>
   ))
-  console.log('renderClasses: ', classes)
   return details.classes.length ? (
     <S.Row>
       <S.Label>klasser</S.Label>

@@ -1,5 +1,5 @@
 import { _ } from 'lodash'
-import { parseDate } from '../../utils/date'
+import { parseDate, toISO } from '../../utils/date'
 import { getClassNames } from '../../utils/classTypes'
 import {
   getDomParser,
@@ -94,8 +94,8 @@ const parseHTML = data => {
     table: 'table',
     setServerSessionCookieUrl: extractOnClickLink(parser),
     date: parseDate(
-      get(parsed, 'Från:') + 'T' + get(parsed, 'kl:').replace('.', ':'),
-      get(parsed, 'Till:') + 'T' + get(parsed, 'ca kl:').replace('.', ':')
+      toISO(get(parsed, 'Från:'), get(parsed, 'kl:')),
+      toISO(get(parsed, 'Till:'), get(parsed, 'ca kl:'))
     ),
     paymentInfo: get(parsed, 'Inbetalningsinfo'),
     info: get(parsed, 'Övrig info', ''),

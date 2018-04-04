@@ -42,7 +42,9 @@ class TournamentDetails extends Component {
   }
 
   componentDidMount() {
-    this.props.actions.fetchTournamentDetails(this.props.tournamentInfo.id)
+    requestAnimationFrame(() =>
+      this.props.actions.fetchTournamentDetails(this.props.tournamentInfo.id)
+    )
   }
 
   render() {

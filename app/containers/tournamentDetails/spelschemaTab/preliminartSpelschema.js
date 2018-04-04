@@ -16,7 +16,7 @@ const Container = styled.View`
 
 class PreliminartSpelschema extends Component {
   componentDidMount() {
-    this.props.actions.fetchAnmalningslista()
+    requestAnimationFrame(() => this.props.actions.fetchAnmalningslista())
   }
 
   render() {
@@ -53,15 +53,15 @@ PreliminartSpelschema.propTypes = {
   classes: PropTypes.arrayOf(PropTypes.shape).isRequired,
   loading: PropTypes.bool,
   actions: PropTypes.shape({
-    fetchAnmalningslista: PropTypes.func.isRequired,
-  }).isRequired,
+    fetchAnmalningslista: PropTypes.func.isRequired
+  }).isRequired
 }
 
 export default connect(
   state => ({
-    ...state.anmalningslista,
+    ...state.anmalningslista
   }),
   dispatch => ({
-    actions: bindActionCreators({ fetchAnmalningslista }, dispatch),
-  }),
+    actions: bindActionCreators({ fetchAnmalningslista }, dispatch)
+  })
 )(PreliminartSpelschema)
