@@ -84,9 +84,10 @@ class SpelschemaTabLoader extends Component {
   render() {
     return (
       <TabLoader
-        fetch={() => this.props.fetchSpelschema(this.props.tournamentDetails)}
-        {...this.props}
+        fetch={this.props.fetchSpelschema}
+        argsForFetch={this.props.tournamentDetails}
         component={SpelschemaTab}
+        {...this.props}
       />
     )
   }

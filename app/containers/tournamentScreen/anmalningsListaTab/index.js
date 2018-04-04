@@ -58,8 +58,9 @@ class AnmalningslistaTabLoader extends Component {
     return (
       <TabLoader
         fetch={this.props.fetchAnmalningslista}
-        {...this.props}
+        argsForFetch={this.props.tournamentDetails}
         component={AnmalningslistaTab}
+        {...this.props}
       />
     )
   }

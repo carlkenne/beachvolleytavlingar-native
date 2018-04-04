@@ -3,13 +3,11 @@ import PropTypes from 'prop-types'
 import { ScrollView, SegmentedControlIOS } from 'react-native'
 import { connect } from 'react-redux'
 import styled from 'styled-components/native'
-import { bindActionCreators } from 'redux'
 import Separator from '../../components/separator'
 import SideMargins from './sideMargins'
 import DetailsTab from './detailsTab'
 import AnmalningslistaTab from './anmalningsListaTab'
 import SpelschemaTab from './spelschemaTab'
-import { fetchTournamentDetails } from './epic'
 import { tournamentDetailsShape } from './propTypes'
 import { tournamentInfoShape } from '../propTypes'
 import { isOldDate } from '../../utils/date'
@@ -33,18 +31,12 @@ const TopBottomMargins = styled.View`
   margin-bottom: 5;
 `
 
-class TournamentDetails extends Component {
+class TournamentScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
       selectedIndex: 0
     }
-  }
-
-  componentDidMount() {
-    requestAnimationFrame(() =>
-      this.props.actions.fetchTournamentDetails(this.props.tournamentInfo.id)
-    )
   }
 
   render() {
@@ -77,7 +69,7 @@ class TournamentDetails extends Component {
         </SideMargins>
         <Separator />
         {this.state.selectedIndex === 0 && (
-          <DetailsTab {...this.props.tournamentDetails} />
+          <DetailsTab tournamentInfo={this.props.tournamentInfo} />
         )}
         {this.state.selectedIndex === 1 && (
           <AnmalningslistaTab
@@ -96,24 +88,16 @@ class TournamentDetails extends Component {
   }
 }
 
-TournamentDetails.propTypes = {
+TournamentScreen.propTypes = {
   tournamentInfo: tournamentInfoShape.isRequired,
   tournamentDetails: PropTypes.shape({
     details: tournamentDetailsShape,
     loading: PropTypes.bool,
     loaded: PropTypes.bool
   }).isRequired,
-  actions: PropTypes.shape({
-    fetchTournamentDetails: PropTypes.func.isRequired
-  }).isRequired,
   navigator: PropTypes.shape().isRequired
 }
 
-export default connect(
-  state => ({
-    tournamentDetails: state.tournamentDetails
-  }),
-  dispatch => ({
-    actions: bindActionCreators({ fetchTournamentDetails }, dispatch)
-  })
-)(TournamentDetails)
+export default connect(state => ({
+  tournamentDetails: state.tournamentDetails
+}))(TournamentScreen)

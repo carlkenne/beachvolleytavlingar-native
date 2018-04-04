@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Text, View } from 'react-native'
 import * as S from '../sectionComponents'
 import OutlineButton from '../../../components/outlineButton'
 import Hyperlink from '../../../components/hyperlink'
 import { tournamentDetailsShape } from '../propTypes'
-import Loading from '../../../components/loading'
+import { tournamentInfoShape } from '../../propTypes'
+import { fetchTournamentDetails } from '../epic'
+import TabLoader from '../tabLoader'
+/* eslint-disable react/no-multi-comp */
 
 const Render = ({ _if, children }) => (_if ? children : null)
 
@@ -28,12 +32,9 @@ const renderClasses = details => {
   ) : null
 }
 
-const DetailsTab = ({ loading, loaded, details }) => {
-  if (loading) {
-    return <Loading />
-  }
-  console.log('details: ', details)
+const DetailsTab = ({ loaded, details }) => {
   console.log('loaded: ', loaded)
+  console.log('details: ', details)
   return (
     loaded && (
       <View>
@@ -117,8 +118,33 @@ const DetailsTab = ({ loading, loaded, details }) => {
 
 DetailsTab.propTypes = {
   details: tournamentDetailsShape,
-  loaded: PropTypes.bool,
+  loaded: PropTypes.bool
+}
+
+class DetailsTabLoader extends Component {
+  render() {
+    return (
+      <TabLoader
+        fetch={this.props.fetchTournamentDetails}
+        argsForFetch={this.props.tournamentInfo}
+        component={DetailsTab}
+        {...this.props}
+      />
+    )
+  }
+}
+
+DetailsTabLoader.propTypes = {
+  tournamentInfo: tournamentInfoShape.isRequired,
+  fetchTournamentDetails: PropTypes.func.isRequired,
   loading: PropTypes.bool
 }
 
-export default DetailsTab
+export default connect(
+  state => ({
+    ...state.tournamentDetails
+  }),
+  {
+    fetchTournamentDetails
+  }
+)(DetailsTabLoader)

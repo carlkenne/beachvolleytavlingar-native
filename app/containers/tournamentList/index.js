@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import styled from 'styled-components/native'
 import Loading from '../../components/loading'
 import TournamentListRow from './TournamentListRow'
-import TournamentDetails from '../tournamentDetails'
+import TournamentScreen from '../tournamentScreen'
 import * as actions from './actions'
 import { ListView } from '../../components/listView'
 
@@ -57,7 +57,7 @@ class TournamentList extends Component {
               tournamentInfo={tournamentInfo}
               onPress={() => {
                 this.props.navigator.push({
-                  component: TournamentDetails,
+                  component: TournamentScreen,
                   title: tournamentInfo.name,
                   passProps: {
                     tournamentInfo,

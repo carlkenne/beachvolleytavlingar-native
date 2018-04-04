@@ -13,9 +13,9 @@ export const FETCH_TOURNAMENT_DETAILS_FAILED =
 export const FETCH_TOURNAMENT_DETAILS =
   'tournamentDetails/FETCH_TOURNAMENT_DETAILS'
 
-export const fetchTournamentDetails = id => ({
+export const fetchTournamentDetails = tournamentInfo => ({
   type: FETCH_TOURNAMENT_DETAILS,
-  id
+  id: tournamentInfo.id
 })
 
 const dispatchLoaded = payload => ({
